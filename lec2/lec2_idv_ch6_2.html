@@ -8,11 +8,9 @@
 </head>
 <body>
     <script type="text/javascript">
-        var makeBarPlot = function (barClass, divId, dataset) {
+        var makeBarPlot = function (barClass, dataset) {
             d3.select("body")
                 .append("div")
-                .attr("id", divId);
-            d3.select("#" + divId)
                 .data(dataset)
                 .enter()
                 .append("div")
@@ -21,14 +19,14 @@
                     return d * 5 + "px";
                 });
         };
-        makeBarPlot("bar", "tweeny", [25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
+        makeBarPlot("bar", [25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
             14, 11, 22, 29, 11, 13, 12, 17, 18, 10,
             24, 18, 25, 9, 3 ]);
         var randomDataset = [];
         for (var i = 0 ; i < 40 ; i++) {
             randomDataset.push(Math.round(Math.random() * 30));
         }
-        makeBarPlot("bar2", "tuli", randomDataset);
+        makeBarPlot("bar2", randomDataset);
         console.log(randomDataset);
     </script>
 </body>
