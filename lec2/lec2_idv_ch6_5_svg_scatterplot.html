@@ -16,14 +16,14 @@
     var randomDataset = [];
     for (var i = 0 ; i < Math.round(Math.random() * (maxSamples - minSamples) + minSamples) ; i++) {
         randomDataset.push([
-            positionFactor * Math.random() * svgWidth,
-            positionFactor * Math.random() * svgHeight,
-            Math.random() * maxValue]);
+            Math.round(positionFactor * Math.random() * svgWidth),
+            Math.round(positionFactor * Math.random() * svgHeight),
+            Math.round(Math.random() * maxValue)
+        ]);
     }
     console.log(randomDataset);
-    d3.select("body")
-        .append("svg")
-        .attr("width", svgWidth)
+    var svg = d3.select("body").append("svg");
+    svg.attr("width", svgWidth)
         .attr("height", svgHeight)
         .selectAll("circle")
         .data(randomDataset)
@@ -38,6 +38,20 @@
         .attr("r", function (d) {
             return Math.sqrt(d[2]);
         });
+    svg.selectAll("text")
+        .data(randomDataset)
+        .enter()
+        .append("text")
+        .text(function (d) {return d;})
+        .attr("x", function(d) {
+            return d[0] + 5;
+        })
+        .attr("y", function(d) {
+            return d[1] + 5;
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "red");
 </script>
 </body>
 </html>
