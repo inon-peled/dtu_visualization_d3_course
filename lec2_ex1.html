@@ -21,7 +21,7 @@
 			.append("p")
 			.text(function (d) {return [d.Food, d.Deliciousness];})
 			.style("color", function (d) {
-				return (d > 11) ? "red" : "blue";
+				return (d.Deliciousness > 5) ? "red" : "blue";
 			});
     });
 	</script>
