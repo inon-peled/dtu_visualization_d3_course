@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meow</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var randomDataset = [];
+    for (var i = 0 ; i < Math.round(Math.random() * 40 + 10) ; i++) {
+        randomDataset.push(Math.round(Math.random() * 30));
+    }
+    console.log(randomDataset);
+
+    var svgWidth = 500;
+    var svgHeight = 50;
+    var barPadding = 1;
+    d3.select("body")
+        .append("svg")
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .selectAll("rect")
+        .data(randomDataset)
+        .enter()
+        .append("rect")
+        .attr("x", function (d, i) {
+            return i * svgWidth / randomDataset.length;
+        })
+        .attr("y", function (d) {
+            return svgHeight - d;
+        })
+        .attr("width", svgWidth / randomDataset.length - barPadding)
+        .attr("height", function (d) {
+            return d * 4;
+        });
+</script>
+</body>
+</html>
