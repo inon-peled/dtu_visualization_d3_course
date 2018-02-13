@@ -8,13 +8,13 @@
 <body>
 <script type="text/javascript">
     var randomDataset = [];
-    for (var i = 0 ; i < Math.round(Math.random() * 40 + 10) ; i++) {
+    for (var i = 0 ; i < Math.round(Math.random() * 200 + 50) ; i++) {
         randomDataset.push(Math.round(Math.random() * 30));
     }
     console.log(randomDataset);
 
-    var svgWidth = 500;
-    var svgHeight = 50;
+    var svgWidth = 1200;
+    var svgHeight = 250;
     var barPadding = 1;
     d3.select("body")
         .append("svg")
@@ -28,11 +28,14 @@
             return i * svgWidth / randomDataset.length;
         })
         .attr("y", function (d) {
-            return svgHeight - d;
+            return svgHeight - d * 4;
         })
         .attr("width", svgWidth / randomDataset.length - barPadding)
         .attr("height", function (d) {
             return d * 4;
+        })
+        .attr("fill", function (d) {
+            return "rgb(" + Math.round(d * 10) + ", 0, " + Math.round(d * 10) + ")";
         });
 </script>
 </body>
