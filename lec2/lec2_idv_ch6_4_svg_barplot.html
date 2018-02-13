@@ -7,8 +7,10 @@
 </head>
 <body>
 <script type="text/javascript">
+    var maxSamples = 250;
+    var minSamples = 50;
     var randomDataset = [];
-    for (var i = 0 ; i < Math.round(Math.random() * 200 + 50) ; i++) {
+    for (var i = 0 ; i < Math.round(Math.random() * (maxSamples - minSamples) + minSamples) ; i++) {
         randomDataset.push(Math.round(Math.random() * 30));
     }
     console.log(randomDataset);
@@ -52,7 +54,7 @@
             return svgHeight - d * 4 + 10;
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
+        .attr("font-size", 7 + 4 * (1 - (randomDataset.length - minSamples) / (maxSamples - minSamples)) + "px")
         .attr("fill", "white");
 </script>
 </body>
