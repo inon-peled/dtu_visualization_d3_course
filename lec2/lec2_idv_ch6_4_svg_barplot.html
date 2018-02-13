@@ -10,7 +10,8 @@
     var maxSamples = 250;
     var minSamples = 50;
     var randomDataset = [];
-    for (var i = 0 ; i < Math.round(Math.random() * (maxSamples - minSamples) + minSamples) ; i++) {
+    var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
+    for (var i = 0 ; i < numSamples ; i++) {
         randomDataset.push(Math.round(Math.random() * 30));
     }
     console.log(randomDataset);

@@ -7,14 +7,15 @@
 </head>
 <body>
 <script type="text/javascript">
-    var maxSamples = 100;
-    var minSamples = 20;
+    var maxSamples = 300;
+    var minSamples = 50;
     var svgWidth = 1200;
-    var svgHeight = 250;
+    var svgHeight = 800;
     var maxValue = 30;
     var positionFactor = 0.9;
     var randomDataset = [];
-    for (var i = 0 ; i < Math.round(Math.random() * (maxSamples - minSamples) + minSamples) ; i++) {
+    var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
+    for (var i = 0 ; i < numSamples ; i++) {
         randomDataset.push([
             Math.round(positionFactor * Math.random() * svgWidth),
             Math.round(positionFactor * Math.random() * svgHeight),
