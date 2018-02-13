@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Meow</title>
-    <link rel="stylesheet" href="lec2_idv_ch6_1.css">
+    <link rel="stylesheet" href="lec2_idv_ch6_2.css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
     <script type="text/javascript">
-        var dataset = [ 25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
+        var makeBarPlot = function (barClass, divId, dataset) {
+            d3.select("body")
+                .append("div")
+                .attr("id", divId);
+            d3.select("#" + divId)
+                .data(dataset)
+                .enter()
+                .append("div")
+                .attr("class", barClass)
+                .style("height", function (d) {
+                    return d * 5 + "px";
+                });
+        };
+        makeBarPlot("bar", "tweeny", [25, 7, 5, 26, 11, 8, 25, 14, 23, 19,
             14, 11, 22, 29, 11, 13, 12, 17, 18, 10,
-            24, 18, 25, 9, 3 ];
-        d3.select("body")
-            .selectAll("div")
-            .data(dataset)
-            .enter()
-            .append("div")
-            .attr("class", "bar")
-            .style("height", function (d) {
-                return d * 5 + "px";
-            });
+            24, 18, 25, 9, 3 ]);
+        var randomDataset = [];
+        for (var i = 0 ; i < 40 ; i++) {
+            randomDataset.push(Math.random() * 30);
+        }
+        makeBarPlot("bar2", "tuli", randomDataset);
     </script>
 </body>
 </html>
