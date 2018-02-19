@@ -27,15 +27,21 @@
 
     var linearScaleFactory = function (dataset, idx, range) {
         return d3.scaleLinear()
-            .domain([0, d3.max(randomDataset, function (d) {
+            .domain([0, d3.max(dataset, function (d) {
                 return d[idx]
             })])
-            .range(range);
+            .range(range)
+            .clamp(true);
     };
 
-    var xScale = linearScaleFactory(randomDataset, 0, [padding, svgWidth - padding]);
+    var xScale = linearScaleFactory(randomDataset, 0, [padding, svgWidth - 2 * padding]);
     var yScale = linearScaleFactory(randomDataset, 1, [padding, svgHeight - padding]);
-    var radiusScale = linearScaleFactory(randomDataset, 2, [2, 10]); // Or [10, 2] for reverse ratio of radius to value.
+    // var radiusScale = linearScaleFactory(randomDataset, 2, [2, 10]); // Or [10, 2] for reverse ratio of radius to value.
+    var areaScale = d3.scaleSqrt()
+        .domain([0, d3.max(randomDataset, function (d) {
+            return d[2];
+        })])
+        .range([2, 10]);
 
     var svg = d3.select("body").append("svg");
     svg.attr("width", svgWidth)
@@ -51,15 +57,17 @@
             return yScale(d[1]);
         })
         .attr("r", function (d) {
-            return radiusScale(d[2]);
-        });
+            return areaScale(d[2]);
+        })
+        .style("stroke", "black")
+        .style("fill", "none");
     svg.selectAll("text")
         .data(randomDataset)
         .enter()
         .append("text")
         .text(function (d) {return d[2];})
         .attr("x", function(d) {
-            return xScale(d[0]) + radiusScale(d[2]) + 2;
+            return xScale(d[0]) + areaScale(d[2]) + 2;
         })
         .attr("y", function(d) {
             return yScale(d[1]);
