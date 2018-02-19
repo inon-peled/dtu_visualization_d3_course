@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meow</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var padding = 20;
+    var maxSamples = 50;
+    var minSamples = 10;
+    var svgWidth = 800;
+    var svgHeight = 600;
+    var positionFactor = 0.9;
+
+    var randomDataset = [];
+    var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
+    for (var i = 0 ; i < numSamples ; i++) {
+        randomDataset.push([
+            Math.random(),
+            Math.round(positionFactor * Math.random() * svgHeight),
+            Math.round(Math.random() * 100)
+        ]);
+    }
+    console.log(randomDataset);
+
+    var linearScaleFactory = function (dataset, idx, range) {
+        return d3.scaleLinear()
+            .domain([0, d3.max(randomDataset, function (d) {
+                return d[idx]
+            })])
+            .range(range);
+    };
+
+    var xScale = linearScaleFactory(randomDataset, 0, [padding, svgWidth - padding]);
+    var yScale = linearScaleFactory(randomDataset, 1, [padding, svgHeight - padding]);
+    var radiusScale = linearScaleFactory(randomDataset, 2, [2, 10]); // Or [10, 2] for reverse ratio of radius to value.
+
+    var svg = d3.select("body").append("svg");
+    svg.attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .selectAll("circle")
+        .data(randomDataset)
+        .enter()
+        .append("circle")
+        .attr("cx", function (d) {
+            return xScale(d[0]);
+        })
+        .attr("cy", function (d) {
+            return yScale(d[1]);
+        })
+        .attr("r", function (d) {
+            return radiusScale(d[2]);
+        });
+    svg.selectAll("text")
+        .data(randomDataset)
+        .enter()
+        .append("text")
+        .text(function (d) {return d[2];})
+        .attr("x", function(d) {
+            return xScale(d[0]) + radiusScale(d[2]) + 2;
+        })
+        .attr("y", function(d) {
+            return yScale(d[1]);
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "red");
+</script>
+</body>
+</html>
