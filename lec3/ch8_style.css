@@ -1,0 +1,10 @@
+.axis path, /* The horizontal line */
+.axis line { /* The vertical ticks */
+    stroke: blue;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-weight: bold;
+    fill: blue;
+}
