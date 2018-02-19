@@ -77,7 +77,8 @@
         .attr("fill", "red");
 
     var xAxis = d3.axisBottom(xScale)
-        .ticks(3);
+        .ticks(5)
+        .tickFormat(d3.format(".0%"));
     svg.append("g")
         .attr("class", "axis")
         .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
