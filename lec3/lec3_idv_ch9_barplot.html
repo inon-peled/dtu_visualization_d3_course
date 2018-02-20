@@ -12,17 +12,23 @@
     var randomDataset = [];
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
     for (var i = 0 ; i < numSamples ; i++) {
-        randomDataset.push(Math.round(Math.random() * 30));
+        randomDataset.push(Math.round(Math.random() * numSamples));
     }
     console.log(randomDataset);
 
     var svgWidth = 1200;
     var svgHeight = 250;
+    var minimumBarHeight = 20;
+    var topPadding = 20;
 
     var xScale = d3.scaleBand()
         .domain(d3.range(randomDataset.length))
         .rangeRound([0, svgWidth])
         .paddingInner(0.05);
+
+    var yScale = d3.scaleLinear()
+        .domain([0, d3.max(randomDataset)])
+        .range([minimumBarHeight, svgHeight - topPadding]);
 
     var svg = d3.select("body").append("svg");
     svg
@@ -36,11 +42,11 @@
             return xScale(i);
         })
         .attr("y", function (d) {
-            return svgHeight - d * 4;
+            return svgHeight - yScale(d);
         })
         .attr("width", xScale.bandwidth())
         .attr("height", function (d) {
-            return d * 4;
+            return yScale(d);
         })
         .attr("fill", function (d) {
             return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
