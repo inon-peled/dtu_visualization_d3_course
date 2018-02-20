@@ -6,15 +6,24 @@
     <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
+
+<p>Click on this text to update the chart with new data values (once).</p>
+
 <script type="text/javascript">
     var maxSamples = 40;
     var minSamples = 10;
-    var randomDataset = [];
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
-    for (var i = 0 ; i < numSamples ; i++) {
-        randomDataset.push(Math.round(Math.random() * numSamples));
-    }
-    console.log(randomDataset);
+
+    var generateValues = function(nSamples) {
+        var randomDataset = [];
+        for (var i = 0 ; i < nSamples ; i++) {
+            randomDataset.push(Math.round(Math.random() * nSamples));
+        }
+        console.log(randomDataset);
+        return randomDataset;
+    };
+
+    var dataset = generateValues(numSamples);
 
     var svgWidth = 1200;
     var svgHeight = 250;
@@ -22,12 +31,12 @@
     var topPadding = 20;
 
     var xScale = d3.scaleBand()
-        .domain(d3.range(randomDataset.length))
+        .domain(d3.range(dataset.length))
         .rangeRound([0, svgWidth])
         .paddingInner(0.05);
 
     var yScale = d3.scaleLinear()
-        .domain([0, d3.max(randomDataset)])
+        .domain([0, d3.max(dataset)])
         .range([minimumBarHeight, svgHeight - topPadding]);
 
     var svg = d3.select("body").append("svg");
@@ -35,7 +44,7 @@
         .attr("width", svgWidth)
         .attr("height", svgHeight)
         .selectAll("rect")
-        .data(randomDataset)
+        .data(dataset)
         .enter()
         .append("rect")
         .attr("x", function (d, i) {
@@ -53,7 +62,7 @@
         });
     svg
         .selectAll("text")
-        .data(randomDataset)
+        .data(dataset)
         .enter()
         .append("text")
         .text(function (d) { return d; })
@@ -62,11 +71,35 @@
         })
         .attr("text-anchor", "middle")
         .attr("y", function (d) {
-            return svgHeight - d * 4 + 10;
+            return svgHeight - yScale(d) + 10;
         })
         .attr("font-family", "sans-serif")
-        .attr("font-size", 7 + 4 * (1 - (randomDataset.length - minSamples) / (maxSamples - minSamples)) + "px")
-        .attr("fill", "white");
+        .attr("font-size", 7 + 4 * (1 - (dataset.length - minSamples) / (maxSamples - minSamples)) + "px")
+        .attr("fill", "yellow");
+
+    d3.select("p")
+        .on("click", function () {
+            dataset = generateValues(numSamples);
+            svg
+                .selectAll("rect")
+                .data(dataset)
+                .attr("y", function (d) {
+                    return svgHeight - yScale(d);
+                })
+                .attr("height", function (d) {
+                    return yScale(d);
+                })
+                .attr("fill", function (d) {
+                    return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
+                });
+            svg
+                .selectAll("text")
+                .data(dataset)
+                .text(function (d) { return d; })
+                .attr("y", function (d) {
+                    return svgHeight - yScale(d) + 10;
+                });
+        })
 </script>
 </body>
 </html>
