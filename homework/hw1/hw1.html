@@ -3,15 +3,93 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Homework 1, Social Data Analysis and Visualization, DTU 2018</title>
+    <title>HW1</title>
     <link rel="stylesheet" href="hw1.css">
     <script type="text/javascript" src="d3.js"></script>
 </head>
 
 <body>
-<script type="text/javascript">
-    // Your beautiful D3 code will go here
-</script>
+<h1>Homework 1, Social Data Analysis and Visualization, DTU 2018</h1>
+
+<div id="part1">
+<h2>Part 1: DAOST Chapter 2 Questions</h2>
+    <ul>
+        <li><p>Q: Explain in your own words the point of the jitter plot.</p>
+            <p>A: The point of the jitter box is to visually distinguish between overlapping points in one dimensional
+                data, while keeping points close to their original locations.</p>
+        </li>
+        <li><p>
+                Q: Explain in your own words the point of figure 2-3.
+                (I'm going to skip saying \"in your own words\" going forward, but I hope you get the point;
+                I expect all answers to be in your own words)
+            </p>
+            <p>
+                A: The point of figure 2-3 is to show a disadvantage of histograms, namely their sensitivity to placement
+                of bin edges, such that the same data appears very differently distributed for different choices of
+                anchor points. This also means that there is generally no one-to-one correspondence between histogram
+                and data.
+            </p>
+        </li>
+        <li>
+            <p>
+                Q: The author of DAOST (Philipp Janert) likes KDEs (and think they're better than histograms).
+                And I don't. I didn't give a detailed explanation in the video, but now that works to my advantage.
+                I'll ask you guys to think about this and thereby create an excellent exercise:
+                When can KDEs be misleading? </p>
+            <p>
+                A: KDE can be misleading when e.g. visualizing few samples from a uniform distribution. If the samples
+                are spaced widely, the resulting KDE will look like a sequence of hills, whereas the actual distribution
+                is a horizontal interval. Conversely, a histogram with few bins will faithfully represent the
+                distribution.
+            </p>
+        </li>
+        <li><p>
+                Q: I've discussed some strengths of the CDF - there are also weaknesses.
+                Janert writes "[CDFs] have less intuitive appeal than histograms or KDEs". What does he mean by that?
+            </p>
+            <p>
+                A: Because a CDF is cumulative, it does not immediately convey the shape of the density function, but
+                rather allow to quickly answer questions about totals. In contrast, histograms and KDE suggest the
+                form of the underlying density function.
+            </p>
+        </li>
+        <li>
+            <p>Q: What is a Quantile plot? What is it good for?</p>
+            <p>A: A quantile plot is a graph of the CDF with the x and y axes interchanged. Thus a quantile plot
+            conveys the same information as CDF, but allows more easily to derive any quantile, i.e. the smallest datum
+                which is greater than X% of the data.</p>
+        </li>
+        <li><p>Q: How is a Probablity Plot defined? What is it useful for? Have you ever seen one before?</p>
+            <p>A: A probability plot is a method for showing how close a data set is to another
+                distribution, while also showing estimates for some summary statistics, such as mean and
+                standard deviation. The other distribution may be theoretical or empirical, namely a second data set.
+                I have seen probability plots before, yay.
+            </p>
+        </li>
+        <li><p> Q: One of the reasons I like DAOST is that Janert is so suspicious of mean, median,
+            and related summary statistics. Explain why one has to be careful when using those -
+            and why visualization of the full data is always better.</p>
+            <p>A: Data sets with very different underlying distributions may have the same summary statistics, hence
+                summary statistics are not sufficient information about distributions. An acute example of this is
+                Anscombe's Quartet. Therefore, to convey the main properties of a distribution, visualization of the
+                full data must accompany the summary statistics.
+            </p>
+        </li>
+        <li><p>Q: I love box plots. When are box plots most useful?</p>
+            <p>A: Box plots compactly present summary statistics, main quantiles, and outliers. The boxes and outliers
+            are drawn in proprtion to the width of the distribution at hand, hence box plots are useful for comparing
+            the main structural properties of several data sets: widths, location, and frequency of outliers.</p>
+        </li>
+        <li><p>Q: The book doesn't mention <href a="https://en.wikipedia.org/wiki/Violin_plot">violin plots</href>.
+            Are those better or worse than box plots? Why?</p>
+            <p>A: Compared to box plots, violin plots add more information, such as shape of data density. Neither
+                method is better or worse, rather each may be more appropriate depending on what properties we wish
+            to visually convey. If we wish to convey quantile structure and outliers, box plots are more suitable,
+                whereas if we wish to convey overall density shape, violin plots are more suitable. </p>
+        </li>
+    </ul>
+</div>
+
 </body>
 
 </html>
