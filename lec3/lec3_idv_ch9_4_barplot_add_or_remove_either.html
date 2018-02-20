@@ -7,14 +7,15 @@
 </head>
 <body>
 
-<p id="add">Click on this text to update the chart with NEW data values (once).</p>
-<p id="popLast">Click on this text to remove the LAST data value.</p>
-<p id="popFirst">Click on this text to remove the FIRST data value.</p>
+<button type="button" id="add">Add New</button>
+<button type="button" id="popLast">Remove Last</button>
+<button type="button" id="popFirst">Remove First</button>
+<br/>
 
 <script type="text/javascript">
     var uniqueKeyCounter = 0;
     var delayFactorMsec = 40;
-    var durationMsec = 1000;
+    var durationMsec = 250;
     var maxSamples = 40;
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
@@ -197,7 +198,7 @@
         .on("click", function () {
             dataset.shift();
             reshapeAfterRemove();
-        })
+        });
 </script>
 </body>
 </html>
