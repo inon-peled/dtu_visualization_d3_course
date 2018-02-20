@@ -83,6 +83,7 @@
             svg
                 .selectAll("rect")
                 .data(dataset)
+                .transition()
                 .attr("y", function (d) {
                     return svgHeight - yScale(d);
                 })
