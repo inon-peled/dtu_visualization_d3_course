@@ -10,6 +10,7 @@
 <p>Click on this text to update the chart with new data values (once).</p>
 
 <script type="text/javascript">
+    var durationMsec = 1000;
     var maxSamples = 40;
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
@@ -84,6 +85,7 @@
                 .selectAll("rect")
                 .data(dataset)
                 .transition()
+                .duration(durationMsec)
                 .attr("y", function (d) {
                     return svgHeight - yScale(d);
                 })
@@ -96,6 +98,8 @@
             svg
                 .selectAll("text")
                 .data(dataset)
+                .transition()
+                .duration(durationMsec)
                 .text(function (d) { return d; })
                 .attr("y", function (d) {
                     return svgHeight - yScale(d) + 10;
