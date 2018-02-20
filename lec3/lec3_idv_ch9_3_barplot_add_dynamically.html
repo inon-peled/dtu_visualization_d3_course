@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meow</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+
+<p>Click on this text to update the chart with new data values (once).</p>
+
+<script type="text/javascript">
+    var delayFactorMsec = 40;
+    var durationMsec = 1000;
+    var maxSamples = 40;
+    var minSamples = 10;
+    var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
+
+    var generateValues = function(nSamples) {
+        var randomDataset = [];
+        var maxValue = Math.random() * nSamples * 2;
+        for (var i = 0 ; i < nSamples ; i++) {
+            randomDataset.push(Math.round(Math.random() * maxValue));
+        }
+        console.log(randomDataset);
+        return randomDataset;
+    };
+
+    var dataset = generateValues(numSamples);
+
+    var svgWidth = 1200;
+    var svgHeight = 250;
+    var minimumBarHeight = 20;
+    var topPadding = 20;
+
+    var xScale = d3.scaleBand();
+    var yScale = d3.scaleLinear();
+
+    var rescale = function(xScale, yScale) {
+        xScale
+            .domain(d3.range(dataset.length))
+            .rangeRound([0, svgWidth])
+            .paddingInner(0.05);
+        yScale
+            .domain([0, d3.max(dataset)])
+            .range([minimumBarHeight, svgHeight - topPadding]);
+    };
+    rescale(xScale, yScale);
+
+    var svg = d3.select("body").append("svg");
+
+    var shapeBars = function(selection) {
+        selection
+            .attr("x", function (d, i) {
+                return xScale(i);
+            })
+            .attr("y", function (d) {
+                return svgHeight - yScale(d);
+            })
+            .attr("width", xScale.bandwidth())
+            .attr("height", function (d) {
+                return yScale(d);
+            })
+            .attr("fill", function (d) {
+                return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
+            });
+    };
+
+    var shapeText = function(selection) {
+        selection
+            .text(function (d) { return d; })
+            .attr("x", function (d, i) {
+                return xScale(i) + xScale.bandwidth() / 2;
+            })
+            .attr("text-anchor", "middle")
+            .attr("y", function (d) {
+                return svgHeight - yScale(d) + 10;
+            })
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 7 + 4 * (1 - (dataset.length - minSamples) / (maxSamples - minSamples)) + "px")
+            .attr("fill", "yellow");
+    };
+
+    shapeBars(svg
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .selectAll("rect")
+        .data(dataset)
+        .enter()
+        .append("rect"));
+
+    shapeText(svg
+        .selectAll("text")
+        .data(dataset)
+        .enter()
+        .append("text"));
+
+    d3.select("p")
+        .on("click", function () {
+            dataset.push(Math.floor(Math.random() * dataset.length));
+            console.log(dataset);
+            rescale(xScale, yScale);
+            var allBarsBeforeAdding = svg
+                .selectAll("rect")
+                .data(dataset);
+            // Add new bar at right end.
+            shapeBars(allBarsBeforeAdding
+                .enter()
+                .append("rect")
+                .attr("x", svgWidth)
+                .attr("y", function (d) {
+                    return svgHeight - yScale(d);
+                })
+                .attr("height", function (d) {
+                    return yScale(d);
+                })
+                .attr("fill", function (d) {
+                    return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
+                })
+                .merge(allBarsBeforeAdding)
+                .transition()
+                .duration(durationMsec)
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
+                .ease(d3.easeBounceOut)
+            );
+            shapeText(svg
+                .selectAll("text")
+                .data(dataset)
+                .transition()
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
+                .ease(d3.easeBounceOut)
+                .duration(durationMsec)
+            );
+        })
+</script>
+</body>
+</html>
