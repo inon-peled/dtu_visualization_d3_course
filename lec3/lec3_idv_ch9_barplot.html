@@ -10,7 +10,8 @@
 <p>Click on this text to update the chart with new data values (once).</p>
 
 <script type="text/javascript">
-    var durationMsec = 1300;
+    var delayFactorMsec = 40;
+    var durationMsec = 1000;
     var maxSamples = 40;
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
@@ -86,6 +87,9 @@
                 .data(dataset)
                 .transition()
                 .duration(durationMsec)
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
                 .ease(d3.easeBounceOut)
                 .attr("y", function (d) {
                     return svgHeight - yScale(d);
@@ -100,6 +104,9 @@
                 .selectAll("text")
                 .data(dataset)
                 .transition()
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
                 .ease(d3.easeBounceOut)
                 .duration(durationMsec)
                 .text(function (d) { return d; })
