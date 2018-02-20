@@ -16,10 +16,10 @@
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
 
-    var generateValues = function(nSamples) {
+    var generateValues = function (nSamples) {
         var randomDataset = [];
         var maxValue = Math.random() * nSamples * 2;
-        for (var i = 0 ; i < nSamples ; i++) {
+        for (var i = 0; i < nSamples; i++) {
             randomDataset.push(Math.round(Math.random() * maxValue));
         }
         console.log(randomDataset);
@@ -36,7 +36,7 @@
     var xScale = d3.scaleBand();
     var yScale = d3.scaleLinear();
 
-    var rescale = function(xScale, yScale) {
+    var rescale = function (xScale, yScale) {
         xScale
             .domain(d3.range(dataset.length))
             .rangeRound([0, svgWidth])
@@ -49,8 +49,8 @@
 
     var svg = d3.select("body").append("svg");
 
-    var shapeBars = function(selection) {
-        selection
+    var shapeBars = function (selection) {
+        return selection
             .attr("x", function (d, i) {
                 return xScale(i);
             })
@@ -66,9 +66,11 @@
             });
     };
 
-    var shapeText = function(selection) {
-        selection
-            .text(function (d) { return d; })
+    var shapeText = function (selection) {
+        return selection
+            .text(function (d) {
+                return d;
+            })
             .attr("x", function (d, i) {
                 return xScale(i) + xScale.bandwidth() / 2;
             })
@@ -97,43 +99,41 @@
 
     d3.select("p")
         .on("click", function () {
+            // Add new bar at right end.
             dataset.push(Math.floor(Math.random() * dataset.length));
             console.log(dataset);
             rescale(xScale, yScale);
             var allBarsBeforeAdding = svg
                 .selectAll("rect")
                 .data(dataset);
-            // Add new bar at right end.
-            shapeBars(allBarsBeforeAdding
-                .enter()
-                .append("rect")
-                .attr("x", svgWidth)
-                .attr("y", function (d) {
-                    return svgHeight - yScale(d);
-                })
-                .attr("height", function (d) {
-                    return yScale(d);
-                })
-                .attr("fill", function (d) {
-                    return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
-                })
-                .merge(allBarsBeforeAdding)
-                .transition()
-                .duration(durationMsec)
-                .delay(function (d, i) {
-                    return delayFactorMsec * i;
-                })
-                .ease(d3.easeBounceOut)
+            shapeBars(
+                shapeBars(allBarsBeforeAdding
+                    .enter()
+                    .append("rect")
+                )
+                    .attr("x", svgWidth)
+                    .merge(allBarsBeforeAdding)
+                    .transition()
+                    .duration(durationMsec)
+                    .delay(function (d, i) {
+                        return delayFactorMsec * i;
+                    })
+                    .ease(d3.easeBounceOut)
             );
-            shapeText(svg
-                .selectAll("text")
-                .data(dataset)
-                .transition()
-                .delay(function (d, i) {
-                    return delayFactorMsec * i;
-                })
-                .ease(d3.easeBounceOut)
-                .duration(durationMsec)
+            var allTextBeforeAdding = svg.selectAll("text").data(dataset);
+            shapeText(
+                shapeText(allTextBeforeAdding
+                    .enter()
+                    .append("text")
+                )
+                    .attr("x", svgWidth)
+                    .merge(allTextBeforeAdding)
+                    .transition()
+                    .delay(function (d, i) {
+                        return delayFactorMsec * i;
+                    })
+                    .ease(d3.easeBounceOut)
+                    .duration(durationMsec)
             );
         })
 </script>
