@@ -53,8 +53,20 @@
         .range([2, 30]);
 
     var svg = d3.select("body").append("svg");
+
+
     svg.attr("width", svgWidth)
-        .attr("height", svgHeight)
+        .attr("height", svgHeight);
+    svg.append("clipPath") //Make a new clipPath
+        .attr("id", "chart-area") //Assign an ID
+        .append("rect")  //Within the clipPath, create a new rect;
+        .attr("x", padding) //Set rect's position and size
+        .attr("y", padding)
+        .attr("width", svgWidth - padding * 3)
+        .attr("height", svgHeight - padding * 2);
+    svg.append("g") //Create new g
+        .attr("id", "circles") //Assign ID of 'circles'
+        .attr("clip-path", "url(#chart-area)") //Add reference to clipPath
         .selectAll("circle")
         .data(randomDataset)
         .enter()
