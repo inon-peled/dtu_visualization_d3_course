@@ -18,8 +18,9 @@
 
     var generateValues = function(nSamples) {
         var randomDataset = [];
+        var maxValue = Math.random() * nSamples * 2;
         for (var i = 0 ; i < nSamples ; i++) {
-            randomDataset.push(Math.round(Math.random() * nSamples));
+            randomDataset.push(Math.round(Math.random() * maxValue));
         }
         console.log(randomDataset);
         return randomDataset;
@@ -82,6 +83,7 @@
     d3.select("p")
         .on("click", function () {
             dataset = generateValues(numSamples);
+            yScale.domain([0, d3.max(dataset)]);
             svg
                 .selectAll("rect")
                 .data(dataset)
