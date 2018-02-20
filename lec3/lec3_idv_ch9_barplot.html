@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Meow</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    var maxSamples = 40;
+    var minSamples = 10;
+    var randomDataset = [];
+    var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
+    for (var i = 0 ; i < numSamples ; i++) {
+        randomDataset.push(Math.round(Math.random() * 30));
+    }
+    console.log(randomDataset);
+
+    var svgWidth = 1200;
+    var svgHeight = 250;
+
+    var xScale = d3.scaleBand()
+        .domain(d3.range(randomDataset.length))
+        .rangeRound([0, svgWidth])
+        .paddingInner(0.05);
+
+    var svg = d3.select("body").append("svg");
+    svg
+        .attr("width", svgWidth)
+        .attr("height", svgHeight)
+        .selectAll("rect")
+        .data(randomDataset)
+        .enter()
+        .append("rect")
+        .attr("x", function (d, i) {
+            return xScale(i);
+        })
+        .attr("y", function (d) {
+            return svgHeight - d * 4;
+        })
+        .attr("width", xScale.bandwidth())
+        .attr("height", function (d) {
+            return d * 4;
+        })
+        .attr("fill", function (d) {
+            return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
+        });
+    svg
+        .selectAll("text")
+        .data(randomDataset)
+        .enter()
+        .append("text")
+        .text(function (d) { return d; })
+        .attr("x", function (d, i) {
+            return xScale(i) + xScale.bandwidth() / 2;
+        })
+        .attr("text-anchor", "middle")
+        .attr("y", function (d) {
+            return svgHeight - d * 4 + 10;
+        })
+        .attr("font-family", "sans-serif")
+        .attr("font-size", 7 + 4 * (1 - (randomDataset.length - minSamples) / (maxSamples - minSamples)) + "px")
+        .attr("fill", "white");
+</script>
+</body>
+</html>
