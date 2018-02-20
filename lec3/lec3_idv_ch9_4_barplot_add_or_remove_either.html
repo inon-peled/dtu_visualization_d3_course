@@ -153,76 +153,50 @@
             );
         });
 
+    var reshapeAfterRemove = function() {
+        rescale(xScale, yScale);
+        var allBarsAfterRemoving = svg
+            .selectAll("rect")
+            .data(dataset, keyFunc);
+        allBarsAfterRemoving
+            .exit()
+            .transition()
+            .attr("fill", "white")
+            .remove();
+        shapeBars(
+            allBarsAfterRemoving
+                .transition()
+                .duration(durationMsec)
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
+        );
+        var allTextAfterRemoving = svg
+            .selectAll("text")
+            .data(dataset, keyFunc);
+        allTextAfterRemoving
+            .exit()
+            .remove();
+        shapeText(
+            allTextAfterRemoving
+                .transition()
+                .delay(function (d, i) {
+                    return delayFactorMsec * i;
+                })
+                .duration(durationMsec)
+        );
+    };
+
     d3.select("#popLast")
         .on("click", function () {
             dataset.pop();
-            rescale(xScale, yScale);
-            var allBarsAfterRemoving = svg
-                .selectAll("rect")
-                .data(dataset, keyFunc);
-            allBarsAfterRemoving
-                .exit()
-                .transition()
-                .attr("fill", "white")
-                .remove();
-            shapeBars(
-                    allBarsAfterRemoving
-                    .transition()
-                    .duration(durationMsec)
-                    .delay(function (d, i) {
-                        return delayFactorMsec * i;
-                    })
-            );
-            var allTextAfterRemoving = svg.selectAll("text").data(dataset);
-            allTextAfterRemoving
-                .exit()
-                .transition()
-                .attr("fill", "white")
-                .remove();
-            shapeText(
-                allTextAfterRemoving
-                    .transition()
-                    .delay(function (d, i) {
-                        return delayFactorMsec * i;
-                    })
-                    .duration(durationMsec)
-            );
+            reshapeAfterRemove();
         });
 
     d3.select("#popFirst")
         .on("click", function () {
             dataset.shift();
-            rescale(xScale, yScale);
-            var allBarsAfterRemoving = svg
-                .selectAll("rect")
-                .data(dataset, keyFunc);
-            allBarsAfterRemoving
-                .exit()
-                .transition()
-                .attr("fill", "white")
-                .remove();
-            shapeBars(
-                allBarsAfterRemoving
-                    .transition()
-                    .duration(durationMsec)
-                    .delay(function (d, i) {
-                        return delayFactorMsec * i;
-                    })
-            );
-            var allTextAfterRemoving = svg
-                .selectAll("text")
-                .data(dataset, keyFunc);
-            allTextAfterRemoving
-                .exit()
-                .remove();
-            shapeText(
-                allTextAfterRemoving
-                    .transition()
-                    .delay(function (d, i) {
-                        return delayFactorMsec * i;
-                    })
-                    .duration(durationMsec)
-            );
+            reshapeAfterRemove();
         })
 </script>
 </body>
