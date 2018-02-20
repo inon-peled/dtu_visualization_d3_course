@@ -23,7 +23,7 @@
         var maxValue = 100 * Math.random();
         for (var i = 0 ; i < numSamples ; i++) {
             randomDataset.push([
-                Math.random() * maxValue,
+                Math.random() * maxValue / 100,
                 Math.random() * maxValue,
                 Math.round(Math.random() * 100)
             ]);
@@ -50,7 +50,7 @@
         .domain([0, d3.max(randomDataset, function (d) {
             return d[2];
         })])
-        .range([2, 10]);
+        .range([2, 30]);
 
     var svg = d3.select("body").append("svg");
     svg.attr("width", svgWidth)
@@ -115,6 +115,10 @@
             svg.selectAll("circle")
                 .data(randomDataset)
                 .transition()
+                .duration(600)
+                .delay(function (d, i) {
+                    return i * 30;
+                })
                 .attr("cx", function (d) {
                     return xScale(d[0]);
                 })
@@ -127,6 +131,10 @@
             svg.selectAll("text")
                 .data(randomDataset)
                 .transition()
+                .duration(600)
+                .delay(function (d, i) {
+                    return i * 30;
+                })
                 .text(function (d) {return d[2];})
                 .attr("x", function(d) {
                     return xScale(d[0]) + areaScale(d[2]) + 2;
