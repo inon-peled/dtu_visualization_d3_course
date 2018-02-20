@@ -7,13 +7,14 @@
 </head>
 <body>
 
-<p id="add">Click on this text to update the chart with new data values (once).</p>
-<p id="popLast">Click on this text to remove the last data value.</p>
+<p id="add">Click on this text to update the chart with NEW data values (once).</p>
+<p id="popLast">Click on this text to remove the LAST data value.</p>
+<p id="popFirst">Click on this text to remove the FIRST data value.</p>
 
 <script type="text/javascript">
     var uniqueKeyCounter = 0;
     var delayFactorMsec = 40;
-    var durationMsec = 250;
+    var durationMsec = 1000;
     var maxSamples = 40;
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
@@ -98,7 +99,7 @@
             .attr("font-family", "sans-serif")
             .attr("font-size", d3.max([6, 10 + 4 * (1 - (dataset.length - minSamples) / (maxSamples - minSamples))]) +
                 "px")
-            .attr("fill", "yellow");
+            .attr("fill", "red");
     };
 
     shapeBars(svg
@@ -177,6 +178,42 @@
                 .exit()
                 .transition()
                 .attr("fill", "white")
+                .remove();
+            shapeText(
+                allTextAfterRemoving
+                    .transition()
+                    .delay(function (d, i) {
+                        return delayFactorMsec * i;
+                    })
+                    .duration(durationMsec)
+            );
+        });
+
+    d3.select("#popFirst")
+        .on("click", function () {
+            dataset.shift();
+            rescale(xScale, yScale);
+            var allBarsAfterRemoving = svg
+                .selectAll("rect")
+                .data(dataset, keyFunc);
+            allBarsAfterRemoving
+                .exit()
+                .transition()
+                .attr("fill", "white")
+                .remove();
+            shapeBars(
+                allBarsAfterRemoving
+                    .transition()
+                    .duration(durationMsec)
+                    .delay(function (d, i) {
+                        return delayFactorMsec * i;
+                    })
+            );
+            var allTextAfterRemoving = svg
+                .selectAll("text")
+                .data(dataset, keyFunc);
+            allTextAfterRemoving
+                .exit()
                 .remove();
             shapeText(
                 allTextAfterRemoving
