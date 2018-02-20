@@ -12,7 +12,7 @@
 
 <script type="text/javascript">
     var padding = 40;
-    var maxSamples = 50;
+    var maxSamples = 30;
     var minSamples = 10;
     var svgWidth = 800;
     var svgHeight = 600;
@@ -115,6 +115,10 @@
             svg.selectAll("circle")
                 .data(randomDataset)
                 .transition()
+                .on("start", function () {
+                    d3.select(this)
+                        .style("fill", "blue");
+                })
                 .duration(600)
                 .delay(function (d, i) {
                     return i * 30;
@@ -127,7 +131,10 @@
                 })
                 .attr("r", function (d) {
                     return areaScale(d[2]);
-                });
+                })
+                .transition()
+                .duration(500)
+                .style("fill", "white");
             svg.selectAll("text")
                 .data(randomDataset)
                 .transition()
