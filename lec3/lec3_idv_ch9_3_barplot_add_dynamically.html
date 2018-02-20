@@ -11,7 +11,7 @@
 
 <script type="text/javascript">
     var delayFactorMsec = 40;
-    var durationMsec = 1000;
+    var durationMsec = 250;
     var maxSamples = 40;
     var minSamples = 10;
     var numSamples = Math.round(Math.random() * (maxSamples - minSamples) + minSamples);
@@ -22,7 +22,7 @@
         for (var i = 0; i < nSamples; i++) {
             randomDataset.push(Math.round(Math.random() * maxValue));
         }
-        console.log(randomDataset);
+        // console.log(randomDataset);
         return randomDataset;
     };
 
@@ -35,6 +35,7 @@
 
     var xScale = d3.scaleBand();
     var yScale = d3.scaleLinear();
+    var blueScale = d3.scaleLinear();
 
     var rescale = function (xScale, yScale) {
         xScale
@@ -44,6 +45,9 @@
         yScale
             .domain([0, d3.max(dataset)])
             .range([minimumBarHeight, svgHeight - topPadding]);
+        blueScale
+            .domain([d3.min(dataset), d3.max(dataset)])
+            .range([0, 255])
     };
     rescale(xScale, yScale);
 
@@ -62,7 +66,7 @@
                 return yScale(d);
             })
             .attr("fill", function (d) {
-                return "rgb(" + 0 + ", 0, " + Math.round(d * 10) + ")";
+                return "rgb(0, 0, " + Math.floor(blueScale(d)) + ")";
             });
     };
 
@@ -101,7 +105,7 @@
         .on("click", function () {
             // Add new bar at right end.
             dataset.push(Math.floor(Math.random() * dataset.length));
-            console.log(dataset);
+            // console.log(dataset);
             rescale(xScale, yScale);
             var allBarsBeforeAdding = svg
                 .selectAll("rect")
@@ -118,7 +122,6 @@
                     .delay(function (d, i) {
                         return delayFactorMsec * i;
                     })
-                    .ease(d3.easeBounceOut)
             );
             var allTextBeforeAdding = svg.selectAll("text").data(dataset);
             shapeText(
@@ -126,13 +129,12 @@
                     .enter()
                     .append("text")
                 )
-                    .attr("x", svgWidth)
+                    .attr("x", svgWidth + 10)
                     .merge(allTextBeforeAdding)
                     .transition()
                     .delay(function (d, i) {
                         return delayFactorMsec * i;
                     })
-                    .ease(d3.easeBounceOut)
                     .duration(durationMsec)
             );
         })
