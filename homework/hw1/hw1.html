@@ -182,6 +182,7 @@
             .rangeRound([axisPadding, svgWidth])
             .paddingInner(0.05);
         var yScale = d3.scaleLinear();
+        var yScaleRev = d3.scaleLinear()    ;
 
         var svg = d3
             .select("body")
@@ -200,11 +201,13 @@
         var xAxis = d3.axisBottom(xScale).tickFormat(function(d, i) {
             return xLabels[i];
         });
-        var yAxis = d3.axisLeft(yScale);
+        var yAxis = d3.axisLeft(yScaleRev);
 
         var refreshPlot = function (dataset, idx) {
             yScale
-                .domain([d3.min(dataset[idx]), d3.max(dataset[idx])]);
+                .domain([d3.max(dataset[idx]), 0]);
+            yScaleRev
+                .domain([d3.max(dataset[idx]), 0]);
             svg
                 .selectAll("rect")
                 .data(dataset[idx])
@@ -224,6 +227,8 @@
         var initializePlot = function(dataset, idx) {
             yScale
                 .range([svgHeight - axisPadding, axisPadding]);
+            yScaleRev
+                .range([axisPadding, svgHeight - axisPadding]);
             svg
                 .selectAll("rect")
                 .data(dataset[idx])
