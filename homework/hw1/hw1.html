@@ -141,6 +141,12 @@
         To show the current offerings, we charted how many types of fruits and vegetables are available by month,
         and showed if they were fresh or from storage.
     </p>
+    <p class="pPart3Text">
+        If you miss the month of September, you might be behind the fruit curve,
+        but there are plenty more months of vegetables left.
+        The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of 12.
+        Now if only we could quantify how delicious the produce is...
+    </p>
     <div class="selectors">
         <select id="whatToDisplay">
             <option value=0>Fruits, Harvest</option>
@@ -150,9 +156,9 @@
         </select>
     </div>
     <script type="text/javascript">
-        var axisPadding = 20;
-        var svgWidth = 1200;
-        var svgHeight = 250;
+        var axisPadding = 40;
+        var svgWidth = 800;
+        var svgHeight = 400;
 
         var dataset = [
             [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
@@ -183,7 +189,9 @@
             .attr("width", svgWidth)
             .attr("height", svgHeight);
 
-        var xAxis = d3.axisBottom(xScale);
+        var xAxis = d3.axisBottom(xScale).tickFormat(function(d, i) {
+            return xLabels[i];
+        });
         var yAxis = d3.axisLeft(yScale);
 
         var refreshPlot = function (dataset, idx) {
@@ -236,12 +244,6 @@
                 refreshPlot(dataset, this.selectedOptions[0].value);
             });
     </script>
-    <p class="pPart3Text">
-        If you miss the month of September, you might be behind the fruit curve,
-        but there are plenty more months of vegetables left.
-        The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of 12.
-        Now if only we could quantify how delicious the produce is...
-    </p>
 </div>
 
 </body>
