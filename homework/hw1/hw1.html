@@ -142,7 +142,7 @@
         and showed if they were fresh or from storage.
     </p>
     <div class="selectors">
-        <select multiple id="plotOptions">
+        <select id="whatToDisplay">
             <option value=0>Fruits, Harvest</option>
             <option value=1>Fruits, Storage</option>
             <option value=2>Vegetables, Harvest</option>
@@ -184,13 +184,13 @@
             .attr("width", svgWidth)
             .attr("height", svgHeight);
 
-        var refreshPlot = function(dataset) {
+        var initializePlot = function(dataset, idx) {
             yScale
-                .domain([0, d3.max(dataset[0])])
+                .domain([0, d3.max(dataset[idx])])
                 .range([minimumBarHeight, svgHeight - topPadding]);
             svg
                 .selectAll("rect")
-                .data(dataset[0])
+                .data(dataset[idx])
                 .enter()
                 .append("rect")
                 .attr("x", function (d, i) {
@@ -203,10 +203,32 @@
                 .attr("height", function (d) {
                     return yScale(d);
                 })
-                .attr("fill", barColors[0]);
+                .attr("fill", barColors[idx]);
         };
 
-        refreshPlot(dataset);
+        initializePlot(dataset, 0);
+
+        var refreshPlot = function (dataset, idx) {
+            yScale
+                .domain([0, d3.max(dataset[idx])]);
+            svg
+                .selectAll("rect")
+                .data(dataset[idx])
+                .attr("y", function (d) {
+                    return svgHeight - yScale(d);
+                })
+                .attr("height", function (d) {
+                    return yScale(d);
+                })
+                .attr("fill", barColors[idx]);
+        };
+
+        d3
+            .select("#whatToDisplay")
+            .on("change", function () {
+                console.log(this.selectedOptions[0].value);
+                refreshPlot(dataset, this.selectedOptions[0].value);
+            });
     </script>
     <p class="pPart3Text">
         If you miss the month of September, you might be behind the fruit curve,
