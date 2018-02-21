@@ -150,10 +150,9 @@
         </select>
     </div>
     <script type="text/javascript">
+        var axisPadding = 20;
         var svgWidth = 1200;
         var svgHeight = 250;
-        var minimumBarHeight = 20;
-        var topPadding = 20;
 
         var dataset = [
             [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
@@ -174,7 +173,7 @@
         var xScale = d3
             .scaleBand()
             .domain(d3.range(xLabels.length))
-            .rangeRound([0, svgWidth])
+            .rangeRound([axisPadding, svgWidth])
             .paddingInner(0.05);
         var yScale = d3.scaleLinear();
 
@@ -184,10 +183,31 @@
             .attr("width", svgWidth)
             .attr("height", svgHeight);
 
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
+
+        var refreshPlot = function (dataset, idx) {
+            yScale
+                .domain([d3.min(dataset[idx]), d3.max(dataset[idx])]);
+            svg
+                .selectAll("rect")
+                .data(dataset[idx])
+                .transition()
+                .attr("y", function (d) {
+                    return svgHeight - yScale(d);
+                })
+                .attr("height", function (d) {
+                    return yScale(d) - axisPadding;
+                })
+                .attr("fill", barColors[idx]);
+            svg.select(".yAxis")
+                .transition()
+                .call(yAxis);
+        };
+
         var initializePlot = function(dataset, idx) {
             yScale
-                .domain([0, d3.max(dataset[idx])])
-                .range([minimumBarHeight, svgHeight - topPadding]);
+                .range([svgHeight - axisPadding, axisPadding]);
             svg
                 .selectAll("rect")
                 .data(dataset[idx])
@@ -196,37 +216,23 @@
                 .attr("x", function (d, i) {
                     return xScale(i);
                 })
-                .attr("y", function (d) {
-                    return svgHeight - yScale(d);
-                })
-                .attr("width", xScale.bandwidth())
-                .attr("height", function (d) {
-                    return yScale(d);
-                })
-                .attr("fill", barColors[idx]);
+                .attr("width", xScale.bandwidth());
+            svg.append("g")
+                .attr("class", "xAxis")
+                .attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")
+                .call(xAxis);
+            svg.append("g")
+                .attr("class", "yAxis")
+                .attr("transform", "translate(" + axisPadding + ", 0)")
+                .call(yAxis);
+            refreshPlot(dataset, idx);
         };
 
         initializePlot(dataset, 0);
 
-        var refreshPlot = function (dataset, idx) {
-            yScale
-                .domain([0, d3.max(dataset[idx])]);
-            svg
-                .selectAll("rect")
-                .data(dataset[idx])
-                .attr("y", function (d) {
-                    return svgHeight - yScale(d);
-                })
-                .attr("height", function (d) {
-                    return yScale(d);
-                })
-                .attr("fill", barColors[idx]);
-        };
-
         d3
             .select("#whatToDisplay")
             .on("change", function () {
-                console.log(this.selectedOptions[0].value);
                 refreshPlot(dataset, this.selectedOptions[0].value);
             });
     </script>
