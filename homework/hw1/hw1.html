@@ -438,14 +438,14 @@
                 var svgHeight = 600;
 
                 var xScale = d3.scaleLinear()
-                    .domain([d3.min(dataset, function (d) {
+                    .domain([0.995 * d3.min(dataset, function (d) {
                         return d.year;
                     }), d3.max(dataset, function (d) {
                         return d.year;
                     })])
                     .range([padding, svgWidth - padding]);
                 var yScale = d3.scaleLinear()
-                    .domain([0, d3.max(dataset, function (d) {
+                    .domain([0, 1.1 * d3.max(dataset, function (d) {
                         return d.timeMinutes;
                     })])
                     .range([svgHeight - padding, padding]);
@@ -455,6 +455,18 @@
                     .append("svg")
                     .attr("width", svgWidth)
                     .attr("height", svgHeight);
+
+                var xAxis = d3.axisBottom(xScale);
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
+                    .call(xAxis);
+
+                var yAxis = d3.axisLeft(yScale);
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", "translate(" + padding + ", 0)")
+                    .call(yAxis);
 
                 showWomen(xScale, yScale, svg
                     .selectAll("circle")
@@ -471,6 +483,13 @@
                     }))
                     .enter()
                     .append("rect"));
+
+                svg.select(".x.axis")
+                    .transition()
+                    .call(xAxis);
+                svg.select(".y.axis")
+                    .transition()
+                    .call(yAxis);
             });
     </script>
 </div>
