@@ -393,8 +393,40 @@
                     category: d.category
                 };
             },
-            function (data) {
-                console.log(data);
+            function (dataset) {
+                var padding = 40;
+                var svgWidth = 800;
+                var svgHeight = 600;
+
+                var xScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset, function (d) {
+                        return d.year;
+                    })])
+                    .range([padding, svgWidth - padding]);
+                var yScale = d3.scaleLinear()
+                    .domain([0, d3.max(dataset, function (d) {
+                        return d.timeMinutes;
+                    })])
+                    .range([padding, svgHeight - padding]);
+
+                var svg = d3.select("body").append("svg");
+                svg.attr("width", svgWidth)
+                    .attr("height", svgHeight)
+                    .selectAll("circle")
+                    .data(dataset)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function (d) {
+                        return xScale(d.year);
+                    })
+                    .attr("cy", function (d) {
+                        return yScale(d.timeMinutes);
+                    })
+                    .attr("r", function (d) {
+                        return 5;
+                    })
+                    .style("stroke", "black")
+                    .style("fill", "none");
             });
     </script>
 </div>
