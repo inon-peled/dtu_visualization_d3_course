@@ -385,8 +385,23 @@
             this Google sheets document</a>.
     </p>
     <script type="text/javascript">
-        var showWomen = function (xScale, yScale, selection) {
+        var addCommonAttributes = function (selection) {
             return selection
+                .style("stroke", "black")
+                .style("stroke-width", function (d) {
+                    return d.year == 2018 ? 2 : 1;
+                })
+                .style("fill", function (d) {
+                    return d.year == 2018 ? "yellow" : "white";
+                })
+                .on("click", function(d) {
+                    console.log(d);
+                });
+        };
+
+        var showWomen = function (xScale, yScale, selection) {
+            return addCommonAttributes(
+                selection
                 .attr("cx", function (d) {
                     return xScale(d.year);
                 })
@@ -396,18 +411,13 @@
                 .attr("r", function (d) {
                     return 4;
                 })
-                .style("stroke", "black")
-                .style("stroke-width", function (d) {
-                    return d.year == 2018 ? 2 : 1;
-                })
-                .style("fill", function (d) {
-                    return d.year == 2018 ? "yellow" : "none";
-                });
+            )
         };
 
         var showMen = function (xScale, yScale, selection) {
-            var squareDim = 7;
-            return selection
+            var squareDim = 6;
+            return addCommonAttributes(
+                selection
                 .attr("x", function (d) {
                     return xScale(d.year);
                 })
@@ -425,13 +435,7 @@
                         (xScale(d.year) + squareDim / 2) + ", " +
                         (yScale(d.timeMinutes) + squareDim / 2) + ")";
                 })
-                .style("stroke", "black")
-                .style("stroke-width", function (d) {
-                    return d.year == 2018 ? 2 : 1;
-                })
-                .style("fill", function (d) {
-                    return d.year == 2018 ? "yellow" : "none";
-                });
+            );
         };
 
         d3.tsv(
