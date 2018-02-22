@@ -411,11 +411,17 @@
                     })])
                     .range([svgHeight - padding, padding]);
 
-                var svg = d3.select("body").append("svg");
-                svg.attr("width", svgWidth)
-                    .attr("height", svgHeight)
+                var svg = d3
+                    .select("body")
+                    .append("svg")
+                    .attr("width", svgWidth)
+                    .attr("height", svgHeight);
+
+                svg
                     .selectAll("circle")
-                    .data(dataset)
+                    .data(dataset.filter(function (d) {
+                        return d.category == "women";
+                    }))
                     .enter()
                     .append("circle")
                     .attr("cx", function (d) {
@@ -425,7 +431,35 @@
                         return yScale(d.timeMinutes);
                     })
                     .attr("r", function (d) {
-                        return 5;
+                        return 4;
+                    })
+                    .style("stroke", "black")
+                    .style("fill", "none");
+
+                var squareDim = 7;
+                svg
+                    .selectAll("rect")
+                    .data(dataset.filter(function (d) {
+                        return d.category == "men";
+                    }))
+                    .enter()
+                    .append("rect")
+                    .attr("x", function (d) {
+                        return xScale(d.year);
+                    })
+                    .attr("y", function (d) {
+                        return yScale(d.timeMinutes);
+                    })
+                    .attr("width", function (d) {
+                        return squareDim;
+                    })
+                    .attr("height", function (d) {
+                        return squareDim;
+                    })
+                    .attr("transform", function (d) {
+                        return "rotate(-45, " +
+                            (xScale(d.year) + squareDim / 2) + ", " +
+                            (yScale(d.timeMinutes) + squareDim / 2) + ")";
                     })
                     .style("stroke", "black")
                     .style("fill", "none");
