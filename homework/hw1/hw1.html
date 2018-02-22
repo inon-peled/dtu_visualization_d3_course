@@ -399,7 +399,9 @@
                 var svgHeight = 600;
 
                 var xScale = d3.scaleLinear()
-                    .domain([0, d3.max(dataset, function (d) {
+                    .domain([d3.min(dataset, function (d) {
+                        return d.year;
+                    }), d3.max(dataset, function (d) {
                         return d.year;
                     })])
                     .range([padding, svgWidth - padding]);
@@ -407,7 +409,7 @@
                     .domain([0, d3.max(dataset, function (d) {
                         return d.timeMinutes;
                     })])
-                    .range([padding, svgHeight - padding]);
+                    .range([svgHeight - padding, padding]);
 
                 var svg = d3.select("body").append("svg");
                 svg.attr("width", svgWidth)
