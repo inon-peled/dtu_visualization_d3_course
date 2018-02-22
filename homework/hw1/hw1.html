@@ -13,358 +13,358 @@
 <h1>Homework 1, Social Data Analysis and Visualization, DTU 2018</h1>
 
 <!--<div id="part1">-->
-    <!--<h2>Part 1: DAOST Chapter 2 Questions</h2>-->
-    <!--<ol>-->
-        <!--<li><p class="question">Explain in your own words the point of the jitter plot.</p>-->
-            <!--<p class="answer">The point of the jitter box is to visually distinguish between overlapping points in one-->
-                <!--dimensional-->
-                <!--data, while keeping points close to their original locations.</p>-->
-        <!--</li>-->
-        <!--<li><p class="question">-->
-            <!--Explain in your own words the point of figure 2-3.-->
-            <!--(I'm going to skip saying \"in your own words\" going forward, but I hope you get the point;-->
-            <!--I expect all answers to be in your own words)-->
-        <!--</p>-->
-            <!--<p class="answer">-->
-                <!--The point of figure 2-3 is to show a disadvantage of histograms, namely their sensitivity to placement-->
-                <!--of bin edges, such that the same data appears very differently distributed for different choices of-->
-                <!--anchor points. This also means that there is generally no one-to-one correspondence between histogram-->
-                <!--and data.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--The author of DAOST (Philipp Janert) likes KDEs (and think they're better than histograms).-->
-                <!--And I don't. I didn't give a detailed explanation in the video, but now that works to my advantage.-->
-                <!--I'll ask you guys to think about this and thereby create an excellent exercise:-->
-                <!--When can KDEs be misleading? </p>-->
-            <!--<p class="answer">-->
-                <!--KDE can be misleading when e.g. visualizing few samples from a uniform distribution. If the samples-->
-                <!--are spaced widely, the resulting KDE will look like a sequence of hills, whereas the actual distribution-->
-                <!--is a horizontal interval. Conversely, a histogram with few bins will faithfully represent the-->
-                <!--distribution.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li><p class="question">-->
-            <!--I've discussed some strengths of the CDF - there are also weaknesses.-->
-            <!--Janert writes "[CDFs] have less intuitive appeal than histograms or KDEs". What does he mean by that?-->
-        <!--</p>-->
-            <!--<p class="answer">-->
-                <!--Because a CDF is cumulative, it does not immediately convey the shape of the density function, but-->
-                <!--rather allow to quickly answer questions about totals. In contrast, histograms and KDE suggest the-->
-                <!--form of the underlying density function.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">What is a Quantile plot? What is it good for?</p>-->
-            <!--<p class="answer">A quantile plot is a graph of the CDF with the x and y axes interchanged. Thus a quantile-->
-                <!--plot-->
-                <!--conveys the same information as CDF, but allows more easily to derive any quantile, i.e. the smallest-->
-                <!--datum-->
-                <!--which is greater than X% of the data.</p>-->
-        <!--</li>-->
-        <!--<li><p class="question">How is a Probablity Plot defined? What is it useful for? Have you ever seen one-->
-            <!--before?</p>-->
-            <!--<p class="answer">A probability plot is a method for showing how similar a data set is to another-->
-                <!--distribution &Phi; with mean &mu; and standard deviation &sigma;. It is a plot of the data set values-->
-                <!--x<sub>i</sub> as a function of-->
-                <!--&Phi;<sup>−1</sup>(y<sub>i</sub>), where y<sub>i</sub> is the quantile of x<sub>i</sub>. &Phi; then-->
-                <!--corresponds to a straight line with slope &sigma; and zero-->
-                <!--intercept &mu;, while dissimilarities with the-->
-                <!--data set are seen as deviations from the line.-->
-                <!--I have seen probability plots before, yay.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li><p class="question"> One of the reasons I like DAOST is that Janert is so suspicious of mean, median,-->
-            <!--and related summary statistics. Explain why one has to be careful when using those - -->
-            <!--and why visualization of the full data is always better.</p>-->
-            <!--<p class="answer">Data sets with very different underlying distributions may have the same summary-->
-                <!--statistics, hence-->
-                <!--summary statistics are not sufficient information about distributions. An acute example of this is-->
-                <!--<a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe's Quartet</a>.-->
-                <!--Therefore, to convey the main properties of a distribution, visualization of the-->
-                <!--full data must accompany the summary statistics.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li><p class="question">I love box plots. When are box plots most useful?</p>-->
-            <!--<p class="answer">Box plots compactly present summary statistics, main quantiles, and outliers. The boxes-->
-                <!--and outliers-->
-                <!--are drawn in proprtion to the width of the distribution at hand, hence box plots are useful for-->
-                <!--comparing-->
-                <!--the main structural properties of several data sets: widths, location, and frequency of outliers.</p>-->
-        <!--</li>-->
-        <!--<li><p class="question">The book doesn't mention-->
-            <!--<a href="https://en.wikipedia.org/wiki/Violin_plot">violin plots</a>.-->
-            <!--Are those better or worse than box plots? Why?</p>-->
-            <!--<p class="answer">Compared to box plots, violin plots add more information, such as shape of data density.-->
-                <!--Neither-->
-                <!--method is better or worse, rather each may be more appropriate depending on what properties we wish-->
-                <!--to visually convey. If we wish to convey quantile structure and outliers, box plots are more suitable,-->
-                <!--whereas if we wish to convey overall density shape, violin plots are more suitable. </p>-->
-        <!--</li>-->
-    <!--</ol>-->
+<!--<h2>Part 1: DAOST Chapter 2 Questions</h2>-->
+<!--<ol>-->
+<!--<li><p class="question">Explain in your own words the point of the jitter plot.</p>-->
+<!--<p class="answer">The point of the jitter box is to visually distinguish between overlapping points in one-->
+<!--dimensional-->
+<!--data, while keeping points close to their original locations.</p>-->
+<!--</li>-->
+<!--<li><p class="question">-->
+<!--Explain in your own words the point of figure 2-3.-->
+<!--(I'm going to skip saying \"in your own words\" going forward, but I hope you get the point;-->
+<!--I expect all answers to be in your own words)-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--The point of figure 2-3 is to show a disadvantage of histograms, namely their sensitivity to placement-->
+<!--of bin edges, such that the same data appears very differently distributed for different choices of-->
+<!--anchor points. This also means that there is generally no one-to-one correspondence between histogram-->
+<!--and data.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--The author of DAOST (Philipp Janert) likes KDEs (and think they're better than histograms).-->
+<!--And I don't. I didn't give a detailed explanation in the video, but now that works to my advantage.-->
+<!--I'll ask you guys to think about this and thereby create an excellent exercise:-->
+<!--When can KDEs be misleading? </p>-->
+<!--<p class="answer">-->
+<!--KDE can be misleading when e.g. visualizing few samples from a uniform distribution. If the samples-->
+<!--are spaced widely, the resulting KDE will look like a sequence of hills, whereas the actual distribution-->
+<!--is a horizontal interval. Conversely, a histogram with few bins will faithfully represent the-->
+<!--distribution.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li><p class="question">-->
+<!--I've discussed some strengths of the CDF - there are also weaknesses.-->
+<!--Janert writes "[CDFs] have less intuitive appeal than histograms or KDEs". What does he mean by that?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--Because a CDF is cumulative, it does not immediately convey the shape of the density function, but-->
+<!--rather allow to quickly answer questions about totals. In contrast, histograms and KDE suggest the-->
+<!--form of the underlying density function.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">What is a Quantile plot? What is it good for?</p>-->
+<!--<p class="answer">A quantile plot is a graph of the CDF with the x and y axes interchanged. Thus a quantile-->
+<!--plot-->
+<!--conveys the same information as CDF, but allows more easily to derive any quantile, i.e. the smallest-->
+<!--datum-->
+<!--which is greater than X% of the data.</p>-->
+<!--</li>-->
+<!--<li><p class="question">How is a Probablity Plot defined? What is it useful for? Have you ever seen one-->
+<!--before?</p>-->
+<!--<p class="answer">A probability plot is a method for showing how similar a data set is to another-->
+<!--distribution &Phi; with mean &mu; and standard deviation &sigma;. It is a plot of the data set values-->
+<!--x<sub>i</sub> as a function of-->
+<!--&Phi;<sup>−1</sup>(y<sub>i</sub>), where y<sub>i</sub> is the quantile of x<sub>i</sub>. &Phi; then-->
+<!--corresponds to a straight line with slope &sigma; and zero-->
+<!--intercept &mu;, while dissimilarities with the-->
+<!--data set are seen as deviations from the line.-->
+<!--I have seen probability plots before, yay.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li><p class="question"> One of the reasons I like DAOST is that Janert is so suspicious of mean, median,-->
+<!--and related summary statistics. Explain why one has to be careful when using those - -->
+<!--and why visualization of the full data is always better.</p>-->
+<!--<p class="answer">Data sets with very different underlying distributions may have the same summary-->
+<!--statistics, hence-->
+<!--summary statistics are not sufficient information about distributions. An acute example of this is-->
+<!--<a href="https://en.wikipedia.org/wiki/Anscombe%27s_quartet">Anscombe's Quartet</a>.-->
+<!--Therefore, to convey the main properties of a distribution, visualization of the-->
+<!--full data must accompany the summary statistics.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li><p class="question">I love box plots. When are box plots most useful?</p>-->
+<!--<p class="answer">Box plots compactly present summary statistics, main quantiles, and outliers. The boxes-->
+<!--and outliers-->
+<!--are drawn in proprtion to the width of the distribution at hand, hence box plots are useful for-->
+<!--comparing-->
+<!--the main structural properties of several data sets: widths, location, and frequency of outliers.</p>-->
+<!--</li>-->
+<!--<li><p class="question">The book doesn't mention-->
+<!--<a href="https://en.wikipedia.org/wiki/Violin_plot">violin plots</a>.-->
+<!--Are those better or worse than box plots? Why?</p>-->
+<!--<p class="answer">Compared to box plots, violin plots add more information, such as shape of data density.-->
+<!--Neither-->
+<!--method is better or worse, rather each may be more appropriate depending on what properties we wish-->
+<!--to visually convey. If we wish to convey quantile structure and outliers, box plots are more suitable,-->
+<!--whereas if we wish to convey overall density shape, violin plots are more suitable. </p>-->
+<!--</li>-->
+<!--</ol>-->
 <!--</div>-->
 
 <!--<div id="part2">-->
-    <!--<h2>Part 1: DAOST Chapter 2 Questions</h2>-->
-    <!--<ol>-->
-        <!--<li>-->
-            <!--<p class="question">Looking at Fig 3-1, Janert writes "the data itself shows clearly that the amount of-->
-                <!--random noise in the data is small". What do you think his argument is?-->
-            <!--</p>-->
-            <!--<p class="answer">Janert's argument is that the points are arranged over a clear, smooth curve,-->
-                <!--such that the points nearly do not deviate from the curve. As such, any inaccuracy in the measurements-->
-                <!--is consistent, and does not originate from an upredictable distribution.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--Can you think of a real-world example of a multivariate relationship like the one in Fig 3-3 (lower-->
-                <!--right panel)?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--For example, the points may describe the two possible trajectories of a vehicle on some road, which-->
-                <!--starts as a straight line and then reaches a junction, where the vehicle may turn in either of two ways.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--What are the two methods Janert metions for smoothing noisy data? Can you think of other ones?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--The two methods Janert mentions for smoothing noisy data are splines and LOESS. Whereas splines address-->
-                <!--overall smoothness and allow easy interpolation for unknown values, LOESS is focused on accuracy of-->
-                <!--local approximations and must be recalculated for new data values. Some other examples of smoothing-->
-                <!--techniques are <a href="https://en.wikipedia.org/wiki/Polynomial_regression">polynomial regression</a>-->
-                <!--and <a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average">ARIMA</a>.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--What are residuals? Why is it a good idea to plot the residuals of your fit?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--Given data and a smooth trend fit on the data, residuals are the remainder when subtracting the trend from the data.-->
-                <!--It is a good idea to plot the residuals of your fit, because then you can further check that no systematic trends-->
-                <!--remain in the residuals. Such trends in the residuals indicate that the fit model is inappropriate-->
-                <!--for the data, as an appropriate model captures all significant patterns in the data.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--Explain in your own words the point of the smooth tube in figure 3-7.-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--The smooth tube in figure 3-7 is meant to convey confidence in the fit smooth curve.-->
-                <!--The narrower regions of the tube correspond to better approximation of the data. In addition, the more-->
-                <!--stable the width of the band is along the curve, the better the smooth fit captures trends in the data.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--What kind of relationships will a semi-log plot help you discover?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--A semi-log plot help discover exponential relationship, namely y = C exp(&alpha; x), where C and &alpha;-->
-                <!--are constants. In a semi-log plot, such a relationship follows a straight line, because because log(y) depends-->
-                <!--linearly on x as log(y) = &alpha; x + log(C).-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--What kind of functions will loglog plots help you see?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--A log-log plot helps discover power-law relationship, namely y = C x<sup>k</sup>, where C and k-->
-                <!--are constants. In a log-log plot, such a relationship follows a straight line, because log(y) depends-->
-                <!--linearly on log(x) as log(y) = k &middot; log(x) + log(C).-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--What the h#ll is banking and what element from our visual system does it use to help us see patterns?-->
-                <!--What are potential problems with banking?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--Banking to 45 degrees is reshaping the aspect ratio of a plot so that most slopes are close to a 45-->
-                <!--degree angle. This helps us perceive trends in the plotted data, because the human visual-->
-                <!--system easily captures changes in 45 degree angles, much more so than horizontal or vertical changes.-->
-                <!--However, bnanking may yield a problematic aspect ratio: 1) it may lose too much visual-->
-                <!--information, 2) it may make it hard to compare parts of the plot, 3) it may be visually unappealing,-->
-                <!--if it is too different than the commonly preferred 4:3 ratio.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--I think figure 3-14 makes an important point about linear fits that is rarely made. What is it?-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--The often overlooked point which is demonstrated in figure 3-14 is that for a two-dimensional dataset,-->
-                <!--the linear realtionship between the variables can significantly change based on which of the two-->
-                <!--we choose to be the independent variable, which stresses the importance of choosing correctly.-->
-            <!--</p>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<p class="question">-->
-                <!--Summarize the discussion of Graphical Analysis and Presentation Graphics on pp. 68-69 in your own words.-->
-            <!--</p>-->
-            <!--<p class="answer">-->
-                <!--Plotting scientific data takes two stages: first analysis, then presentation. In the analysis phase,-->
-                <!--multiple graphics are plotted quickly, to study the data in search of patterns and new information.-->
-                <!--Once such information is found, research questions can be formulated and answered, and then the findings-->
-                <!--can be summarized for presentation to a target audience. Presentation plots are made to visually convey-->
-                <!--the study results, and are thus few, concise, and made with attention to detail.-->
-            <!--</p>-->
-        <!--</li>-->
-    <!--</ol>-->
+<!--<h2>Part 1: DAOST Chapter 2 Questions</h2>-->
+<!--<ol>-->
+<!--<li>-->
+<!--<p class="question">Looking at Fig 3-1, Janert writes "the data itself shows clearly that the amount of-->
+<!--random noise in the data is small". What do you think his argument is?-->
+<!--</p>-->
+<!--<p class="answer">Janert's argument is that the points are arranged over a clear, smooth curve,-->
+<!--such that the points nearly do not deviate from the curve. As such, any inaccuracy in the measurements-->
+<!--is consistent, and does not originate from an upredictable distribution.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--Can you think of a real-world example of a multivariate relationship like the one in Fig 3-3 (lower-->
+<!--right panel)?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--For example, the points may describe the two possible trajectories of a vehicle on some road, which-->
+<!--starts as a straight line and then reaches a junction, where the vehicle may turn in either of two ways.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--What are the two methods Janert metions for smoothing noisy data? Can you think of other ones?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--The two methods Janert mentions for smoothing noisy data are splines and LOESS. Whereas splines address-->
+<!--overall smoothness and allow easy interpolation for unknown values, LOESS is focused on accuracy of-->
+<!--local approximations and must be recalculated for new data values. Some other examples of smoothing-->
+<!--techniques are <a href="https://en.wikipedia.org/wiki/Polynomial_regression">polynomial regression</a>-->
+<!--and <a href="https://en.wikipedia.org/wiki/Autoregressive_integrated_moving_average">ARIMA</a>.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--What are residuals? Why is it a good idea to plot the residuals of your fit?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--Given data and a smooth trend fit on the data, residuals are the remainder when subtracting the trend from the data.-->
+<!--It is a good idea to plot the residuals of your fit, because then you can further check that no systematic trends-->
+<!--remain in the residuals. Such trends in the residuals indicate that the fit model is inappropriate-->
+<!--for the data, as an appropriate model captures all significant patterns in the data.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--Explain in your own words the point of the smooth tube in figure 3-7.-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--The smooth tube in figure 3-7 is meant to convey confidence in the fit smooth curve.-->
+<!--The narrower regions of the tube correspond to better approximation of the data. In addition, the more-->
+<!--stable the width of the band is along the curve, the better the smooth fit captures trends in the data.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--What kind of relationships will a semi-log plot help you discover?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--A semi-log plot help discover exponential relationship, namely y = C exp(&alpha; x), where C and &alpha;-->
+<!--are constants. In a semi-log plot, such a relationship follows a straight line, because because log(y) depends-->
+<!--linearly on x as log(y) = &alpha; x + log(C).-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--What kind of functions will loglog plots help you see?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--A log-log plot helps discover power-law relationship, namely y = C x<sup>k</sup>, where C and k-->
+<!--are constants. In a log-log plot, such a relationship follows a straight line, because log(y) depends-->
+<!--linearly on log(x) as log(y) = k &middot; log(x) + log(C).-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--What the h#ll is banking and what element from our visual system does it use to help us see patterns?-->
+<!--What are potential problems with banking?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--Banking to 45 degrees is reshaping the aspect ratio of a plot so that most slopes are close to a 45-->
+<!--degree angle. This helps us perceive trends in the plotted data, because the human visual-->
+<!--system easily captures changes in 45 degree angles, much more so than horizontal or vertical changes.-->
+<!--However, bnanking may yield a problematic aspect ratio: 1) it may lose too much visual-->
+<!--information, 2) it may make it hard to compare parts of the plot, 3) it may be visually unappealing,-->
+<!--if it is too different than the commonly preferred 4:3 ratio.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--I think figure 3-14 makes an important point about linear fits that is rarely made. What is it?-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--The often overlooked point which is demonstrated in figure 3-14 is that for a two-dimensional dataset,-->
+<!--the linear realtionship between the variables can significantly change based on which of the two-->
+<!--we choose to be the independent variable, which stresses the importance of choosing correctly.-->
+<!--</p>-->
+<!--</li>-->
+<!--<li>-->
+<!--<p class="question">-->
+<!--Summarize the discussion of Graphical Analysis and Presentation Graphics on pp. 68-69 in your own words.-->
+<!--</p>-->
+<!--<p class="answer">-->
+<!--Plotting scientific data takes two stages: first analysis, then presentation. In the analysis phase,-->
+<!--multiple graphics are plotted quickly, to study the data in search of patterns and new information.-->
+<!--Once such information is found, research questions can be formulated and answered, and then the findings-->
+<!--can be summarized for presentation to a target audience. Presentation plots are made to visually convey-->
+<!--the study results, and are thus few, concise, and made with attention to detail.-->
+<!--</p>-->
+<!--</li>-->
+<!--</ol>-->
 <!--</div>-->
 
 <!--<div id="part3">-->
-    <!--<h2>Part 3: Viz 1</h2>-->
-    <!--<p class="disclaimer">FOR ACADEMIC PURPOSES ONLY: this is a reproduction of-->
-        <!--<a href="http://iquantny.tumblr.com/post/129373499164/this-is-quantifiably-the-best-month-to-go-to-the">-->
-            <!--a blog post-->
-        <!--</a>.</p>-->
-    <!--<p class="pDate">SEPTEMBER 18, 2015</p>-->
-    <!--<h3 class="h2Subpage">This is Quantifiably the Best Month to go to the Farmers Market</h3>-->
-    <!--<p class="pPart3Text">-->
-        <!--As part of a homework assignment, I ask my students at Pratt to go out and chart something of interest to them,-->
-        <!--and Katherine Savarese came back with a simple chart about farmers markets that I loved &#45;&#45;-->
-        <!--it inspired this post.-->
-    <!--</p>-->
-    <!--<p class="pPart3Text">-->
-        <!--You probably know that farmers markets are a staple across all five boroughs of New York City,-->
-        <!--but September happens to be a very special month. Why is that?-->
-        <!--Well, it turns out September is the month with the most unique types of fresh produce &#45;&#45;-->
-        <!--forty three to be exact.-->
-    <!--</p>-->
-    <!--<p class="pPart3Text">-->
-        <!--To show the current offerings, we charted how many types of fruits and vegetables are available by month,-->
-        <!--and showed if they were fresh or from storage.-->
-    <!--</p>-->
-    <!--<p class="pPart3Text">-->
-        <!--If you miss the month of September, you might be behind the fruit curve,-->
-        <!--but there are plenty more months of vegetables left.-->
-        <!--The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of 12.-->
-        <!--Now if only we could quantify how delicious the produce is...-->
-    <!--</p>-->
-    <!--<div class="selectors">-->
-        <!--<select id="whatToDisplay">-->
-            <!--<option value=0>Fruits, Harvest</option>-->
-            <!--<option value=1>Fruits, Storage</option>-->
-            <!--<option value=2>Vegetables, Harvest</option>-->
-            <!--<option value=3>Vegetables, Storage</option>-->
-        <!--</select>-->
-    <!--</div>-->
-    <!--<script type="text/javascript">-->
-        <!--var axisPadding = 40;-->
-        <!--var svgWidth = 800;-->
-        <!--var svgHeight = 400;-->
+<!--<h2>Part 3: Viz 1</h2>-->
+<!--<p class="disclaimer">FOR ACADEMIC PURPOSES ONLY: this is a reproduction of-->
+<!--<a href="http://iquantny.tumblr.com/post/129373499164/this-is-quantifiably-the-best-month-to-go-to-the">-->
+<!--a blog post-->
+<!--</a>.</p>-->
+<!--<p class="pDate">SEPTEMBER 18, 2015</p>-->
+<!--<h3 class="h2Subpage">This is Quantifiably the Best Month to go to the Farmers Market</h3>-->
+<!--<p class="pPart3Text">-->
+<!--As part of a homework assignment, I ask my students at Pratt to go out and chart something of interest to them,-->
+<!--and Katherine Savarese came back with a simple chart about farmers markets that I loved &#45;&#45;-->
+<!--it inspired this post.-->
+<!--</p>-->
+<!--<p class="pPart3Text">-->
+<!--You probably know that farmers markets are a staple across all five boroughs of New York City,-->
+<!--but September happens to be a very special month. Why is that?-->
+<!--Well, it turns out September is the month with the most unique types of fresh produce &#45;&#45;-->
+<!--forty three to be exact.-->
+<!--</p>-->
+<!--<p class="pPart3Text">-->
+<!--To show the current offerings, we charted how many types of fruits and vegetables are available by month,-->
+<!--and showed if they were fresh or from storage.-->
+<!--</p>-->
+<!--<p class="pPart3Text">-->
+<!--If you miss the month of September, you might be behind the fruit curve,-->
+<!--but there are plenty more months of vegetables left.-->
+<!--The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of 12.-->
+<!--Now if only we could quantify how delicious the produce is...-->
+<!--</p>-->
+<!--<div class="selectors">-->
+<!--<select id="whatToDisplay">-->
+<!--<option value=0>Fruits, Harvest</option>-->
+<!--<option value=1>Fruits, Storage</option>-->
+<!--<option value=2>Vegetables, Harvest</option>-->
+<!--<option value=3>Vegetables, Storage</option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<script type="text/javascript">-->
+<!--var axisPadding = 40;-->
+<!--var svgWidth = 800;-->
+<!--var svgHeight = 400;-->
 
-        <!--var dataset = [-->
-            <!--[0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],-->
-            <!--[2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2],-->
-            <!--[0, 0, 0, 2, 11, 16, 23, 28, 33, 31, 11, 3],-->
-            <!--[9, 9, 6, 3, 3, 3, 2, 1, 0, 0, 6, 8]-->
-        <!--];-->
+<!--var dataset = [-->
+<!--[0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],-->
+<!--[2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2],-->
+<!--[0, 0, 0, 2, 11, 16, 23, 28, 33, 31, 11, 3],-->
+<!--[9, 9, 6, 3, 3, 3, 2, 1, 0, 0, 6, 8]-->
+<!--];-->
 
-        <!--var barColors = [-->
-            <!--'blue',-->
-            <!--'lightblue',-->
-            <!--'red',-->
-            <!--'pink'-->
-        <!--];-->
+<!--var barColors = [-->
+<!--'blue',-->
+<!--'lightblue',-->
+<!--'red',-->
+<!--'pink'-->
+<!--];-->
 
-        <!--var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];-->
+<!--var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];-->
 
-        <!--var xScale = d3-->
-            <!--.scaleBand()-->
-            <!--.domain(d3.range(xLabels.length))-->
-            <!--.rangeRound([axisPadding, svgWidth])-->
-            <!--.paddingInner(0.05);-->
-        <!--var yScale = d3.scaleLinear();-->
-        <!--var yScaleRev = d3.scaleLinear();-->
+<!--var xScale = d3-->
+<!--.scaleBand()-->
+<!--.domain(d3.range(xLabels.length))-->
+<!--.rangeRound([axisPadding, svgWidth])-->
+<!--.paddingInner(0.05);-->
+<!--var yScale = d3.scaleLinear();-->
+<!--var yScaleRev = d3.scaleLinear();-->
 
-        <!--var svg = d3-->
-            <!--.select("body")-->
-            <!--.append("svg")-->
-            <!--.attr("width", svgWidth)-->
-            <!--.attr("height", svgHeight);-->
+<!--var svg = d3-->
+<!--.select("body")-->
+<!--.append("svg")-->
+<!--.attr("width", svgWidth)-->
+<!--.attr("height", svgHeight);-->
 
-        <!--svg.append("text")-->
-            <!--.attr("x", svgWidth / 2)-->
-            <!--.attr("y", axisPadding / 2)-->
-            <!--.attr("text-anchor", "middle")-->
-            <!--.style("font-size", "16px")-->
-            <!--.text("NYC Green Markets: Unique Produce Types");-->
+<!--svg.append("text")-->
+<!--.attr("x", svgWidth / 2)-->
+<!--.attr("y", axisPadding / 2)-->
+<!--.attr("text-anchor", "middle")-->
+<!--.style("font-size", "16px")-->
+<!--.text("NYC Green Markets: Unique Produce Types");-->
 
-        <!--svg.append("text")-->
-            <!--.attr("transform", "rotate(-90)")-->
-            <!--.attr("y", 0)-->
-            <!--.attr("x", -svgHeight / 2)-->
-            <!--.attr("dy", "1em")-->
-            <!--.style("text-anchor", "middle")-->
-            <!--.text("No. Unique Types of Produce");-->
+<!--svg.append("text")-->
+<!--.attr("transform", "rotate(-90)")-->
+<!--.attr("y", 0)-->
+<!--.attr("x", -svgHeight / 2)-->
+<!--.attr("dy", "1em")-->
+<!--.style("text-anchor", "middle")-->
+<!--.text("No. Unique Types of Produce");-->
 
-        <!--var xAxis = d3.axisBottom(xScale).tickFormat(function (d, i) {-->
-            <!--return xLabels[i];-->
-        <!--});-->
-        <!--var yAxis = d3.axisLeft(yScaleRev);-->
+<!--var xAxis = d3.axisBottom(xScale).tickFormat(function (d, i) {-->
+<!--return xLabels[i];-->
+<!--});-->
+<!--var yAxis = d3.axisLeft(yScaleRev);-->
 
-        <!--var refreshPlot = function (dataset, idx) {-->
-            <!--yScale-->
-                <!--.domain([d3.max(dataset[idx]), 0]);-->
-            <!--yScaleRev-->
-                <!--.domain([d3.max(dataset[idx]), 0]);-->
-            <!--svg-->
-                <!--.selectAll("rect")-->
-                <!--.data(dataset[idx])-->
-                <!--.transition()-->
-                <!--.attr("y", function (d) {-->
-                    <!--return svgHeight - yScale(d);-->
-                <!--})-->
-                <!--.attr("height", function (d) {-->
-                    <!--return yScale(d) - axisPadding;-->
-                <!--})-->
-                <!--.attr("fill", barColors[idx]);-->
-            <!--svg.select(".yAxis")-->
-                <!--.transition()-->
-                <!--.call(yAxis);-->
-        <!--};-->
+<!--var refreshPlot = function (dataset, idx) {-->
+<!--yScale-->
+<!--.domain([d3.max(dataset[idx]), 0]);-->
+<!--yScaleRev-->
+<!--.domain([d3.max(dataset[idx]), 0]);-->
+<!--svg-->
+<!--.selectAll("rect")-->
+<!--.data(dataset[idx])-->
+<!--.transition()-->
+<!--.attr("y", function (d) {-->
+<!--return svgHeight - yScale(d);-->
+<!--})-->
+<!--.attr("height", function (d) {-->
+<!--return yScale(d) - axisPadding;-->
+<!--})-->
+<!--.attr("fill", barColors[idx]);-->
+<!--svg.select(".yAxis")-->
+<!--.transition()-->
+<!--.call(yAxis);-->
+<!--};-->
 
-        <!--var initializePlot = function (dataset, idx) {-->
-            <!--yScale-->
-                <!--.range([svgHeight - axisPadding, axisPadding]);-->
-            <!--yScaleRev-->
-                <!--.range([axisPadding, svgHeight - axisPadding]);-->
-            <!--svg-->
-                <!--.selectAll("rect")-->
-                <!--.data(dataset[idx])-->
-                <!--.enter()-->
-                <!--.append("rect")-->
-                <!--.attr("x", function (d, i) {-->
-                    <!--return xScale(i);-->
-                <!--})-->
-                <!--.attr("width", xScale.bandwidth());-->
-            <!--svg.append("g")-->
-                <!--.attr("class", "xAxis")-->
-                <!--.attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")-->
-                <!--.call(xAxis);-->
-            <!--svg.append("g")-->
-                <!--.attr("class", "yAxis")-->
-                <!--.attr("transform", "translate(" + axisPadding + ", 0)")-->
-                <!--.call(yAxis);-->
-            <!--refreshPlot(dataset, idx);-->
-        <!--};-->
+<!--var initializePlot = function (dataset, idx) {-->
+<!--yScale-->
+<!--.range([svgHeight - axisPadding, axisPadding]);-->
+<!--yScaleRev-->
+<!--.range([axisPadding, svgHeight - axisPadding]);-->
+<!--svg-->
+<!--.selectAll("rect")-->
+<!--.data(dataset[idx])-->
+<!--.enter()-->
+<!--.append("rect")-->
+<!--.attr("x", function (d, i) {-->
+<!--return xScale(i);-->
+<!--})-->
+<!--.attr("width", xScale.bandwidth());-->
+<!--svg.append("g")-->
+<!--.attr("class", "xAxis")-->
+<!--.attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")-->
+<!--.call(xAxis);-->
+<!--svg.append("g")-->
+<!--.attr("class", "yAxis")-->
+<!--.attr("transform", "translate(" + axisPadding + ", 0)")-->
+<!--.call(yAxis);-->
+<!--refreshPlot(dataset, idx);-->
+<!--};-->
 
-        <!--initializePlot(dataset, 0);-->
+<!--initializePlot(dataset, 0);-->
 
-        <!--d3-->
-            <!--.select("#whatToDisplay")-->
-            <!--.on("change", function () {-->
-                <!--refreshPlot(dataset, this.selectedOptions[0].value);-->
-            <!--});-->
-    <!--</script>-->
+<!--d3-->
+<!--.select("#whatToDisplay")-->
+<!--.on("change", function () {-->
+<!--refreshPlot(dataset, this.selectedOptions[0].value);-->
+<!--});-->
+<!--</script>-->
 <!--</div>-->
 
 <div id="part4">
@@ -380,9 +380,48 @@
         the 2018 prediction for women is probably way off.
     </p>
     <script type="text/javascript">
+        var showWomen = function (xScale, yScale, selection) {
+            return selection
+                .attr("cx", function (d) {
+                    return xScale(d.year);
+                })
+                .attr("cy", function (d) {
+                    return yScale(d.timeMinutes);
+                })
+                .attr("r", function (d) {
+                    return 4;
+                })
+                .style("stroke", "black")
+                .style("fill", "none");
+        };
+
+        var showMen = function (xScale, yScale, selection) {
+            var squareDim = 7;
+            return selection
+                .attr("x", function (d) {
+                    return xScale(d.year);
+                })
+                .attr("y", function (d) {
+                    return yScale(d.timeMinutes);
+                })
+                .attr("width", function (d) {
+                    return squareDim;
+                })
+                .attr("height", function (d) {
+                    return squareDim;
+                })
+                .attr("transform", function (d) {
+                    return "rotate(-45, " +
+                        (xScale(d.year) + squareDim / 2) + ", " +
+                        (yScale(d.timeMinutes) + squareDim / 2) + ")";
+                })
+                .style("stroke", "black")
+                .style("fill", "none");
+        };
+
         d3.tsv(
             "marathon.tsv",
-            function(d) {
+            function (d) {
                 return {
                     year: parseInt(d.year),
                     athlete: d.athlete,
@@ -417,52 +456,21 @@
                     .attr("width", svgWidth)
                     .attr("height", svgHeight);
 
-                svg
+                showWomen(xScale, yScale, svg
                     .selectAll("circle")
                     .data(dataset.filter(function (d) {
                         return d.category == "women";
                     }))
                     .enter()
-                    .append("circle")
-                    .attr("cx", function (d) {
-                        return xScale(d.year);
-                    })
-                    .attr("cy", function (d) {
-                        return yScale(d.timeMinutes);
-                    })
-                    .attr("r", function (d) {
-                        return 4;
-                    })
-                    .style("stroke", "black")
-                    .style("fill", "none");
+                    .append("circle"));
 
-                var squareDim = 7;
-                svg
+                showMen(xScale, yScale, svg
                     .selectAll("rect")
                     .data(dataset.filter(function (d) {
                         return d.category == "men";
                     }))
                     .enter()
-                    .append("rect")
-                    .attr("x", function (d) {
-                        return xScale(d.year);
-                    })
-                    .attr("y", function (d) {
-                        return yScale(d.timeMinutes);
-                    })
-                    .attr("width", function (d) {
-                        return squareDim;
-                    })
-                    .attr("height", function (d) {
-                        return squareDim;
-                    })
-                    .attr("transform", function (d) {
-                        return "rotate(-45, " +
-                            (xScale(d.year) + squareDim / 2) + ", " +
-                            (yScale(d.timeMinutes) + squareDim / 2) + ")";
-                    })
-                    .style("stroke", "black")
-                    .style("fill", "none");
+                    .append("rect"));
             });
     </script>
 </div>
