@@ -397,6 +397,9 @@
                     return 4;
                 })
                 .style("stroke", "black")
+                .style("stroke-width", function (d) {
+                    return d.year == 2018 ? 2 : 1;
+                })
                 .style("fill", function (d) {
                     return d.year == 2018 ? "yellow" : "none";
                 });
@@ -423,6 +426,9 @@
                         (yScale(d.timeMinutes) + squareDim / 2) + ")";
                 })
                 .style("stroke", "black")
+                .style("stroke-width", function (d) {
+                    return d.year == 2018 ? 2 : 1;
+                })
                 .style("fill", function (d) {
                     return d.year == 2018 ? "yellow" : "none";
                 });
