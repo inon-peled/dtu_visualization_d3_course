@@ -393,7 +393,8 @@
 
     <div id="tooltip" class="hidden">
         <p><b><span id="name"><strong>placeholder</strong></span></b></p>
-        <p><span id="country">placeholder</span></p>
+        <p><i><span id="country">placeholder</span></i></p>
+        <p><span id="notes">placeholder</span></p>
     </div>
 
     <script type="text/javascript">
@@ -521,6 +522,9 @@
                     d3.select("#tooltip")
                         .select("#country")
                         .text(d.country);
+                    d3.select("#tooltip")
+                        .select("#notes")
+                        .text(d.year + (d.notes ? "; " + d.notes : ""));
                     d3.select("#tooltip").classed("hidden", false);
                 })
                 .on("mouseout", function (d) {
