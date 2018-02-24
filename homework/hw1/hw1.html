@@ -404,12 +404,12 @@
 
         var addCommonAttributes = function (selection) {
             return selection
+                .style("fill", function (d) {
+                    return d.year > 2017 ? "yellow" : "white";
+                })
                 .style("stroke", "black")
                 .style("stroke-width", function (d) {
-                    return d.year === 2018 ? 2 : 1;
-                })
-                .style("fill", function (d) {
-                    return d.year === 2018 ? "yellow" : "white";
+                    return d.year > 2017 ? "2" : "1";
                 })
         };
 
@@ -535,7 +535,7 @@
                 .scaleLinear()
                 .domain([0.9 * d3.min(datasetToShow, function (d) {
                     return d.timeMinutes;
-                }), 1.1 * d3.max(datasetToShow, function (d) {
+                }), 1.03 * d3.max(datasetToShow, function (d) {
                     return d.timeMinutes;
                 })])
                 .range([svgHeight - padding, padding]);
