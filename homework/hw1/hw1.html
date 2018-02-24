@@ -397,9 +397,9 @@
     </div>
 
     <script type="text/javascript">
-        var padding = 40;
-        var svgWidth = 800;
-        var svgHeight = 600;
+        var padding2 = 40;
+        var svgWidth2 = 1200;
+        var svgHeight2 = 600;
 
         var menData = [];
         var womenData = [];
@@ -496,9 +496,9 @@
         var addListenersCircles = function (selection, xAttr, yAttr) {
             selection
                 .on("mouseover", function (d) {
-                    var xPosition = d3.max([padding * 3, parseFloat(d3.select(this).attr(xAttr) - 7 * padding)]);
+                    var xPosition = d3.max([padding2 * 3, parseFloat(d3.select(this).attr(xAttr) - 7 * padding2)]);
                     var yPosition = d3.max(
-                        [svgHeight - padding * 5, parseFloat(d3.select(this).attr(yAttr)) - 3 * padding]);
+                        [svgHeight2 - padding2 * 5, parseFloat(d3.select(this).attr(yAttr)) - 3 * padding2]);
                     d3.select("#tooltip")
                         .style("left", xPosition + "px")
                         .style("top", yPosition + "px")
@@ -516,8 +516,8 @@
 
         var initializeSvg = function() {
             svg2
-                .attr("width", svgWidth)
-                .attr("height", svgHeight);
+                .attr("width", svgWidth2)
+                .attr("height", svgHeight2);
             svg2
                 .append("g")
                 .attr("class", "x axis");
@@ -552,7 +552,7 @@
                 }), 1.002 * d3.max(datasetToShow, function (d) {
                     return d.year;
                 })])
-                .range([padding, svgWidth - padding]);
+                .range([padding2, svgWidth2 - padding2]);
             var yScale = d3
                 .scaleLinear()
                 .domain([0.9 * d3.min(datasetToShow, function (d) {
@@ -560,7 +560,7 @@
                 }), 1.03 * d3.max(datasetToShow, function (d) {
                     return d.timeMinutes;
                 })])
-                .range([svgHeight - padding, padding]);
+                .range([svgHeight2 - padding2, padding2]);
 
             var xAxis = d3.axisBottom(xScale);
             var yAxis = d3.axisLeft(yScale);
@@ -577,11 +577,11 @@
             }
 
             svg2.select(".x.axis")
-                .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
+                .attr("transform", "translate(0, " + (svgHeight2 - padding2) + ")")
                 .transition()
                 .call(xAxis);
             svg2.select(".y.axis")
-                .attr("transform", "translate(" + padding + ", 0)")
+                .attr("transform", "translate(" + padding2 + ", 0)")
                 .transition()
                 .call(yAxis);
         };
