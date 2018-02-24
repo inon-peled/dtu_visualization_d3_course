@@ -391,6 +391,11 @@
         <option value="womenOnly">Only Women</option>
     </select>
 
+    <div id="tooltip" class="hidden">
+        <p><b><span id="name"><strong>placeholder</strong></span></b></p>
+        <p><span id="country">placeholder</span></p>
+    </div>
+
     <script type="text/javascript">
         var padding = 40;
         var svgWidth = 800;
@@ -398,7 +403,7 @@
 
         var menData = [];
         var womenData = [];
-        var svg = d3
+        var svg2 = d3
             .select("body")
             .append("svg");
 
@@ -494,36 +499,51 @@
                 .transition();
         };
 
-        var addListeners = function (selection) {
+        var addListenersCircles = function (selection, xAttr, yAttr) {
             selection
-                .on("mouseover", function (d) { console.log(d);})
-                .on("mouseout", function (d) { console.log(d);});
+                .on("mouseover", function (d) {
+                    var xPosition = d3.max([padding * 3, parseFloat(d3.select(this).attr(xAttr) - 7 * padding)]);
+                    var yPosition = d3.min(
+                        [svgHeight - padding * 5, parseFloat(d3.select(this).attr(yAttr)) + 3 * padding]);
+                    d3.select("#tooltip")
+                        .style("left", xPosition + "px")
+                        .style("top", yPosition + "px")
+                        .select("#name")
+                        .text(d.athlete);
+                    d3.select("#tooltip")
+                        .select("#country")
+                        .text(d.country);
+                    d3.select("#tooltip").classed("hidden", false);
+                })
+                .on("mouseout", function (d) {
+                    d3.select("#tooltip").classed("hidden", true);
+                });
         };
 
         var initializeSvg = function() {
-            svg
+            svg2
                 .attr("width", svgWidth)
                 .attr("height", svgHeight);
-            svg
+            svg2
                 .append("g")
                 .attr("class", "x axis");
-            svg
+            svg2
                 .append("g")
                 .attr("class", "y axis");
-            disappearWomen(svg
+            disappearWomen(svg2
                 .selectAll("circle")
                 .data(womenData)
                 .enter()
                 .append("circle")
             );
-            disappearMen(svg
+            disappearMen(svg2
                 .selectAll("rect")
                 .data(menData)
                 .enter()
                 .append("rect")
             );
-            addListeners(svg.selectAll("rect"));
-            addListeners(svg.selectAll("circle"));
+            addListenersCircles(svg2.selectAll("rect"), "x", "y");
+            addListenersCircles(svg2.selectAll("circle"), "cx", "yx");
             updatePlot("allData");
         };
 
@@ -552,21 +572,21 @@
             var yAxis = d3.axisLeft(yScale);
 
             if (optionToShow === "allData") {
-                showMen(xScale, yScale, svg.selectAll("rect"));
-                showWomen(xScale, yScale, svg.selectAll("circle"));
+                showMen(xScale, yScale, svg2.selectAll("rect"));
+                showWomen(xScale, yScale, svg2.selectAll("circle"));
             } else if (optionToShow === "menOnly") {
-                disappearWomen(svg.selectAll("circle"));
-                showMen(xScale, yScale, svg.selectAll("rect"));
+                disappearWomen(svg2.selectAll("circle"));
+                showMen(xScale, yScale, svg2.selectAll("rect"));
             } else if (optionToShow === "womenOnly") {
-                disappearMen(svg.selectAll("rect"));
-                showWomen(xScale, yScale, svg.selectAll("circle"))
+                disappearMen(svg2.selectAll("rect"));
+                showWomen(xScale, yScale, svg2.selectAll("circle"))
             }
 
-            svg.select(".x.axis")
+            svg2.select(".x.axis")
                 .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
                 .transition()
                 .call(xAxis);
-            svg.select(".y.axis")
+            svg2.select(".y.axis")
                 .attr("transform", "translate(" + padding + ", 0)")
                 .transition()
                 .call(yAxis);
