@@ -457,17 +457,17 @@
                 selection
                     .transition()
                 .attr("x", function (d) {
-                    return xScale(d.year);
+                    return xScale(d.year) - squareDim / 2;
                 })
                 .attr("y", function (d) {
-                    return yScale(d.timeMinutes);
+                    return yScale(d.timeMinutes) - squareDim / 2;
                 })
                 .attr("width", squareDim)
                 .attr("height", squareDim)
                 .attr("transform", function (d) {
                     return "rotate(-45, " +
-                        (xScale(d.year) + squareDim / 2) + ", " +
-                        (yScale(d.timeMinutes) + squareDim / 2) + ")";
+                        (xScale(d.year)) + ", " +
+                        (yScale(d.timeMinutes)) + ")";
                 })
             );
             sel.on("start", function () {
