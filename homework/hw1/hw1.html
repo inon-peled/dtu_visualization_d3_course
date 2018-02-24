@@ -420,17 +420,7 @@
         };
 
         var showWomen = function (xScale, yScale, selection) {
-            var line = d3.line()
-                .x(function(d) { return xScale(d.year); })
-                .y(function(d) { return yScale(d.timeMinutes); });
-            d3
-                .select("#womenPath")
-                .datum(womenData)
-                .attr("class", "line")
-                .attr("d", line)
-                .attr("stroke", "blue")
-                .transition();
-            return addCommonAttributes(
+            var sel = addCommonAttributes(
                 selection
                     .transition()
                     .attr("cx", function (d) {
@@ -441,11 +431,29 @@
                     })
                     .attr("r", 5)
             );
+            sel.on("start", function () {
+                d3
+                    .select("#womenPath")
+                    .attr("stroke", "none");
+            });
+            sel.on("end", function () {
+                var line = d3.line()
+                    .x(function(d) { return xScale(d.year); })
+                    .y(function(d) { return yScale(d.timeMinutes); });
+                d3
+                    .select("#womenPath")
+                    .datum(womenData)
+                    .attr("class", "line")
+                    .attr("d", line)
+                    .attr("stroke", "blue");
+                }
+            );
+            return sel;
         };
 
         var showMen = function (xScale, yScale, selection) {
             var squareDim = 8;
-            return addCommonAttributes(
+            var sel = addCommonAttributes(
                 selection
                     .transition()
                 .attr("x", function (d) {
@@ -462,6 +470,24 @@
                         (yScale(d.timeMinutes) + squareDim / 2) + ")";
                 })
             );
+            sel.on("start", function () {
+                d3
+                    .select("#menPath")
+                    .attr("stroke", "none");
+            });
+            sel.on("end", function () {
+                    var line = d3.line()
+                        .x(function(d) { return xScale(d.year); })
+                        .y(function(d) { return yScale(d.timeMinutes); });
+                    d3
+                        .select("#menPath")
+                        .datum(menData)
+                        .attr("class", "line")
+                        .attr("d", line)
+                        .attr("stroke", "red");
+                }
+            );
+            return sel;
         };
 
         var readAllData = function() {
@@ -499,6 +525,10 @@
         };
 
         var disappearMen = function(selection) {
+            d3
+                .select("#menPath")
+                .transition()
+                .attr("stroke", "none");
             return selection
                 .transition()
                 // .attr("x", svgWidth + 2 * padding)
