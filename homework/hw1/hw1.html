@@ -608,20 +608,20 @@
                 .append("path")
                 .attr("id", "menPath")
                 .attr("fill", "none")
-                .attr("stroke", "red");
+                .attr("stroke", "none");
             svg2
                 .append("line")
                 .attr("id", "womenLinearFit")
                 .attr("fill", "none")
                 .attr("stroke", "none")
-                .attr("stroke-width", "3")
+                .attr("stroke-width", "2")
                 .attr("stroke-dasharray", "5, 5");
             svg2
                 .append("line")
                 .attr("id", "menLinearFit")
                 .attr("fill", "none")
                 .attr("stroke", "none")
-                .attr("stroke-width", "3")
+                .attr("stroke-width", "2")
                 .attr("stroke-dasharray", "5, 5");
             updatePlot("allData");
         };
