@@ -428,7 +428,7 @@
                 .attr("r", function (d) {
                     return 4;
                 })
-            )
+            ).transition();
         };
 
         var showMen = function (xScale, yScale, selection) {
@@ -452,7 +452,7 @@
                         (xScale(d.year) + squareDim / 2) + ", " +
                         (yScale(d.timeMinutes) + squareDim / 2) + ")";
                 })
-            );
+            ).transition();
         };
 
         var readAllData = function() {
@@ -477,6 +477,23 @@
                 }
             )};
 
+        var disappearWomen = function(selection) {
+            return selection
+                .attr("cx", svgWidth + 2 * padding)
+                .attr("cy", svgHeight / 2)
+                .attr("r", 0)
+                .transition();
+        };
+
+        var disappearMen = function(selection) {
+            return selection
+                .attr("x", svgWidth + 2 * padding)
+                .attr("y", svgHeight / 2)
+                .attr("height", 0)
+                .attr("width", 0)
+                .transition();
+        };
+
         var initializeSvg = function() {
             svg
                 .attr("width", svgWidth)
@@ -487,6 +504,18 @@
             svg
                 .append("g")
                 .attr("class", "y axis");
+            disappearWomen(svg
+                .selectAll("circle")
+                .data(womenData)
+                .enter()
+                .append("circle")
+            );
+            disappearMen(svg
+                .selectAll("rect")
+                .data(menData)
+                .enter()
+                .append("rect")
+            );
             updatePlot("allData");
         };
 
@@ -514,16 +543,16 @@
             var xAxis = d3.axisBottom(xScale);
             var yAxis = d3.axisLeft(yScale);
 
-            showWomen(xScale, yScale, svg
-                .selectAll("circle")
-                .data(womenData)
-                .enter()
-                .append("circle"));
-            showMen(xScale, yScale, svg
-                .selectAll("rect")
-                .data(menData)
-                .enter()
-                .append("rect"));
+            if (optionToShow === "allData") {
+                showMen(xScale, yScale, svg.selectAll("rect"));
+                showWomen(xScale, yScale, svg.selectAll("circle"));
+            } else if (optionToShow === "menOnly") {
+                disappearWomen(svg.selectAll("circle"));
+                showMen(xScale, yScale, svg.selectAll("rect"));
+            } else if (optionToShow === "womenOnly") {
+                disappearMen(svg.selectAll("rect"));
+                showWomen(xScale, yScale, svg.selectAll("circle"))
+            }
 
             svg.select(".x.axis")
                 .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
