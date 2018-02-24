@@ -494,6 +494,12 @@
                 .transition();
         };
 
+        var addListeners = function (selection) {
+            selection
+                .on("mouseover", function (d) { console.log(d);})
+                .on("mouseout", function (d) { console.log(d);});
+        };
+
         var initializeSvg = function() {
             svg
                 .attr("width", svgWidth)
@@ -516,6 +522,8 @@
                 .enter()
                 .append("rect")
             );
+            addListeners(svg.selectAll("rect"));
+            addListeners(svg.selectAll("circle"));
             updatePlot("allData");
         };
 
