@@ -428,14 +428,12 @@
                 .attr("cy", function (d) {
                     return yScale(d.timeMinutes);
                 })
-                .attr("r", function (d) {
-                    return 4;
-                })
+                .attr("r", 5)
             );
         };
 
         var showMen = function (xScale, yScale, selection) {
-            var squareDim = 6;
+            var squareDim = 8;
             return addCommonAttributes(
                 selection
                     .transition()
@@ -445,12 +443,8 @@
                 .attr("y", function (d) {
                     return yScale(d.timeMinutes);
                 })
-                .attr("width", function (d) {
-                    return squareDim;
-                })
-                .attr("height", function (d) {
-                    return squareDim;
-                })
+                .attr("width", squareDim)
+                .attr("height", squareDim)
                 .attr("transform", function (d) {
                     return "rotate(-45, " +
                         (xScale(d.year) + squareDim / 2) + ", " +
