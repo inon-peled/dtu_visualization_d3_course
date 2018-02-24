@@ -503,8 +503,8 @@
             selection
                 .on("mouseover", function (d) {
                     var xPosition = d3.max([padding * 3, parseFloat(d3.select(this).attr(xAttr) - 7 * padding)]);
-                    var yPosition = d3.min(
-                        [svgHeight - padding * 5, parseFloat(d3.select(this).attr(yAttr)) + 3 * padding]);
+                    var yPosition = d3.max(
+                        [svgHeight - padding * 5, parseFloat(d3.select(this).attr(yAttr)) - 3 * padding]);
                     d3.select("#tooltip")
                         .style("left", xPosition + "px")
                         .style("top", yPosition + "px")
