@@ -433,19 +433,23 @@
             );
             sel.on("start", function () {
                 d3
-                    .select("#womenPath")
+                    .selectAll("path")
                     .attr("stroke", "none");
             });
             sel.on("end", function () {
-                var line = d3.line()
-                    .x(function(d) { return xScale(d.year); })
-                    .y(function(d) { return yScale(d.timeMinutes); });
-                d3
-                    .select("#womenPath")
-                    .datum(womenData)
-                    .attr("class", "line")
-                    .attr("d", line)
-                    .attr("stroke", "blue");
+                    var line = d3.line()
+                        .x(function (d) {
+                            return xScale(d.year);
+                        })
+                        .y(function (d) {
+                            return yScale(d.timeMinutes);
+                        });
+                    d3
+                        .select("#womenPath")
+                        .datum(womenData)
+                        .attr("class", "line")
+                        .attr("d", line)
+                        .attr("stroke", "blue");
                 }
             );
             return sel;
@@ -456,29 +460,33 @@
             var sel = addCommonAttributes(
                 selection
                     .transition()
-                .attr("x", function (d) {
-                    return xScale(d.year) - squareDim / 2;
-                })
-                .attr("y", function (d) {
-                    return yScale(d.timeMinutes) - squareDim / 2;
-                })
-                .attr("width", squareDim)
-                .attr("height", squareDim)
-                .attr("transform", function (d) {
-                    return "rotate(-45, " +
-                        (xScale(d.year)) + ", " +
-                        (yScale(d.timeMinutes)) + ")";
-                })
+                    .attr("x", function (d) {
+                        return xScale(d.year) - squareDim / 2;
+                    })
+                    .attr("y", function (d) {
+                        return yScale(d.timeMinutes) - squareDim / 2;
+                    })
+                    .attr("width", squareDim)
+                    .attr("height", squareDim)
+                    .attr("transform", function (d) {
+                        return "rotate(-45, " +
+                            (xScale(d.year)) + ", " +
+                            (yScale(d.timeMinutes)) + ")";
+                    })
             );
             sel.on("start", function () {
                 d3
-                    .select("#menPath")
+                    .selectAll("path")
                     .attr("stroke", "none");
             });
             sel.on("end", function () {
                     var line = d3.line()
-                        .x(function(d) { return xScale(d.year); })
-                        .y(function(d) { return yScale(d.timeMinutes); });
+                        .x(function (d) {
+                            return xScale(d.year);
+                        })
+                        .y(function (d) {
+                            return yScale(d.timeMinutes);
+                        });
                     d3
                         .select("#menPath")
                         .datum(menData)
@@ -490,7 +498,7 @@
             return sel;
         };
 
-        var readAllData = function() {
+        var readAllData = function () {
             d3.tsv(
                 "marathon.tsv",
                 function (d) {
@@ -505,13 +513,18 @@
                     };
                 },
                 function (dataset) {
-                    menData = dataset.filter(function (d) { return d.category === "men"});
-                    womenData = dataset.filter(function (d) { return d.category === "women"});
+                    menData = dataset.filter(function (d) {
+                        return d.category === "men"
+                    });
+                    womenData = dataset.filter(function (d) {
+                        return d.category === "women"
+                    });
                     initializeSvg();
                 }
-            )};
+            )
+        };
 
-        var disappearWomen = function(selection) {
+        var disappearWomen = function (selection) {
             d3
                 .select("#womenPath")
                 .transition()
@@ -524,7 +537,7 @@
                 .transition();
         };
 
-        var disappearMen = function(selection) {
+        var disappearMen = function (selection) {
             d3
                 .select("#menPath")
                 .transition()
@@ -562,7 +575,7 @@
                 });
         };
 
-        var initializeSvg = function() {
+        var initializeSvg = function () {
             svg2
                 .attr("width", svgWidth2)
                 .attr("height", svgHeight2);
@@ -587,19 +600,32 @@
             addListenersCircles(svg2.selectAll("rect"), "x", "y");
             addListenersCircles(svg2.selectAll("circle"), "cx", "yx");
             svg2
+                .append("g")
+                .attr("id", "pathsGroup");
+            d3.select("#pathsGroup")
                 .append("path")
                 .attr("id", "womenPath")
                 .attr("fill", "none")
                 .attr("stroke", "none");
-            svg2
+            d3.select("#pathsGroup")
                 .append("path")
                 .attr("id", "menPath")
                 .attr("fill", "none")
                 .attr("stroke", "red");
+            d3.select("#pathsGroup")
+                .append("path")
+                .attr("id", "womenLinearFit")
+                .attr("fill", "none")
+                .attr("stroke", "none");
+            d3.select("#pathsGroup")
+                .append("path")
+                .attr("id", "menLinearFit")
+                .attr("fill", "none")
+                .attr("stroke", "none");
             updatePlot("allData");
         };
 
-        var updatePlot = function(optionToShow) {
+        var updatePlot = function (optionToShow) {
             var datasetToShow = optionToShow === "allData" ? menData.concat(womenData) : (
                 optionToShow === "menOnly" ? menData : womenData
             );
