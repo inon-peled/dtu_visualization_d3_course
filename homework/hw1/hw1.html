@@ -384,7 +384,17 @@
         <a href="https://docs.google.com/spreadsheets/d/1MNXyRa3925kxtWQJzPkH6J8g2UYOMUXLtK7Ucfydw2I/edit?usp=sharing">
             this Google sheets document</a>.
     </p>
+
+    <select id="showForMarathon">
+        <option value="allData">All Data</option>
+        <option value="menOnly">Only Men</option>
+        <option value="womenOnly">Only Women</option>
+    </select>
+
     <script type="text/javascript">
+        var menData = [];
+        var womenData = [];
+
         var addCommonAttributes = function (selection) {
             return selection
                 .style("stroke", "black")
@@ -438,80 +448,108 @@
             );
         };
 
-        d3.tsv(
-            "marathon.tsv",
-            function (d) {
-                return {
-                    year: parseInt(d.year),
-                    athlete: d.athlete,
-                    country: d.country,
-                    timePretty: d.timePretty,
-                    notes: d.notes,
-                    timeMinutes: parseInt(d.timeMinutes),
-                    category: d.category
-                };
-            },
-            function (dataset) {
-                var padding = 40;
-                var svgWidth = 800;
-                var svgHeight = 600;
+        var readAllData = function() {
+            d3.tsv(
+                "marathon.tsv",
+                function (d) {
+                    return {
+                        id: d.category + d.year,
+                        year: parseInt(d.year),
+                        athlete: d.athlete,
+                        country: d.country,
+                        timePretty: d.timePretty,
+                        notes: d.notes,
+                        timeMinutes: parseInt(d.timeMinutes),
+                        category: d.category
+                    };
+                },
+                function (dataset) {
+                    menData = dataset.filter(function (d) { return d.category == "men"});
+                    womenData = dataset.filter(function (d) { return d.category == "women"});
+                }
+            )};
 
-                var xScale = d3.scaleLinear()
-                    .domain([0.995 * d3.min(dataset, function (d) {
-                        return d.year;
-                    }), 1.002 * d3.max(dataset, function (d) {
-                        return d.year;
-                    })])
-                    .range([padding, svgWidth - padding]);
-                var yScale = d3.scaleLinear()
-                    .domain([0.9 * d3.min(dataset, function (d) {
-                        return d.timeMinutes;
-                    }), 1.1 * d3.max(dataset, function (d) {
-                        return d.timeMinutes;
-                    })])
-                    .range([svgHeight - padding, padding]);
+        readAllData();
 
-                var svg = d3
-                    .select("body")
-                    .append("svg")
-                    .attr("width", svgWidth)
-                    .attr("height", svgHeight);
+        var updatePlot = function() {
+            d3.tsv(
+                "marathon.tsv",
+                function (d) {
+                    return {
+                        id: d.category + d.year,
+                        year: parseInt(d.year),
+                        athlete: d.athlete,
+                        country: d.country,
+                        timePretty: d.timePretty,
+                        notes: d.notes,
+                        timeMinutes: parseInt(d.timeMinutes),
+                        category: d.category
+                    };
+                },
+                function (dataset) {
+                    var padding = 40;
+                    var svgWidth = 800;
+                    var svgHeight = 600;
 
-                var xAxis = d3.axisBottom(xScale);
-                svg.append("g")
-                    .attr("class", "x axis")
-                    .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
-                    .call(xAxis);
+                    var xScale = d3.scaleLinear()
+                        .domain([0.995 * d3.min(dataset, function (d) {
+                            return d.year;
+                        }), 1.002 * d3.max(dataset, function (d) {
+                            return d.year;
+                        })])
+                        .range([padding, svgWidth - padding]);
+                    var yScale = d3.scaleLinear()
+                        .domain([0.9 * d3.min(dataset, function (d) {
+                            return d.timeMinutes;
+                        }), 1.1 * d3.max(dataset, function (d) {
+                            return d.timeMinutes;
+                        })])
+                        .range([svgHeight - padding, padding]);
 
-                var yAxis = d3.axisLeft(yScale);
-                svg.append("g")
-                    .attr("class", "y axis")
-                    .attr("transform", "translate(" + padding + ", 0)")
-                    .call(yAxis);
+                    var svg = d3
+                        .select("body")
+                        .append("svg")
+                        .attr("width", svgWidth)
+                        .attr("height", svgHeight);
 
-                showWomen(xScale, yScale, svg
-                    .selectAll("circle")
-                    .data(dataset.filter(function (d) {
-                        return d.category == "women";
-                    }))
-                    .enter()
-                    .append("circle"));
+                    var xAxis = d3.axisBottom(xScale);
+                    svg.append("g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0, " + (svgHeight - padding) + ")")
+                        .call(xAxis);
 
-                showMen(xScale, yScale, svg
-                    .selectAll("rect")
-                    .data(dataset.filter(function (d) {
-                        return d.category == "men";
-                    }))
-                    .enter()
-                    .append("rect"));
+                    var yAxis = d3.axisLeft(yScale);
+                    svg.append("g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + padding + ", 0)")
+                        .call(yAxis);
 
-                svg.select(".x.axis")
-                    .transition()
-                    .call(xAxis);
-                svg.select(".y.axis")
-                    .transition()
-                    .call(yAxis);
-            });
+                    showWomen(xScale, yScale, svg
+                        .selectAll("circle")
+                        .data(dataset.filter(function (d) {
+                            return d.category == "women";
+                        }))
+                        .enter()
+                        .append("circle"));
+
+                    showMen(xScale, yScale, svg
+                        .selectAll("rect")
+                        .data(dataset.filter(function (d) {
+                            return d.category == "men";
+                        }))
+                        .enter()
+                        .append("rect"));
+
+                    svg.select(".x.axis")
+                        .transition()
+                        .call(xAxis);
+                    svg.select(".y.axis")
+                        .transition()
+                        .call(yAxis);
+                });
+        };
+
+        updatePlot();
     </script>
 </div>
 
