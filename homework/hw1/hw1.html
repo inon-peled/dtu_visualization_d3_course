@@ -411,14 +411,12 @@
                 .style("fill", function (d) {
                     return d.year === 2018 ? "yellow" : "white";
                 })
-                .on("click", function(d) {
-                    console.log(d);
-                });
         };
 
         var showWomen = function (xScale, yScale, selection) {
             return addCommonAttributes(
                 selection
+                    .transition()
                 .attr("cx", function (d) {
                     return xScale(d.year);
                 })
@@ -428,13 +426,14 @@
                 .attr("r", function (d) {
                     return 4;
                 })
-            ).transition();
+            );
         };
 
         var showMen = function (xScale, yScale, selection) {
             var squareDim = 6;
             return addCommonAttributes(
                 selection
+                    .transition()
                 .attr("x", function (d) {
                     return xScale(d.year);
                 })
@@ -452,7 +451,7 @@
                         (xScale(d.year) + squareDim / 2) + ", " +
                         (yScale(d.timeMinutes) + squareDim / 2) + ")";
                 })
-            ).transition();
+            );
         };
 
         var readAllData = function() {
@@ -460,7 +459,6 @@
                 "marathon.tsv",
                 function (d) {
                     return {
-                        id: d.category + d.year,
                         year: parseInt(d.year),
                         athlete: d.athlete,
                         country: d.country,
@@ -479,16 +477,18 @@
 
         var disappearWomen = function(selection) {
             return selection
-                .attr("cx", svgWidth + 2 * padding)
-                .attr("cy", svgHeight / 2)
+                .transition()
+                // .attr("cx", svgWidth + 2 * padding)
+                // .attr("cy", svgHeight / 2)
                 .attr("r", 0)
                 .transition();
         };
 
         var disappearMen = function(selection) {
             return selection
-                .attr("x", svgWidth + 2 * padding)
-                .attr("y", svgHeight / 2)
+                .transition()
+                // .attr("x", svgWidth + 2 * padding)
+                // .attr("y", svgHeight / 2)
                 .attr("height", 0)
                 .attr("width", 0)
                 .transition();
