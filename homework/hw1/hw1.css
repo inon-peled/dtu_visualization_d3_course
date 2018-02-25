@@ -36,3 +36,8 @@ div.tooltip {
     font-family: sans-serif;
     font-size: 20px;
 }
+
+.interactive {
+    display: block;
+    margin: auto;
+}

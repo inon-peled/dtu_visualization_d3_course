@@ -230,159 +230,167 @@
         </a>.</p>
     <p class="pDate">SEPTEMBER 18, 2015</p>
     <h3 class="h2Subpage">This is Quantifiably the Best Month to go to the Farmers Market</h3>
-    <p class="pPart3Text">
-        As part of a homework assignment, I ask my students at Pratt to go out and chart something of interest to them,
-        and Katherine Savarese came back with a simple chart about farmers markets that I loved --
-        it inspired this post.
-    </p>
-    <p class="pPart3Text">
-        You probably know that farmers markets are a staple across all five boroughs of New York City,
-        but September happens to be a very special month. Why is that?
-        Well, it turns out September is the month with the most unique types of fresh produce --
-        forty three to be exact.
-    </p>
-    <p class="pPart3Text">
-        To show the current offerings, we charted how many types of fruits and vegetables are available by month,
-        and showed if they were fresh or from storage.
-    </p>
-    <p class="pPart3Text">
-        If you miss the month of September, you might be behind the fruit curve,
-        but there are plenty more months of vegetables left.
-        The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of 12.
-        Now if only we could quantify how delicious the produce is...
-    </p>
-    <div class="selectors">
-        <label>Showing: </label>
-        <select id="whatToDisplay" class="selectBox">
-            <option value=0>Fruits, Harvest</option>
-            <option value=1>Fruits, Storage</option>
-            <option value=2>Vegetables, Harvest</option>
-            <option value=3>Vegetables, Storage</option>
-        </select>
+    <div>
+        <p class="pPart3Text">
+            As part of a homework assignment, I ask my students at Pratt to go out and chart something of interest to
+            them,
+            and Katherine Savarese came back with a simple chart about farmers markets that I loved --
+            it inspired this post.
+        </p>
+        <p class="pPart3Text">
+            You probably know that farmers markets are a staple across all five boroughs of New York City,
+            but September happens to be a very special month. Why is that?
+            Well, it turns out September is the month with the most unique types of fresh produce --
+            forty three to be exact.
+        </p>
+        <p class="pPart3Text">
+            To show the current offerings, we charted how many types of fruits and vegetables are available by month,
+            and showed if they were fresh or from storage.
+        </p>
     </div>
-    <script type="text/javascript">
-        var axisPadding = 60;
-        var svgWidth = 800;
-        var svgHeight = 400;
+    <div id="interactive1">
+        <div class="selectors">
+            <select id="whatToDisplay" class="selectBox interactive">
+                <option value=0>Fruits, Harvest</option>
+                <option value=1>Fruits, Storage</option>
+                <option value=2>Vegetables, Harvest</option>
+                <option value=3>Vegetables, Storage</option>
+            </select>
+        </div>
+        <script type="text/javascript">
+            var axisPadding = 60;
+            var svgWidth = 800;
+            var svgHeight = 400;
 
-        var dataset = [
-            [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
-            [2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2],
-            [0, 0, 0, 2, 11, 16, 23, 28, 33, 31, 11, 3],
-            [9, 9, 6, 3, 3, 3, 2, 1, 0, 0, 6, 8]
-        ];
+            var dataset = [
+                [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
+                [2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2],
+                [0, 0, 0, 2, 11, 16, 23, 28, 33, 31, 11, 3],
+                [9, 9, 6, 3, 3, 3, 2, 1, 0, 0, 6, 8]
+            ];
 
-        var barColors = [
-            'blue',
-            'lightblue',
-            'red',
-            'pink'
-        ];
+            var barColors = [
+                'blue',
+                'lightblue',
+                'red',
+                'pink'
+            ];
 
-        var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-        var xScale = d3
-            .scaleBand()
-            .domain(d3.range(xLabels.length))
-            .rangeRound([axisPadding, svgWidth])
-            .paddingInner(0.05);
-        var yScale = d3.scaleLinear();
-        var yScaleRev = d3.scaleLinear();
+            var xScale = d3
+                .scaleBand()
+                .domain(d3.range(xLabels.length))
+                .rangeRound([axisPadding, svgWidth])
+                .paddingInner(0.05);
+            var yScale = d3.scaleLinear();
+            var yScaleRev = d3.scaleLinear();
 
-        var svg = d3
-            .select("body")
-            .append("svg")
-            .attr("width", svgWidth)
-            .attr("height", svgHeight);
+            var svg = d3
+                .select("#interactive1")
+                .append("svg")
+                .attr("class", "interactive")
+                .attr("width", svgWidth)
+                .attr("height", svgHeight);
 
-        svg.append("text")
-            .attr("x", svgWidth / 2)
-            .attr("y", axisPadding / 2)
-            .attr("text-anchor", "middle")
-            .style("font-size", "22px")
-            .text("NYC Green Markets: Unique Produce Types");
+            svg.append("text")
+                .attr("x", svgWidth / 2)
+                .attr("y", axisPadding / 2)
+                .attr("text-anchor", "middle")
+                .style("font-size", "22px")
+                .text("NYC Green Markets: Unique Produce Types");
 
-        svg.append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0)
-            .attr("x", -svgHeight / 2)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("No. Unique Types of Produce");
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0)
+                .attr("x", -svgHeight / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("No. Unique Types of Produce");
 
-        svg.append("text")
-            .attr("y", svgHeight - axisPadding / 2)
-            .attr("x", svgWidth / 2)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("Month");
+            svg.append("text")
+                .attr("y", svgHeight - axisPadding / 2)
+                .attr("x", svgWidth / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Month");
 
-        var xAxis = d3
-            .axisBottom(xScale)
-            .tickFormat(function (d, i) {
-                return xLabels[i];
-            });
-        var yAxis = d3
-            .axisLeft(yScaleRev)
-            .tickFormat(function (e) {
-                return Math.floor(e) !== e ? "" : e;
-            });
+            var xAxis = d3
+                .axisBottom(xScale)
+                .tickFormat(function (d, i) {
+                    return xLabels[i];
+                });
+            var yAxis = d3
+                .axisLeft(yScaleRev)
+                .tickFormat(function (e) {
+                    return Math.floor(e) !== e ? "" : e;
+                });
 
-        var refreshPlot = function (dataset, idx) {
-            yScale
-                .domain([d3.max(dataset[idx]), 0]);
-            yScaleRev
-                .domain([d3.max(dataset[idx]), 0]);
-            svg
-                .selectAll(".bar")
-                .data(dataset[idx])
-                .transition()
-                .attr("y", function (d) {
-                    return svgHeight - yScale(d);
-                })
-                .attr("height", function (d) {
-                    return yScale(d) - axisPadding;
-                })
-                .attr("fill", barColors[idx]);
-            svg.select(".yAxis")
-                .transition()
-                .call(yAxis);
-        };
+            var refreshPlot = function (dataset, idx) {
+                yScale
+                    .domain([d3.max(dataset[idx]), 0]);
+                yScaleRev
+                    .domain([d3.max(dataset[idx]), 0]);
+                svg
+                    .selectAll(".bar")
+                    .data(dataset[idx])
+                    .transition()
+                    .attr("y", function (d) {
+                        return svgHeight - yScale(d);
+                    })
+                    .attr("height", function (d) {
+                        return yScale(d) - axisPadding;
+                    })
+                    .attr("fill", barColors[idx]);
+                svg.select(".yAxis")
+                    .transition()
+                    .call(yAxis);
+            };
 
-        var initializePlot = function (dataset, idx) {
-            yScale
-                .range([svgHeight - axisPadding, axisPadding]);
-            yScaleRev
-                .range([axisPadding, svgHeight - axisPadding]);
-            svg
-                .selectAll("rect")
-                .data(dataset[idx])
-                .enter()
-                .append("rect")
-                .attr("class", "bar")
-                .attr("x", function (d, i) {
-                    return xScale(i);
-                })
-                .attr("width", xScale.bandwidth());
-            svg.append("g")
-                .attr("class", "xAxis")
-                .attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")
-                .call(xAxis);
-            svg.append("g")
-                .attr("class", "yAxis")
-                .attr("transform", "translate(" + axisPadding + ", 0)")
-                .call(yAxis);
-            refreshPlot(dataset, idx);
-        };
+            var initializePlot = function (dataset, idx) {
+                yScale
+                    .range([svgHeight - axisPadding, axisPadding]);
+                yScaleRev
+                    .range([axisPadding, svgHeight - axisPadding]);
+                svg
+                    .selectAll("rect")
+                    .data(dataset[idx])
+                    .enter()
+                    .append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function (d, i) {
+                        return xScale(i);
+                    })
+                    .attr("width", xScale.bandwidth());
+                svg.append("g")
+                    .attr("class", "xAxis")
+                    .attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")
+                    .call(xAxis);
+                svg.append("g")
+                    .attr("class", "yAxis")
+                    .attr("transform", "translate(" + axisPadding + ", 0)")
+                    .call(yAxis);
+                refreshPlot(dataset, idx);
+            };
 
-        initializePlot(dataset, 0);
+            initializePlot(dataset, 0);
 
-        d3
-            .select("#whatToDisplay")
-            .on("change", function () {
-                refreshPlot(dataset, d3.select("#whatToDisplay").property("value"));
-            });
-    </script>
+            d3
+                .select("#whatToDisplay")
+                .on("change", function () {
+                    refreshPlot(dataset, d3.select("#whatToDisplay").property("value"));
+                });
+        </script>
+    </div>
+    <div>
+        <p class="pPart3Text">
+            If you miss the month of September, you might be behind the fruit curve,
+            but there are plenty more months of vegetables left.
+            The chart shows that fresh vegetables are available 9 out of 12 months, but fruit is only available 5 out of
+            12.
+            Now if only we could quantify how delicious the produce is...
+        </p>
+    </div>
 </div>
 
 <div id="part4">
@@ -404,8 +412,7 @@
     </p>
 
     <div class="selectors">
-        <label>Showing: </label>
-        <select id="showForMarathon" class="selectBox">
+        <select id="showForMarathon" class="selectBox interactive">
             <option value="allData">All Data</option>
             <option value="menOnly">Only Men</option>
             <option value="womenOnly">Only Women</option>
@@ -432,6 +439,7 @@
 
         var svg2 = d3.select("body")
             .append("svg")
+            .attr("class", "interactive")
             .attr("width", svgWidth2)
             .attr("height", svgHeight2)
             .append("g")
