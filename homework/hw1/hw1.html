@@ -449,6 +449,184 @@
     </div>
 
     <script type="text/javascript">
+        var marathonData = "year\tathlete\tcountry\ttimePretty\tnotes\ttimeMinutes\tcategory\n" +
+            "1897\tJohn J. McDermott\tUnited States (NY)\t2:55:10\t\t175\tmen\n" +
+            "1898\tRonald J. MacDonald\tCanada\t2:42:00\t\t162\tmen\n" +
+            "1899\tLawrence Brignolia\tUnited States (MA)\t2:54:38\t\t175\tmen\n" +
+            "1900\tJohn \"Jack\" Caffery\tCanada\t2:39:44\t\t160\tmen\n" +
+            "1901\tJohn \"Jack\" Caffery\tCanada\t2:29:23\t2nd victory\t149\tmen\n" +
+            "1902\tSammy Mellor\tUnited States (NY)\t2:43:12\t\t163\tmen\n" +
+            "1903\tJohn Lorden\tUnited States (MA)\t2:41:29\t\t161\tmen\n" +
+            "1904\tMichael Spring\tUnited States (NY)\t2:38:04\t\t158\tmen\n" +
+            "1905\tFrederick Lorz\tUnited States (NY)\t2:38:25\t\t158\tmen\n" +
+            "1906\tTim Ford\tUnited States (MA)\t2:45:45\t\t166\tmen\n" +
+            "1907\tThomas Longboat\tCanada\t2:24:24\t\t144\tmen\n" +
+            "1908\tThomas Morrissey\tUnited States (NY)\t2:25:43\t\t146\tmen\n" +
+            "1909\tHenri Renaud\tUnited States (NH)\t2:53:36\t\t174\tmen\n" +
+            "1910\tFred Cameron\tCanada\t2:28:52\t\t149\tmen\n" +
+            "1911\tClarence DeMar\tUnited States (MA)\t2:21:39\t\t142\tmen\n" +
+            "1912\tMichael J. Ryan\tUnited States (NY)\t2:21:18\t\t141\tmen\n" +
+            "1913\tFritz Carlson\tUnited States (MN)\t2:25:14\t\t145\tmen\n" +
+            "1914\tJames Duffy\tCanada\t2:25:14\t\t145\tmen\n" +
+            "1915\tÉdouard Fabre\tCanada\t2:31:41\t\t152\tmen\n" +
+            "1916\tArthur Roth\tUnited States (MA)\t2:27:16\t\t147\tmen\n" +
+            "1917\tBill Kennedy\tUnited States (NY)\t2:28:37\t\t149\tmen\n" +
+            "1918\tCamp Devens relay team\tUnited States (MA)\t2:29:53\t1918 race was relay for 10-man military teams\t150\tmen\n" +
+            "1919\tCarl Linder\tUnited States (MA)\t2:29:13\t\t149\tmen\n" +
+            "1920\tPeter Trivoulides\tGreece\t2:29:31\tRepresented Greece at Olympic Games later that year\t150\tmen\n" +
+            "1921\tFrank Zuna\tUnited States (NY)\t2:18:57\t\t139\tmen\n" +
+            "1922\tClarence DeMar\tUnited States (MA)\t2:18:10\t2nd victory\t138\tmen\n" +
+            "1923\tClarence DeMar\tUnited States (MA)\t2:23:47\t3rd victory\t144\tmen\n" +
+            "1924\tClarence DeMar\tUnited States (MA)\t2:29:40\t4th victory\t150\tmen\n" +
+            "1925\tCharles Mellor\tUnited States (IL)\t2:33:00\t\t153\tmen\n" +
+            "1926\tJohnny Miles\tCanada\t2:25:40\t\t146\tmen\n" +
+            "1927\tClarence DeMar\tUnited States (MA)\t2:40:22\t5th victory\t160\tmen\n" +
+            "1928\tClarence DeMar\tUnited States (MA)\t2:37:07\t6th victory\t157\tmen\n" +
+            "1929\tJohnny Miles\tCanada\t2:33:08\t2nd victory\t153\tmen\n" +
+            "1930\tClarence DeMar\tUnited States (MA)\t2:34:48\t7th victory\t155\tmen\n" +
+            "1931\tJames Henigan\tUnited States (MA)\t2:46:45\t\t167\tmen\n" +
+            "1932\tPaul de Bruyn\tGermany\t2:33:36\t\t154\tmen\n" +
+            "1933\tLeslie S. Pawson\tUnited States (RI)\t2:31:01\t\t151\tmen\n" +
+            "1934\tDave Komonen\tCanada\t2:32:53\t\t153\tmen\n" +
+            "1935\tJohn A. Kelley\tUnited States (MA)\t2:32:07\t\t152\tmen\n" +
+            "1936\tEllison Brown\tUnited States (RI)\t2:33:40\t\t154\tmen\n" +
+            "1937\tWalter Young\tCanada\t2:33:20\t\t153\tmen\n" +
+            "1938\tLeslie S. Pawson\tUnited States (RI)\t2:35:34\t2nd victory\t156\tmen\n" +
+            "1939\tEllison Brown\tUnited States (RI)\t2:28:51\t2nd victory\t149\tmen\n" +
+            "1940\tGérard Côté\tCanada\t2:28:28\t\t148\tmen\n" +
+            "1941\tLeslie S. Pawson\tUnited States (RI)\t2:30:38\t3rd victory\t151\tmen\n" +
+            "1942\tJoe Smith\tUnited States (MA)\t2:26:51\t\t147\tmen\n" +
+            "1943\tGérard Côté\tCanada\t2:28:25\t2nd victory\t148\tmen\n" +
+            "1944\tGérard Côté\tCanada\t2:31:50\t3rd victory\t152\tmen\n" +
+            "1945\tJohn A. Kelley\tUnited States (MA)\t2:30:40\t2nd victory\t151\tmen\n" +
+            "1946\tStylianos Kyriakides\tGreece\t2:29:27\t\t149\tmen\n" +
+            "1947\tSuh Yun-bok\tSouth Korea\t2:25:39\t\t146\tmen\n" +
+            "1948\tGérard Côté\tCanada\t2:31:02\t4th victory\t151\tmen\n" +
+            "1949\tGösta Leandersson\tSweden\t2:31:50\t\t152\tmen\n" +
+            "1950\tHam Kee-Yong\tSouth Korea\t2:32:39\t\t153\tmen\n" +
+            "1951\tShigeki Tanaka\tJapan\t2:27:45\t\t148\tmen\n" +
+            "1952\tDoroteo Flores\tGuatemala\t2:31:53\tOnly Guatemalan to ever win the marathon\t152\tmen\n" +
+            "1953\tKeizo Yamada\tJapan\t2:18:51\t\t139\tmen\n" +
+            "1954\tVeikko Karvonen\tFinland\t2:20:39\t\t141\tmen\n" +
+            "1955\tHideo Hamamura\tJapan\t2:18:22\t\t138\tmen\n" +
+            "1956\tAntti Viskari\tFinland\t2:14:14\t\t134\tmen\n" +
+            "1957\tJohn J. Kelley\tUnited States (CT)\t2:20:05\t\t140\tmen\n" +
+            "1958\tFranjo Mihalić\tYugoslavia\t2:25:54\t\t146\tmen\n" +
+            "1959\tEino Oksanen\tFinland\t2:22:42\t\t143\tmen\n" +
+            "1960\tPaavo Kotila\tFinland\t2:20:54\t\t141\tmen\n" +
+            "1961\tEino Oksanen\tFinland\t2:23:39\t2nd victory\t144\tmen\n" +
+            "1962\tEino Oksanen\tFinland\t2:23:48\t3rd victory\t144\tmen\n" +
+            "1963\tAurèle Vandendriessche\tBelgium\t2:18:58\t\t139\tmen\n" +
+            "1964\tAurèle Vandendriessche\tBelgium\t2:19:59\t2nd victory\t140\tmen\n" +
+            "1965\tMorio Shigematsu\tJapan\t2:16:33\t\t137\tmen\n" +
+            "1966\tKenji Kimihara\tJapan\t2:17:11\t\t137\tmen\n" +
+            "1967\tDave McKenzie\tNew Zealand\t2:15:45\t\t136\tmen\n" +
+            "1968\tAmby Burfoot\tUnited States (CT)\t2:22:17\t\t142\tmen\n" +
+            "1969\tYoshiaki Unetani\tJapan\t2:13:49\t\t134\tmen\n" +
+            "1970\tRon Hill\tUnited Kingdom\t2:10:30\t\t131\tmen\n" +
+            "1971\tÁlvaro Mejía\tColombia\t2:18:45\t\t139\tmen\n" +
+            "1972\tOlavi Suomalainen\tFinland\t2:15:39\t\t136\tmen\n" +
+            "1973\tJon Anderson\tUnited States (OR)\t2:16:03\t\t136\tmen\n" +
+            "1974\tNeil Cusack\tIreland\t2:13:39\t\t134\tmen\n" +
+            "1975\tBill Rodgers\tUnited States (MA)\t2:09:55\t\t130\tmen\n" +
+            "1976\tJack Fultz\tUnited States (VA)\t2:20:19\t\t140\tmen\n" +
+            "1977\tJerome Drayton\tCanada\t2:14:46\t\t135\tmen\n" +
+            "1978\tBill Rodgers\tUnited States (MA)\t2:10:13\t2nd victory\t130\tmen\n" +
+            "1979\tBill Rodgers\tUnited States (MA)\t2:09:27\t3rd victory\t129\tmen\n" +
+            "1980\tBill Rodgers\tUnited States (MA)\t2:12:11\t4th victory\t132\tmen\n" +
+            "1981\tToshihiko Seko\tJapan\t2:09:26\t\t129\tmen\n" +
+            "1982\tAlberto Salazar\tUnited States (MA)\t2:08:52\t\t129\tmen\n" +
+            "1983\tGreg Meyer\tUnited States (MI)\t2:09:00\t\t129\tmen\n" +
+            "1984\tGeoff Smith\tUnited Kingdom\t2:10:34\t\t131\tmen\n" +
+            "1985\tGeoff Smith\tUnited Kingdom\t2:14:05\t2nd victory\t134\tmen\n" +
+            "1986\tRobert de Castella\tAustralia\t2:07:51\t\t128\tmen\n" +
+            "1987\tToshihiko Seko\tJapan\t2:11:50\t2nd victory\t132\tmen\n" +
+            "1988\tIbrahim Hussein\tKenya\t2:08:43\t\t129\tmen\n" +
+            "1989\tAbebe Mekonnen\tEthiopia\t2:09:06\t\t129\tmen\n" +
+            "1990\tGelindo Bordin\tItaly\t2:08:19\t\t128\tmen\n" +
+            "1991\tIbrahim Hussein\tKenya\t2:11:06\t2nd victory\t131\tmen\n" +
+            "1992\tIbrahim Hussein\tKenya\t2:08:14\t3rd victory\t128\tmen\n" +
+            "1993\tCosmas Ndeti\tKenya\t2:09:33\t\t130\tmen\n" +
+            "1994\tCosmas Ndeti\tKenya\t2:07:15\t2nd victory,\t127\tmen\n" +
+            "1995\tCosmas Ndeti\tKenya\t2:09:22\t3rd victory\t129\tmen\n" +
+            "1996\tMoses Tanui\tKenya\t2:09:15\t\t129\tmen\n" +
+            "1997\tLameck Aguta\tKenya\t2:10:34\t\t131\tmen\n" +
+            "1998\tMoses Tanui\tKenya\t2:07:34\t2nd victory\t128\tmen\n" +
+            "1999\tJoseph Chebet\tKenya\t2:09:52\t\t130\tmen\n" +
+            "2000\tElijah Lagat\tKenya\t2:09:47\t\t130\tmen\n" +
+            "2001\tLee Bong-Ju\tSouth Korea\t2:09:43\t\t130\tmen\n" +
+            "2002\tRodgers Rop\tKenya\t2:09:02\t\t129\tmen\n" +
+            "2003\tRobert Kipkoech Cheruiyot\tKenya\t2:10:11\t\t130\tmen\n" +
+            "2004\tTimothy Cherigat\tKenya\t2:10:37\t\t131\tmen\n" +
+            "2005\tHailu Negussie\tEthiopia\t2:11:44\t\t132\tmen\n" +
+            "2006\tRobert Kipkoech Cheruiyot\tKenya\t2:07:14\t2nd victory\t127\tmen\n" +
+            "2007\tRobert Kipkoech Cheruiyot\tKenya\t2:14:13\t3rd victory\t134\tmen\n" +
+            "2008\tRobert Kipkoech Cheruiyot\tKenya\t2:07:45\t4th victory\t128\tmen\n" +
+            "2009\tDeriba Merga\tEthiopia\t2:08:42\t\t129\tmen\n" +
+            "2010\tRobert Kiprono Cheruiyot\tKenya\t2:05:52\t\t126\tmen\n" +
+            "2011\tGeoffrey Mutai\tKenya\t2:03:02\tCurrent men's course record\t123\tmen\n" +
+            "2012\tWesley Korir\tKenya\t2:12:40\t\t133\tmen\n" +
+            "2013\tLelisa Desisa Benti\tEthiopia\t2:10:22\t\t130\tmen\n" +
+            "2014\tMeb Keflezighi\tUnited States (CA)\t2:08:37\tFirst American win since 1983\t129\tmen\n" +
+            "2015\tLelisa Desisa Benti\tEthiopia\t2:09:17\t2nd victory\t129\tmen\n" +
+            "2016\tLemi Berhanu Hayle\tEthiopia\t2:12:45\t\t133\tmen\n" +
+            "2017\tGeoffrey Kirui\tKenya\t2:09:37\t\t130\tmen\n" +
+            "1966\tBobbi Gibb\tUnited States (MA)\t3:21:40\t(unsanctioned)\t202\twomen\n" +
+            "1967\tBobbi Gibb\tUnited States (CA)\t3:27:17\t(unsanctioned) 2nd victory\t207\twomen\n" +
+            "1968\tBobbi Gibb\tUnited States (CA)\t3:30:00\t(unsanctioned) 3rd victory\t210\twomen\n" +
+            "1969\tSara Mae Berman\tUnited States (MA)\t3:22:46\t(unsanctioned)\t203\twomen\n" +
+            "1970\tSara Mae Berman\tUnited States (MA)\t3:05:07\t(unsanctioned) 2nd victory\t185\twomen\n" +
+            "1971\tSara Mae Berman\tUnited States (MA)\t3:08:30\t(unsanctioned) 3rd victory\t189\twomen\n" +
+            "1972\tNina Kuscsik\tUnited States (NY)\t3:10:26\tfirst year that women were officially sanctioned\t190\twomen\n" +
+            "1973\tJacqueline Hansen\tUnited States (CA)\t3:05:59\t\t186\twomen\n" +
+            "1974\tMiki Gorman\tUnited States (CA)\t2:47:11\t\t167\twomen\n" +
+            "1975\tLiane Winter\tWest Germany\t2:42:24\t\t162\twomen\n" +
+            "1976\tKim Merritt\tUnited States (WI)\t2:47:10\t\t167\twomen\n" +
+            "1977\tMiki Gorman\tUnited States (CA)\t2:48:33\t2nd victory\t169\twomen\n" +
+            "1978\tGayle Barron\tUnited States (GA)\t2:44:52\t\t165\twomen\n" +
+            "1979\tJoan Benoit\tUnited States (ME)\t2:35:15\t\t155\twomen\n" +
+            "1980\tJacqueline Gareau\tCanada\t2:34:28\t\t154\twomen\n" +
+            "1981\tAllison Roe\tNew Zealand\t2:26:46\t\t147\twomen\n" +
+            "1982\tCharlotte Teske\tWest Germany\t2:29:33\t\t150\twomen\n" +
+            "1983\tJoan Benoit\tUnited States (ME)\t2:22:43\t2nd victory\t143\twomen\n" +
+            "1984\tLorraine Moller\tNew Zealand\t2:29:28\t\t149\twomen\n" +
+            "1985\tLisa Larsen Weidenbach\tUnited States (MI)\t2:34:06\t\t154\twomen\n" +
+            "1986\tIngrid Kristiansen\tNorway\t2:24:55\t\t145\twomen\n" +
+            "1987\tRosa Mota\tPortugal\t2:25:21\t\t145\twomen\n" +
+            "1988\tRosa Mota\tPortugal\t2:24:30\t2nd victory\t145\twomen\n" +
+            "1989\tIngrid Kristiansen\tNorway\t2:24:33\t2nd victory\t145\twomen\n" +
+            "1990\tRosa Mota\tPortugal\t2:25:24\t3rd victory\t145\twomen\n" +
+            "1991\tWanda Panfil\tPoland\t2:24:18\t\t144\twomen\n" +
+            "1992\tOlga Markova\tRussia\t2:23:43\t\t144\twomen\n" +
+            "1993\tOlga Markova\tRussia\t2:25:27\t2nd victory\t145\twomen\n" +
+            "1994\tUta Pippig\tGermany\t2:21:45\t\t142\twomen\n" +
+            "1995\tUta Pippig\tGermany\t2:25:11\t2nd victory\t145\twomen\n" +
+            "1996\tUta Pippig\tGermany\t2:27:12\t3rd victory\t147\twomen\n" +
+            "1997\tFatuma Roba\tEthiopia\t2:26:23\t\t146\twomen\n" +
+            "1998\tFatuma Roba\tEthiopia\t2:23:21\t2nd victory\t143\twomen\n" +
+            "1999\tFatuma Roba\tEthiopia\t2:23:25\t3rd victory\t143\twomen\n" +
+            "2000\tCatherine Ndereba\tKenya\t2:26:11\t\t146\twomen\n" +
+            "2001\tCatherine Ndereba\tKenya\t2:23:53\t2nd victory\t144\twomen\n" +
+            "2002\tMargaret Okayo\tKenya\t2:20:43\t\t141\twomen\n" +
+            "2003\tSvetlana Zakharova\tRussia\t2:25:19\t\t145\twomen\n" +
+            "2004\tCatherine Ndereba\tKenya\t2:24:27\t3rd victory\t144\twomen\n" +
+            "2005\tCatherine Ndereba\tKenya\t2:25:12\t4th victory\t145\twomen\n" +
+            "2006\tRita Jeptoo\tKenya\t2:23:38\t\t144\twomen\n" +
+            "2007\tLidiya Grigoryeva\tRussia\t2:29:18\t\t149\twomen\n" +
+            "2008\tDire Tune\tEthiopia\t2:25:25\t2 seconds ahead of 2nd-place finisher\t145\twomen\n" +
+            "2009\tSalina Kosgei\tKenya\t2:32:16\t1 second ahead of 2nd-place finisher\t152\twomen\n" +
+            "2010\tTeyba Erkesso\tEthiopia\t2:26:11\t3 seconds ahead of 2nd-place finisher\t146\twomen\n" +
+            "2011\tCaroline Kilel\tKenya\t2:22:36\t2 seconds ahead of 2nd-place finisher\t143\twomen\n" +
+            "2012\tSharon Cherop\tKenya\t2:31:50\t2 seconds ahead of 2nd-place finisher\t152\twomen\n" +
+            "2013\tRita Jeptoo\tKenya\t2:26:25\t2nd victory\t146\twomen\n" +
+            "2014\tRita Jeptoo\tKenya\t2:18:57\tCourse record, later disqualified\t139\twomen\n" +
+            "2014\tBizunesh Deba\tEthiopia\t2:19:59\t\t140\twomen\n" +
+            "2015\tCaroline Rotich\tKenya\t2:24:55\t\t145\twomen\n" +
+            "2016\tAtsede Baysa\tEthiopia\t2:29:19\t\t149\twomen\n" +
+            "2017\tEdna Kiplagat\tKenya\t2:21:52\t\t142\twomen\n" +
+            "2018\tTBD\tTBD\tPrediction: 2:11:07\t\t131\twomen\n" +
+            "2018\tTBD\tTBD\tPrediction: 2:04:15\t\t124\tmen";
+
         var smallSquareDim = 8;
         var smallCircleRadius = 5;
         var padding2 = 60;
@@ -561,8 +739,8 @@
         };
 
         var readAllData = function () {
-            d3.tsv(
-                "marathon.tsv",
+            var dataset = d3.tsvParse(
+                marathonData,
                 function (d) {
                     return {
                         year: parseInt(d.year),
@@ -573,17 +751,14 @@
                         timeMinutes: parseInt(d.timeMinutes),
                         category: d.category
                     };
-                },
-                function (dataset) {
-                    menData = dataset.filter(function (d) {
-                        return d.category === "men"
-                    });
-                    womenData = dataset.filter(function (d) {
-                        return d.category === "women"
-                    });
-                    initializeSvg();
-                }
-            )
+                });
+            menData = dataset.filter(function (d) {
+                return d.category === "men"
+            });
+            womenData = dataset.filter(function (d) {
+                return d.category === "women"
+            });
+            initializeSvg();
         };
 
         var disappearWomen = function (selection) {
