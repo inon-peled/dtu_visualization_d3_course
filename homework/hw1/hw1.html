@@ -260,7 +260,7 @@
         </select>
     </div>
     <script type="text/javascript">
-        var axisPadding = 40;
+        var axisPadding = 60;
         var svgWidth = 800;
         var svgHeight = 400;
 
@@ -309,10 +309,16 @@
             .style("text-anchor", "middle")
             .text("No. Unique Types of Produce");
 
-        var xAxis = d3.axisBottom(xScale).tickFormat(function (d, i) {
-            return xLabels[i];
-        });
-        var yAxis = d3.axisLeft(yScaleRev);
+        var xAxis = d3
+            .axisBottom(xScale)
+            .tickFormat(function (d, i) {
+                return xLabels[i];
+            });
+        var yAxis = d3
+            .axisLeft(yScaleRev)
+            .tickFormat(function(e) {
+                return Math.floor(e) !== e ? "" : e;
+            });
 
         var refreshPlot = function (dataset, idx) {
             yScale
@@ -401,8 +407,8 @@
         var padding2 = 60;
         var svgWidth2 = 1200;
         var svgHeight2 = 600;
-        var womenLinearFit = { x1: 1966, x2: 2018, y1: 179.62, y2: 131.12 };
-        var menLinearFit = { x1: 1897, x2: 2018, y1: 159.36, y2: 124.25 };
+        var womenLinearFit = {x1: 1966, x2: 2018, y1: 179.62, y2: 131.12};
+        var menLinearFit = {x1: 1897, x2: 2018, y1: 159.36, y2: 124.25};
 
         var menData = [];
         var womenData = [];
@@ -420,15 +426,14 @@
             .append("g")
             .attr("transform", "translate(0, 0)");
 
-        var disappearAllLines = function() {
+        var disappearAllLines = function () {
             d3.select("#menPath").attr("stroke", "none");
             d3.select("#womenPath").attr("stroke", "none");
             d3.select("#menLinearFit").attr("stroke", "none");
             d3.select("#womenLinearFit").attr("stroke", "none");
         };
 
-        var drawLinesThroughPoints = function(
-            xScale, yScale, pathId, dataset, strokeColor, linearFitId, linearFitData) {
+        var drawLinesThroughPoints = function (xScale, yScale, pathId, dataset, strokeColor, linearFitId, linearFitData) {
             var line = d3.line()
                 .x(function (d) {
                     return xScale(d.year);
@@ -501,7 +506,7 @@
                     })
             );
             sel.on("start", disappearAllLines);
-            sel.on("end", function() {
+            sel.on("end", function () {
                 drawLinesThroughPoints(xScale, yScale, "#menPath", menData, "red", "#menLinearFit", menLinearFit);
             });
             return sel;
