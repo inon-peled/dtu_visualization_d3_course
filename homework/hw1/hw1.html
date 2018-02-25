@@ -703,7 +703,22 @@
                 .attr("fill", "white")
                 .attr("width", 200)
                 .attr("height", 100);
-
+            var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
+            var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
+            svg2.append("rect")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("x", legendX + 5)
+                .attr("y", legendY + 40)
+                .attr("stroke", "black")
+                .attr("fill", "white")
+                .attr("width", smallSquareDim)
+                .attr("height", smallSquareDim)
+                .attr("transform", function (d) {
+                    return "rotate(-45, " +
+                        (legendX  + smallSquareDim / 2) + ", " +
+                        (legendY + smallSquareDim / 2) + ")";
+                });
             updatePlot("allData");
         };
 
