@@ -556,48 +556,23 @@
                 .transition();
         };
 
-        var addListenersCircles = function (selection, xAttr, yAttr) {
+        var addListenersCircles = function (selection, xAttr, yAttr, color) {
             selection
                 .on("mouseover", function (d) {
                     div.transition()
-                        .style("opacity", .9);
+                        .style("opacity", .9)
+                        .style("background", color);
                     div
                         .html("<b>" + d.athlete + "</b><br/>" +
                             "<b>" + d.timePretty + "</b>, <i>" + d.country + "</i>, " + d.year +
                             "<br/>" + d.notes)
-                        .style("left", (d3.event.pageX) + "px")
-                        .style("top", (d3.event.pageY - 28) + "px");
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY - 20) + "px");
                 })
                 .on("mouseout", function (d) {
                     div.transition()
                         .style("opacity", 0);
                 });
-                // .on("mouseover", function (d) {
-                //     var xPosition = d3.event.pageX;
-                //     var yPosition = d3.event.pageY;
-                //     console.log(xPosition, yPosition)
-                //     d3.select("#tooltip")
-                //         .transition()
-                //         .duration(200)
-                //         .style("opacity", .9);
-                //     d3.select("#tooltip")
-                //         .style("left", xPosition + "px")
-                //         .style("top", yPosition + "px")
-                //         .select("#name")
-                //         .text(d.athlete);
-                //     d3.select("#tooltip")
-                //         .select("#country")
-                //         .text(d.country);
-                //     d3.select("#tooltip")
-                //         .select("#notes")
-                //         .text(d.year + (d.notes ? "; " + d.notes : ""));
-                // })
-                // .on("mouseout", function (d) {
-                //     d3.select("#tooltip")
-                //         .transition()
-                //         .duration(500)
-                //         .style("opacity", 0);
-                // });
         };
 
         var initializeSvg = function () {
@@ -648,8 +623,8 @@
                 .enter()
                 .append("rect")
             );
-            addListenersCircles(svg2.selectAll("rect"), "x", "y");
-            addListenersCircles(svg2.selectAll("circle"), "cx", "cy");
+            addListenersCircles(svg2.selectAll("rect"), "x", "y", "rgb(255, 179, 179)");
+            addListenersCircles(svg2.selectAll("circle"), "cx", "cy", "lightsteelblue");
             updatePlot("allData");
         };
 
