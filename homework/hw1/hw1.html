@@ -607,7 +607,7 @@
                 .attr("y", 50)
                 .attr("stroke", "none")
                 .attr("fill", "white")
-                .attr("width", 150)
+                .attr("width", 170)
                 .attr("height", 130);
             var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
             var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
@@ -677,6 +677,31 @@
                 .attr("fill", "black")
                 .attr("x", legendSymbolsCenterX + 20)
                 .attr("y", legendY + 80);
+            svg2.append("circle")
+                .attr("fill", "lightgreen")
+                .attr("stroke", "black")
+                .attr("stroke-width", "2")
+                .attr("cx", legendSymbolsCenterX - 10)
+                .attr("cy", legendY + 100)
+                .attr("r", smallCircleRadius);
+            svg2.append("rect")
+                .attr("fill", "lightgreen")
+                .attr("stroke", "black")
+                .attr("stroke-width", "2")
+                .attr("width", smallSquareDim)
+                .attr("height", smallSquareDim)
+                .attr("x", legendSymbolsCenterX + 2)
+                .attr("y", legendY + 100 - smallCircleRadius)
+                .attr("transform", function (d) {
+                    return "rotate(-45, " +
+                        (legendSymbolsCenterX + 2 + smallSquareDim / 2) + ", " +
+                        (legendY + 100 - smallCircleRadius + smallSquareDim / 2) + ")"
+                });
+                svg2.append("text")
+                    .text("Prediction 2018")
+                    .attr("fill", "black")
+                    .attr("x", legendSymbolsCenterX + 20)
+                    .attr("y", legendY + 106);
         };
 
         var placeTitles = function (){
