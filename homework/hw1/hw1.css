@@ -1,5 +1,11 @@
+li {
+    font-size: 1.3em;
+}
+
 .question {
-    color: dodgerblue;
+    font-family: sans-serif;
+    color: slategrey;
+    font-style: italic;
 }
 
 div.tooltip {
