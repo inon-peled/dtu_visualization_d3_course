@@ -394,14 +394,12 @@
         <option value="womenOnly">Only Women</option>
     </select>
 
-    <div>
-        <div id="tooltip" class="hidden">
-            <p><b><span id="name"><strong>placeholder</strong></span></b></p>
-            <p><i><span id="country">placeholder</span></i></p>
-            <p><span id="notes">placeholder</span></p>
-        </div>
-        <svg id="svgMarathon"></svg>
-    </div>
+    <!--<div id="tooltip" class="hidden">-->
+        <!--<p><b><span id="name"><strong>placeholder</strong></span></b></p>-->
+        <!--<p><i><span id="country">placeholder</span></i></p>-->
+        <!--<p><span id="notes">placeholder</span></p>-->
+    <!--</div>-->
+    <!--<svg id="svgMarathon"></svg>-->
 
     <script type="text/javascript">
         var padding2 = 40;
@@ -412,7 +410,19 @@
 
         var menData = [];
         var womenData = [];
-        var svg2 = d3.select("#svgMarathon");
+
+        var div = d3
+            .select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity", 0);
+
+        var svg2 = d3.select("body")
+            .append("svg")
+            .attr("width", svgWidth2)
+            .attr("height", svgHeight2)
+            .append("g")
+            .attr("transform", "translate(0, 0)");
 
         var disappearAllLines = function() {
             d3.select("#menPath").attr("stroke", "none");
@@ -558,31 +568,52 @@
         var addListenersCircles = function (selection, xAttr, yAttr) {
             selection
                 .on("mouseover", function (d) {
-                    var xPosition = d3.max([padding2 * 3, parseFloat(d3.select(this).attr(xAttr) - 7 * padding2)]);
-                    var yPosition = d3.max(
-                        [svgHeight2 - padding2 * 5, parseFloat(d3.select(this).attr(yAttr)) - 3 * padding2]);
-                    d3.select("#tooltip")
-                        .style("left", xPosition + "px")
-                        .style("top", yPosition + "px")
-                        .select("#name")
-                        .text(d.athlete);
-                    d3.select("#tooltip")
-                        .select("#country")
-                        .text(d.country);
-                    d3.select("#tooltip")
-                        .select("#notes")
-                        .text(d.year + (d.notes ? "; " + d.notes : ""));
-                    d3.select("#tooltip").classed("hidden", false);
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    div.html(d.athlete)
+                        .style("left", (d3.event.pageX) + "px")
+                        .style("top", (d3.event.pageY - 28) + "px");
                 })
                 .on("mouseout", function (d) {
-                    d3.select("#tooltip").classed("hidden", true);
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
                 });
+                // .on("mouseover", function (d) {
+                //     var xPosition = d3.event.pageX;
+                //     var yPosition = d3.event.pageY;
+                //     console.log(xPosition, yPosition)
+                //     d3.select("#tooltip")
+                //         .transition()
+                //         .duration(200)
+                //         .style("opacity", .9);
+                //     d3.select("#tooltip")
+                //         .style("left", xPosition + "px")
+                //         .style("top", yPosition + "px")
+                //         .select("#name")
+                //         .text(d.athlete);
+                //     d3.select("#tooltip")
+                //         .select("#country")
+                //         .text(d.country);
+                //     d3.select("#tooltip")
+                //         .select("#notes")
+                //         .text(d.year + (d.notes ? "; " + d.notes : ""));
+                // })
+                // .on("mouseout", function (d) {
+                //     d3.select("#tooltip")
+                //         .transition()
+                //         .duration(500)
+                //         .style("opacity", 0);
+                // });
         };
 
         var initializeSvg = function () {
             svg2
                 .attr("width", svgWidth2)
-                .attr("height", svgHeight2);
+                .attr("height", svgHeight2)
+                .append("g")
+                .attr("transform", "translate(0, 0)");
             svg2
                 .append("g")
                 .attr("class", "x axis");
