@@ -663,6 +663,21 @@
                 .attr("fill", "blue")
                 .attr("x", legendSymbolsCenterX + 20)
                 .attr("y", legendY + 55);
+            svg2
+                .append("line")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-width", "2")
+                .attr("stroke-dasharray", "5, 5")
+                .attr("x1", legendSymbolsCenterX - 15)
+                .attr("x2", legendSymbolsCenterX + 15)
+                .attr("y1", legendY + 75)
+                .attr("y2", legendY + 75);
+            svg2.append("text")
+                .text("Linear Fit")
+                .attr("fill", "black")
+                .attr("x", legendSymbolsCenterX + 20)
+                .attr("y", legendY + 80);
         };
 
         var placeTitles = function (){
