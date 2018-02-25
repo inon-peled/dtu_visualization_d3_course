@@ -320,7 +320,7 @@
             yScaleRev
                 .domain([d3.max(dataset[idx]), 0]);
             svg
-                .selectAll("rect")
+                .selectAll(".bar")
                 .data(dataset[idx])
                 .transition()
                 .attr("y", function (d) {
@@ -345,6 +345,7 @@
                 .data(dataset[idx])
                 .enter()
                 .append("rect")
+                .attr("class", "bar")
                 .attr("x", function (d, i) {
                     return xScale(i);
                 })
@@ -644,14 +645,18 @@
                 .data(womenData)
                 .enter()
                 .append("circle")
+                .attr("class", "womenSymbol")
             );
             disappearMen(svg2
                 .selectAll("rect")
                 .data(menData)
                 .enter()
                 .append("rect")
+                .attr("class", "menSymbol")
             );
-            tooltipListeners(svg2.selectAll("circle"), "cx", "cy", "lightblue",
+            tooltipListeners(
+                svg2.selectAll(".womenSymbol"),
+                "cx", "cy", "lightblue",
                 function (sel) {
                     return sel
                         .style("r", 2 * smallCircleRadius);
@@ -661,7 +666,9 @@
                         .style("r", smallCircleRadius);
                 }
             );
-            tooltipListeners(svg2.selectAll("rect"), "x", "y", "rgb(255, 179, 179)",
+            tooltipListeners(
+                svg2.selectAll(".menSymbol"),
+                "x", "y", "rgb(255, 179, 179)",
                 function (sel) {
                     return sel
                         .style("width", 2 * smallSquareDim)
@@ -704,14 +711,14 @@
                 .axisLeft(yScale);
 
             if (optionToShow === "allData") {
-                showMen(xScale, yScale, svg2.selectAll("rect"));
-                showWomen(xScale, yScale, svg2.selectAll("circle"));
+                showMen(xScale, yScale, svg2.selectAll(".menSymbol"));
+                showWomen(xScale, yScale, svg2.selectAll(".womenSymbol"));
             } else if (optionToShow === "menOnly") {
                 disappearWomen(svg2.selectAll("circle"));
-                showMen(xScale, yScale, svg2.selectAll("rect"));
+                showMen(xScale, yScale, svg2.selectAll(".menSymbol"));
             } else if (optionToShow === "womenOnly") {
-                disappearMen(svg2.selectAll("rect"));
-                showWomen(xScale, yScale, svg2.selectAll("circle"))
+                disappearMen(svg2.selectAll(".menSymbol"));
+                showWomen(xScale, yScale, svg2.selectAll(".womenSymbol"))
             }
 
             svg2.select(".x.axis")
