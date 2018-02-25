@@ -719,6 +719,11 @@
                         (legendX  + smallSquareDim / 2) + ", " +
                         (legendY + smallSquareDim / 2) + ")";
                 });
+            svg2.append("text")
+                .text("Men")
+                .attr("x", legendX + 50)
+                .attr("y", legendY + 35);
+
             updatePlot("allData");
         };
 
