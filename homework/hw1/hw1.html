@@ -613,6 +613,15 @@
             var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
             var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
             var legendSymbolsCenterX = legendX + 20 + smallSquareDim / 2;
+            svg2
+                .append("line")
+                .attr("fill", "none")
+                .attr("stroke", "red")
+                .attr("stroke-width", "2")
+                .attr("x1", legendSymbolsCenterX - 15)
+                .attr("x2", legendSymbolsCenterX + 15)
+                .attr("y1", legendY + 20 + smallSquareDim / 2)
+                .attr("y2", legendY + 20 + smallSquareDim / 2);
             svg2.append("rect")
                 .attr("fill", "white")
                 .attr("stroke", "black")
@@ -632,6 +641,15 @@
                 .attr("fill", "red")
                 .attr("x", legendSymbolsCenterX + 20)
                 .attr("y", legendY + 20 + smallSquareDim);
+            svg2
+                .append("line")
+                .attr("fill", "none")
+                .attr("stroke", "blue")
+                .attr("stroke-width", "2")
+                .attr("x1", legendSymbolsCenterX - 15)
+                .attr("x2", legendSymbolsCenterX + 15)
+                .attr("y1", legendY + 50)
+                .attr("y2", legendY + 50);
             svg2.append("circle")
                 .attr("fill", "white")
                 .attr("stroke", "black")
