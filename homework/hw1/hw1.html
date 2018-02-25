@@ -323,7 +323,7 @@
             });
         var yAxis = d3
             .axisLeft(yScaleRev)
-            .tickFormat(function(e) {
+            .tickFormat(function (e) {
                 return Math.floor(e) !== e ? "" : e;
             });
 
@@ -599,10 +599,55 @@
                 });
         };
 
-        var initializeSvg = function () {
-            svg2
-                .attr("width", svgWidth2)
-                .attr("height", svgHeight2);
+        var placeLegend = function () {
+            svg2.append("rect")
+                .attr("fill", "none")
+                .attr("stroke", "none")
+                .attr("id", "legendMarathon")
+                .attr("x", svgWidth2 - 300)
+                .attr("y", 100)
+                .attr("stroke", "black")
+                .attr("fill", "white")
+                .attr("width", 200)
+                .attr("height", 100);
+            var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
+            var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
+            var legendSymbolsCenterX = legendX + 20 + smallSquareDim / 2;
+            svg2.append("rect")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("width", smallSquareDim)
+                .attr("height", smallSquareDim)
+                .attr("x", legendX + 20)
+                .attr("y", legendY + 20)
+                .attr("stroke", "black")
+                .attr("fill", "white")
+                .attr("transform", function (d) {
+                    return "rotate(-45, " +
+                        legendSymbolsCenterX + ", " +
+                        (legendY + 20 + smallSquareDim / 2) + ")";
+                });
+            svg2.append("text")
+                .text("Men")
+                .attr("fill", "red")
+                .attr("x", legendSymbolsCenterX + 20)
+                .attr("y", legendY + 20 + smallSquareDim);
+            svg2.append("circle")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("cx", legendSymbolsCenterX)
+                .attr("cy", legendY + 50)
+                .attr("r", smallCircleRadius)
+                .attr("stroke", "black")
+                .attr("fill", "white");
+            svg2.append("text")
+                .text("Women")
+                .attr("fill", "blue")
+                .attr("x", legendSymbolsCenterX + 20)
+                .attr("y", legendY + 55);
+        };
+
+        var placeTitles = function (){
             svg2.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0)
@@ -622,12 +667,18 @@
                 .attr("text-anchor", "middle")
                 .style("font-size", "30px")
                 .text("Boston Marathon Winners");
+        };
+
+        var placeAxes = function () {
             svg2
                 .append("g")
                 .attr("class", "x axis");
             svg2
                 .append("g")
                 .attr("class", "y axis");
+        };
+
+        var placePaths = function () {
             svg2
                 .append("path")
                 .attr("id", "womenPath")
@@ -652,6 +703,9 @@
                 .attr("stroke", "none")
                 .attr("stroke-width", "2")
                 .attr("stroke-dasharray", "5, 5");
+        };
+
+        var initializeSymbols = function () {
             disappearWomen(svg2
                 .selectAll("circle")
                 .data(womenData)
@@ -692,50 +746,17 @@
                         .style("height", smallSquareDim);
                 }
             );
+        };
 
-            svg2.append("rect")
-                .attr("fill", "none")
-                .attr("stroke", "none")
-                .attr("id", "legendMarathon")
-                .attr("x", svgWidth2 - 300)
-                .attr("y", 100)
-                .attr("stroke", "black")
-                .attr("fill", "white")
-                .attr("width", 200)
-                .attr("height", 100);
-            var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
-            var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
-            svg2.append("rect")
-                .attr("fill", "white")
-                .attr("stroke", "black")
-                .attr("width", smallSquareDim)
-                .attr("height", smallSquareDim)
-                .attr("x", legendX + 5)
-                .attr("y", legendY + 40)
-                .attr("stroke", "black")
-                .attr("fill", "white")
-                .attr("transform", function (d) {
-                    return "rotate(-45, " +
-                        (legendX  + smallSquareDim / 2) + ", " +
-                        (legendY + smallSquareDim / 2) + ")";
-                });
-            svg2.append("text")
-                .text("Men")
-                .attr("x", legendX + 50)
-                .attr("y", legendY + 35);
-            svg2.append("circle")
-                .attr("fill", "white")
-                .attr("stroke", "black")
-                .attr("cx", legendX + 35)
-                .attr("cy", legendY + 50)
-                .attr("r", smallCircleRadius)
-                .attr("stroke", "black")
-                .attr("fill", "white");
-            svg2.append("text")
-                .text("Women")
-                .attr("x", legendX + 50)
-                .attr("y", legendY + 55);
-
+        var initializeSvg = function () {
+            svg2
+                .attr("width", svgWidth2)
+                .attr("height", svgHeight2);
+            placeTitles();
+            placeAxes();
+            placePaths();
+            initializeSymbols();
+            placeLegend();
             updatePlot("allData");
         };
 
