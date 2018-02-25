@@ -7,10 +7,11 @@ div.tooltip {
     text-align: center;
     width: 150px;
     height: auto;
-    padding: 2px;
+    padding: 10px;
     background: lightsteelblue;
     border: 0;
     border-radius: 8px;
+    -webkit-border-radius: 8px;
     pointer-events: none;
     font-family: sans-serif;
     font-size: 16px;
@@ -19,27 +20,3 @@ div.tooltip {
     -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
-
-/*#tooltip {*/
-    /*position: relative;*/
-    /*width: 150px;*/
-    /*height: auto;*/
-    /*padding: 10px;*/
-    /*background-color: lightyellow;*/
-    /*-webkit-border-radius: 10px;*/
-    /*-moz-border-radius: 10px;*/
-    /*border-radius: 10px;*/
-    /*-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);*/
-    /*-moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);*/
-    /*box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);*/
-    /*pointer-events: none;*/
-/*}*/
-/*#tooltip.hidden {*/
-    /*display: none;*/
-/*}*/
-/*#tooltip p {*/
-    /*margin: 0;*/
-    /*font-family: sans-serif;*/
-    /*font-size: 16px;*/
-    /*line-height: 20px;*/
-/*}*/

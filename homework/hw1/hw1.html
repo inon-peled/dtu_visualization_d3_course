@@ -394,13 +394,6 @@
         <option value="womenOnly">Only Women</option>
     </select>
 
-    <!--<div id="tooltip" class="hidden">-->
-        <!--<p><b><span id="name"><strong>placeholder</strong></span></b></p>-->
-        <!--<p><i><span id="country">placeholder</span></i></p>-->
-        <!--<p><span id="notes">placeholder</span></p>-->
-    <!--</div>-->
-    <!--<svg id="svgMarathon"></svg>-->
-
     <script type="text/javascript">
         var padding2 = 40;
         var svgWidth2 = 1200;
@@ -568,7 +561,10 @@
                 .on("mouseover", function (d) {
                     div.transition()
                         .style("opacity", .9);
-                    div.html(d.athlete)
+                    div
+                        .html("<b>" + d.athlete + "</b><br/>" +
+                            "<b>" + d.timePretty + "</b>, <i>" + d.country + "</i>, " + d.year +
+                            "<br/>" + d.notes)
                         .style("left", (d3.event.pageX) + "px")
                         .style("top", (d3.event.pageY - 28) + "px");
                 })
