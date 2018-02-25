@@ -589,9 +589,20 @@
         var initializeSvg = function () {
             svg2
                 .attr("width", svgWidth2)
-                .attr("height", svgHeight2)
-                .append("g")
-                .attr("transform", "translate(0, 0)");
+                .attr("height", svgHeight2);
+            svg2.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0)
+                .attr("x", -svgHeight2 / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Winning Time (Minutes)");
+            svg2.append("text")
+                .attr("x", svgWidth2 / 2)
+                .attr("y", svgHeight2 - padding2 / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Year");
             svg2
                 .append("g")
                 .attr("class", "x axis");
