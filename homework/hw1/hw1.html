@@ -714,7 +714,7 @@
                 showMen(xScale, yScale, svg2.selectAll(".menSymbol"));
                 showWomen(xScale, yScale, svg2.selectAll(".womenSymbol"));
             } else if (optionToShow === "menOnly") {
-                disappearWomen(svg2.selectAll("circle"));
+                disappearWomen(svg2.selectAll(".womenSymbol"));
                 showMen(xScale, yScale, svg2.selectAll(".menSymbol"));
             } else if (optionToShow === "womenOnly") {
                 disappearMen(svg2.selectAll(".menSymbol"));
