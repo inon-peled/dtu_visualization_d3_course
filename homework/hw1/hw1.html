@@ -545,8 +545,6 @@
                 .attr("stroke", "none");
             return selection
                 .transition()
-                // .attr("cx", svgWidth + 2 * padding)
-                // .attr("cy", svgHeight / 2)
                 .attr("r", 0)
                 .transition();
         };
@@ -618,20 +616,6 @@
             svg2
                 .append("g")
                 .attr("class", "y axis");
-            disappearWomen(svg2
-                .selectAll("circle")
-                .data(womenData)
-                .enter()
-                .append("circle")
-            );
-            disappearMen(svg2
-                .selectAll("rect")
-                .data(menData)
-                .enter()
-                .append("rect")
-            );
-            addListenersCircles(svg2.selectAll("rect"), "x", "y");
-            addListenersCircles(svg2.selectAll("circle"), "cx", "cy");
             svg2
                 .append("path")
                 .attr("id", "womenPath")
@@ -656,6 +640,20 @@
                 .attr("stroke", "none")
                 .attr("stroke-width", "2")
                 .attr("stroke-dasharray", "5, 5");
+            disappearWomen(svg2
+                .selectAll("circle")
+                .data(womenData)
+                .enter()
+                .append("circle")
+            );
+            disappearMen(svg2
+                .selectAll("rect")
+                .data(menData)
+                .enter()
+                .append("rect")
+            );
+            addListenersCircles(svg2.selectAll("rect"), "x", "y");
+            addListenersCircles(svg2.selectAll("circle"), "cx", "cy");
             updatePlot("allData");
         };
 
