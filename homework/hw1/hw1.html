@@ -697,8 +697,11 @@
                 })])
                 .range([svgHeight2 - padding2, padding2]);
 
-            var xAxis = d3.axisBottom(xScale).ticks(10, "d");
-            var yAxis = d3.axisLeft(yScale);
+            var xAxis = d3
+                .axisBottom(xScale)
+                .ticks(10, "d");
+            var yAxis = d3
+                .axisLeft(yScale);
 
             if (optionToShow === "allData") {
                 showMen(xScale, yScale, svg2.selectAll("rect"));
@@ -714,10 +717,12 @@
             svg2.select(".x.axis")
                 .attr("transform", "translate(0, " + (svgHeight2 - padding2) + ")")
                 .transition()
+                .style("font", "14px times")
                 .call(xAxis);
             svg2.select(".y.axis")
                 .attr("transform", "translate(" + padding2 + ", 0)")
                 .transition()
+                .style("font", "14px times")
                 .call(yAxis);
         };
 
