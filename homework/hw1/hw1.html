@@ -379,7 +379,7 @@
         d3
             .select("#whatToDisplay")
             .on("change", function () {
-                refreshPlot(dataset, this.selectedOptions[0].value);
+                refreshPlot(dataset, d3.select("#whatToDisplay").property("value"));
             });
     </script>
 </div>
@@ -870,7 +870,7 @@
         d3
             .select("#showForMarathon")
             .on("change", function () {
-                updatePlot(this.selectedOptions[0].value);
+                updatePlot(d3.select("#showForMarathon").property("value"));
             });
     </script>
 </div>
