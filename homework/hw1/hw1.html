@@ -266,7 +266,7 @@
         <script type="text/javascript">
             var axisPadding = 60;
             var svgWidth = 800;
-            var svgHeight = 400;
+            var svgHeight = 500;
 
             var dataset = [
                 [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
@@ -334,9 +334,9 @@
 
             var refreshPlot = function (dataset, idx) {
                 yScale
-                    .domain([d3.max(dataset[idx]), 0]);
+                    .domain([1 + d3.max(dataset[idx]), 0]);
                 yScaleRev
-                    .domain([d3.max(dataset[idx]), 0]);
+                    .domain([1 + d3.max(dataset[idx]), 0]);
                 svg
                     .selectAll(".bar")
                     .data(dataset[idx])
