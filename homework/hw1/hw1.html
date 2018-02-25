@@ -299,28 +299,6 @@
                 .attr("width", svgWidth)
                 .attr("height", svgHeight);
 
-            svg.append("text")
-                .attr("x", svgWidth / 2)
-                .attr("y", axisPadding / 2)
-                .attr("text-anchor", "middle")
-                .style("font-size", "22px")
-                .text("NYC Green Markets: Unique Produce Types");
-
-            svg.append("text")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0)
-                .attr("x", -svgHeight / 2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("No. Unique Types of Produce");
-
-            svg.append("text")
-                .attr("y", svgHeight - axisPadding / 2)
-                .attr("x", svgWidth / 2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Month");
-
             var xAxis = d3
                 .axisBottom(xScale)
                 .tickFormat(function (d, i) {
@@ -348,6 +326,16 @@
                         return yScale(d) - axisPadding;
                     })
                     .attr("fill", barColors[idx]);
+                svg
+                    .selectAll(".barLabel")
+                    .data(dataset[idx])
+                    .transition()
+                    .attr("y", function (d) {
+                        return yScaleRev(d) - 10;
+                    })
+                    .text(function (d) {
+                        return d;
+                    });
                 svg.select(".yAxis")
                     .transition()
                     .call(yAxis);
@@ -368,6 +356,17 @@
                         return xScale(i);
                     })
                     .attr("width", xScale.bandwidth());
+                svg.selectAll("text")
+                    .data(dataset[idx])
+                    .enter()
+                    .append("text")
+                    .attr("class", "barLabel")
+                    .attr("x", function (d, i) {
+                        return xScale(i) + xScale.bandwidth() / 2;
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", 14  + "px");
                 svg.append("g")
                     .attr("class", "xAxis")
                     .attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")
@@ -376,6 +375,27 @@
                     .attr("class", "yAxis")
                     .attr("transform", "translate(" + axisPadding + ", 0)")
                     .call(yAxis);
+
+                svg.append("text")
+                    .attr("x", svgWidth / 2)
+                    .attr("y", axisPadding / 2)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "22px")
+                    .text("NYC Green Markets: Unique Produce Types");
+                svg.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 0)
+                    .attr("x", -svgHeight / 2)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("No. Unique Types of Produce");
+                svg.append("text")
+                    .attr("y", svgHeight - axisPadding / 2)
+                    .attr("x", svgWidth / 2)
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Month");
+
                 refreshPlot(dataset, idx);
             };
 
