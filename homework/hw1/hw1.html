@@ -276,10 +276,10 @@
             ];
 
             var barColors = [
-                'blue',
-                'lightblue',
                 'red',
-                'pink'
+                'pink',
+                'blue',
+                'lightblue'
             ];
 
             var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -366,7 +366,7 @@
                     })
                     .attr("text-anchor", "middle")
                     .attr("font-family", "sans-serif")
-                    .attr("font-size", 14  + "px");
+                    .attr("font-size", 16  + "px");
                 svg.append("g")
                     .attr("class", "xAxis")
                     .attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")
