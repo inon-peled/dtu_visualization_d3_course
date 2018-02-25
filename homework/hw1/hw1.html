@@ -571,7 +571,7 @@
                         .style("top", (d3.event.pageY - 20) + "px");
                     cbInflate(d3.select(this)
                         .transition()
-                        .style("fill", "yellow")
+                        .style("fill", color)
                         .style("stroke-width", "2")
                     );
                 })
@@ -651,7 +651,7 @@
                 .enter()
                 .append("rect")
             );
-            tooltipListeners(svg2.selectAll("circle"), "cx", "cy", "lightsteelblue",
+            tooltipListeners(svg2.selectAll("circle"), "cx", "cy", "lightblue",
                 function (sel) {
                     return sel
                         .style("r", 2 * smallCircleRadius);
