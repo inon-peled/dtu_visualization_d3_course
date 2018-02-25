@@ -692,6 +692,18 @@
                         .style("height", smallSquareDim);
                 }
             );
+
+            svg2.append("rect")
+                .attr("fill", "none")
+                .attr("stroke", "none")
+                .attr("id", "legendMarathon")
+                .attr("x", svgWidth2 - 300)
+                .attr("y", 100)
+                .attr("stroke", "black")
+                .attr("fill", "white")
+                .attr("width", 200)
+                .attr("height", 100);
+
             updatePlot("allData");
         };
 
