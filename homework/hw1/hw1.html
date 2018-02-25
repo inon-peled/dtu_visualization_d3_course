@@ -697,7 +697,7 @@
                 })])
                 .range([svgHeight2 - padding2, padding2]);
 
-            var xAxis = d3.axisBottom(xScale);
+            var xAxis = d3.axisBottom(xScale).ticks(10, "d");
             var yAxis = d3.axisLeft(yScale);
 
             if (optionToShow === "allData") {
