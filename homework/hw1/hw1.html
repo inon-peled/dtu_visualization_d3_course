@@ -252,7 +252,8 @@
         Now if only we could quantify how delicious the produce is...
     </p>
     <div class="selectors">
-        <select id="whatToDisplay">
+        <label>Showing: </label>
+        <select id="whatToDisplay" class="selectBox">
             <option value=0>Fruits, Harvest</option>
             <option value=1>Fruits, Storage</option>
             <option value=2>Vegetables, Harvest</option>
@@ -402,11 +403,14 @@
             this Google sheets document</a>.
     </p>
 
-    <select id="showForMarathon">
-        <option value="allData">All Data</option>
-        <option value="menOnly">Only Men</option>
-        <option value="womenOnly">Only Women</option>
-    </select>
+    <div class="selectors">
+        <label>Showing: </label>
+        <select id="showForMarathon" class="selectBox">
+            <option value="allData">All Data</option>
+            <option value="menOnly">Only Men</option>
+            <option value="womenOnly">Only Women</option>
+        </select>
+    </div>
 
     <script type="text/javascript">
         var smallSquareDim = 8;
@@ -697,14 +701,14 @@
                         (legendSymbolsCenterX + 2 + smallSquareDim / 2) + ", " +
                         (legendY + 100 - smallCircleRadius + smallSquareDim / 2) + ")"
                 });
-                svg2.append("text")
-                    .text("Prediction 2018")
-                    .attr("fill", "black")
-                    .attr("x", legendSymbolsCenterX + 20)
-                    .attr("y", legendY + 106);
+            svg2.append("text")
+                .text("Prediction 2018")
+                .attr("fill", "black")
+                .attr("x", legendSymbolsCenterX + 20)
+                .attr("y", legendY + 106);
         };
 
-        var placeTitles = function (){
+        var placeTitles = function () {
             svg2.append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0)

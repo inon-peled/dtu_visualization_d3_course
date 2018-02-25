@@ -25,3 +25,14 @@ div.tooltip {
     font-family: sans-serif;
     font-size: 14px;
 }
+
+.selectors {
+    font-family: sans-serif;
+    font-size: 20px;
+}
+
+.selectBox {
+    background-color: yellow;
+    font-family: sans-serif;
+    font-size: 20px;
+}
