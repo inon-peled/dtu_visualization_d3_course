@@ -395,6 +395,8 @@
     </select>
 
     <script type="text/javascript">
+        var smallSquareDim = 8;
+        var smallCircleRadius = 5;
         var padding2 = 60;
         var svgWidth2 = 1200;
         var svgHeight2 = 600;
@@ -451,7 +453,7 @@
         var addCommonAttributes = function (selection) {
             return selection
                 .style("fill", function (d) {
-                    return d.year > 2017 ? "yellow" : "white";
+                    return d.year > 2017 ? "lightgreen" : "white";
                 })
                 .style("stroke", "black")
                 .style("stroke-width", function (d) {
@@ -469,7 +471,7 @@
                     .attr("cy", function (d) {
                         return yScale(d.timeMinutes);
                     })
-                    .attr("r", 5)
+                    .attr("r", smallCircleRadius)
             );
             sel.on("start", disappearAllLines);
             sel.on("end", function () {
@@ -480,18 +482,17 @@
         };
 
         var showMen = function (xScale, yScale, selection) {
-            var squareDim = 8;
             var sel = addCommonAttributes(
                 selection
                     .transition()
                     .attr("x", function (d) {
-                        return xScale(d.year) - squareDim / 2;
+                        return xScale(d.year) - smallSquareDim / 2;
                     })
                     .attr("y", function (d) {
-                        return yScale(d.timeMinutes) - squareDim / 2;
+                        return yScale(d.timeMinutes) - smallSquareDim / 2;
                     })
-                    .attr("width", squareDim)
-                    .attr("height", squareDim)
+                    .attr("width", smallSquareDim)
+                    .attr("height", smallSquareDim)
                     .attr("transform", function (d) {
                         return "rotate(-45, " +
                             (xScale(d.year)) + ", " +
@@ -556,7 +557,7 @@
                 .transition();
         };
 
-        var addListenersCircles = function (selection, xAttr, yAttr, color) {
+        var tooltipListeners = function (selection, xAttr, yAttr, color, cbInflate, cbDeflate) {
             selection
                 .on("mouseover", function (d) {
                     div.transition()
@@ -568,10 +569,20 @@
                             "<br/>" + d.notes)
                         .style("left", (d3.event.pageX + 20) + "px")
                         .style("top", (d3.event.pageY - 20) + "px");
+                    cbInflate(d3.select(this)
+                        .transition()
+                        .style("fill", "yellow")
+                        .style("stroke-width", "2")
+                    );
                 })
                 .on("mouseout", function (d) {
                     div.transition()
                         .style("opacity", 0);
+                    cbDeflate(d3.select(this)
+                        .transition()
+                        .style("fill", d.year > 2017 ? "lightgreen" : "white")
+                        .style("stroke-width", d.year > 2017 ? "2" : "1")
+                    );
                 });
         };
 
@@ -623,8 +634,28 @@
                 .enter()
                 .append("rect")
             );
-            addListenersCircles(svg2.selectAll("rect"), "x", "y", "rgb(255, 179, 179)");
-            addListenersCircles(svg2.selectAll("circle"), "cx", "cy", "lightsteelblue");
+            tooltipListeners(svg2.selectAll("circle"), "cx", "cy", "lightsteelblue",
+                function (sel) {
+                    return sel
+                        .style("r", 2 * smallCircleRadius);
+                },
+                function (sel) {
+                    return sel
+                        .style("r", smallCircleRadius);
+                }
+            );
+            tooltipListeners(svg2.selectAll("rect"), "x", "y", "rgb(255, 179, 179)",
+                function (sel) {
+                    return sel
+                        .style("width", 2 * smallSquareDim)
+                        .style("height", 2 * smallSquareDim);
+                },
+                function (sel) {
+                    return sel
+                        .style("width", smallSquareDim)
+                        .style("height", smallSquareDim);
+                }
+            );
             updatePlot("allData");
         };
 
