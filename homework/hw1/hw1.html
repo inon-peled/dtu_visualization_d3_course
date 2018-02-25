@@ -708,12 +708,12 @@
             svg2.append("rect")
                 .attr("fill", "white")
                 .attr("stroke", "black")
+                .attr("width", smallSquareDim)
+                .attr("height", smallSquareDim)
                 .attr("x", legendX + 5)
                 .attr("y", legendY + 40)
                 .attr("stroke", "black")
                 .attr("fill", "white")
-                .attr("width", smallSquareDim)
-                .attr("height", smallSquareDim)
                 .attr("transform", function (d) {
                     return "rotate(-45, " +
                         (legendX  + smallSquareDim / 2) + ", " +
@@ -723,6 +723,18 @@
                 .text("Men")
                 .attr("x", legendX + 50)
                 .attr("y", legendY + 35);
+            svg2.append("circle")
+                .attr("fill", "white")
+                .attr("stroke", "black")
+                .attr("cx", legendX + 35)
+                .attr("cy", legendY + 50)
+                .attr("r", smallCircleRadius)
+                .attr("stroke", "black")
+                .attr("fill", "white");
+            svg2.append("text")
+                .text("Women")
+                .attr("x", legendX + 50)
+                .attr("y", legendY + 55);
 
             updatePlot("allData");
         };
