@@ -717,12 +717,10 @@
             svg2.select(".x.axis")
                 .attr("transform", "translate(0, " + (svgHeight2 - padding2) + ")")
                 .transition()
-                .style("font", "14px times")
                 .call(xAxis);
             svg2.select(".y.axis")
                 .attr("transform", "translate(" + padding2 + ", 0)")
                 .transition()
-                .style("font", "14px times")
                 .call(yAxis);
         };
 
