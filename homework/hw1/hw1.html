@@ -298,7 +298,7 @@
             .attr("x", svgWidth / 2)
             .attr("y", axisPadding / 2)
             .attr("text-anchor", "middle")
-            .style("font-size", "16px")
+            .style("font-size", "22px")
             .text("NYC Green Markets: Unique Produce Types");
 
         svg.append("text")
@@ -603,6 +603,12 @@
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("Year");
+            svg2.append("text")
+                .attr("x", svgWidth2 / 2)
+                .attr("y", padding2 / 2)
+                .attr("text-anchor", "middle")
+                .style("font-size", "30px")
+                .text("Boston Marathon Winners");
             svg2
                 .append("g")
                 .attr("class", "x axis");
