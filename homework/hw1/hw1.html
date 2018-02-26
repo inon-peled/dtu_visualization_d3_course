@@ -819,11 +819,11 @@
             svg2.append("rect")
                 .style("fill", "rgb(232,232,232)")
                 .attr("id", "legendMarathon")
-                .attr("x", svgWidth2 - 250)
+                .attr("x", svgWidth2 - 300)
                 .attr("y", 50)
                 .attr("stroke", "none")
                 .attr("fill", "white")
-                .attr("width", 170)
+                .attr("width", 220)
                 .attr("height", 130);
             var legendX = parseFloat(d3.select("#legendMarathon").attr("x"));
             var legendY = parseFloat(d3.select("#legendMarathon").attr("y"));
@@ -852,6 +852,7 @@
                         (legendY + 20 + smallSquareDim / 2) + ")";
                 });
             svg2.append("text")
+                .attr("class", "legendText")
                 .text("Men")
                 .attr("fill", "red")
                 .attr("x", legendSymbolsCenterX + 20)
@@ -874,6 +875,7 @@
                 .attr("stroke", "black")
                 .attr("fill", "white");
             svg2.append("text")
+                .attr("class", "legendText")
                 .text("Women")
                 .attr("fill", "blue")
                 .attr("x", legendSymbolsCenterX + 20)
@@ -889,6 +891,7 @@
                 .attr("y1", legendY + 75)
                 .attr("y2", legendY + 75);
             svg2.append("text")
+                .attr("class", "legendText")
                 .text("Linear Fit")
                 .attr("fill", "black")
                 .attr("x", legendSymbolsCenterX + 20)
@@ -914,6 +917,7 @@
                         (legendY + 100 - smallCircleRadius + smallSquareDim / 2) + ")"
                 });
             svg2.append("text")
+                .attr("class", "legendText")
                 .text("Prediction 2018")
                 .attr("fill", "black")
                 .attr("x", legendSymbolsCenterX + 20)
