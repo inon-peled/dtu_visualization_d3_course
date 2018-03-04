@@ -82,7 +82,11 @@
                     color: cl });
                 return cl;
             })
-            .attr("d", arc);
+            .attr("d", arc)
+            .append("title")  //Make tooltip
+            .text(function(d, i) {
+                return appliedColors[i].borough;
+            });
 
         //Labels
         arcs.append("text")
