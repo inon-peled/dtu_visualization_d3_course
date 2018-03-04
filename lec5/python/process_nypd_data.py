@@ -50,12 +50,12 @@ def pd_desc_count():
 
 
 def top_crimes(crimes_path, year, num_top, out_file_folder):
-    df = pd.read_csv(crimes_path)\
+    return pd.read_csv(crimes_path)\
         [lambda df: df.year == year]\
         .set_index(['year', 'crime'])\
         .groupby('month')['count']\
-        .nlargest(num_top)
-    df.unstack()\
+        .nlargest(num_top)\
+        .unstack()\
         .to_csv(os.path.join(out_file_folder,
                              'top_%d_crimes_%d.csv' % (num_top, year)))
 
