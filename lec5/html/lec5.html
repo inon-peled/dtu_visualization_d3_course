@@ -17,6 +17,12 @@
             font-size: 18px;
             fill: black;
         }
+        .axis {
+            font-size: 15px;
+        }
+        .area:hover {
+            fill: yellow;
+        }
     </style>
 </head>
 <body>
@@ -136,8 +142,8 @@
         var legendSquareDim = 20;
         var w = 1000;
         var h = 500;
-        var leftPadding = 20;
-        var rightPadding = 20;
+        var leftPadding = 50;
+        var rightPadding = 50;
         var topPadding = 100;
 
         var colorsAreas = [];
@@ -172,8 +178,7 @@
         };
 
         //Set up stack method
-        var stack = d3.stack()
-            .order(d3.stackOrderDescending);  // <-- Flipped stacking order
+        var stack = d3.stack();
 
         //Load in data
         d3.csv("top_5_crimes_2016.csv", rowConverter, function(data) {
