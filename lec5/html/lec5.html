@@ -198,18 +198,19 @@
             12,2016,ASSAULT,4595\n\
             12,2016,UNCLASSIFIED,2827";
 
-        var top5Crimes2016 = _.map(_.split(top5Crimes2016Str, "\n"), function (s) { return _.trim(s); })
-        top5Crimes2016 = _.map(top5Crimes2016, function(e) {
-            return _.split(e, ",");
-        });
-        top5Crimes2016 = _.map(top5Crimes2016, function (a) {
-            return {
-                month: parseInt(a[0]),
-                year: parseInt(a[1]),
-                crime: a[2],
-                count: parseInt(a[3])
-            };
-        });
+        var top5Crimes2016 = _(top5Crimes2016Str)
+            .split("\n")
+            .map(function (s) { return _.trim(s); })
+            .map(function(e) { return _.split(e, ","); })
+            .map(function (a) {
+                return {
+                    month: parseInt(a[0]),
+                    year: parseInt(a[1]),
+                    crime: a[2],
+                    count: parseInt(a[3])
+                };
+            })
+            .value();
         // var xScale, yScale, xAxis, yAxis, area;  //Empty, for now
         //
         // var rowConverter = function(d, i, cols) {
