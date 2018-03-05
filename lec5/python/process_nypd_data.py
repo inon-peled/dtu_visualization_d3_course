@@ -62,5 +62,5 @@ def top_crimes(crimes_path, year, num_top, out_file_folder):
 if __name__ == '__main__':
     # excerpt(100, DATA_CSV_PATH, os.path.join('data', 'excerpt.csv'))
     # total_per_borough(DATA_CSV_PATH, 2016, 'data')
-    pd_desc_count()
-    # top_crimes(os.path.join(DATA_DIR, 'crime_count_per_month.csv'), 2016, 5, DATA_DIR)
+    # pd_desc_count()
+    top_crimes(os.path.join(DATA_DIR, 'crime_count_per_month.csv'), 2016, 5, DATA_DIR)
