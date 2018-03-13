@@ -119,9 +119,18 @@
                 })
                     .attr("class", "murderLocation brushed");
             }
+        })
+        .on("end", function() {
+            if (!d3.event.selection) return;
+            d3.select(this).call(brush.move, null);
         });
     svg.append("g")
         .call(brush);
+
+    svg.on("click", function() {
+        d3.selectAll(".murderLocation")
+            .attr("class", "murderLocation nonBrushed");
+    });
 
 </script>
 
