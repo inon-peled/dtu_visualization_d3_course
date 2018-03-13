@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Lec6</title>
     <script type="text/javascript" src="./d3.js"></script>
+    <script type="text/javascript" src="./lodash.js"></script>
     <style type="text/css">
         /* No style rules here yet */
     </style>
@@ -15,6 +16,7 @@
     var svgResizeFactor = 1.5;
     var w = 600 * svgResizeFactor;
     var h = 400 * svgResizeFactor;
+    var murders = [];
 
     //Define map projection
     var projection = d3.geoMercator()
@@ -41,7 +43,18 @@
             .append("path")
             .attr("d", path)
             .style("fill", "steelblue");
-
+        // Place circles for murder occurences in 2016.
+        d3.csv("murders_2016.csv",
+            function (d) {
+                return {
+                    "lat": parseFloat(d.Latitude),
+                    "lon": parseFloat(d.Longitude),
+                    "hour": parseInt(d.HR)
+                };
+            },
+            function (data) {
+                murders = data;
+            });
     });
 
 </script>
