@@ -14,9 +14,9 @@
         }
         .nonBrushed {
             fill: lightgrey;
-            stroke: grey;
+            stroke: black;
             stroke-width: 1;
-            opacity: 0.85;
+            opacity: 1;
         }
     </style>
 </head>
@@ -89,6 +89,12 @@
                     .attr("cy", function(d) {
                         return projection([d.lon, d.lat])[1];
                     })
+                    .attr("r", 0)
+                    .transition()
+                    .duration(400)
+                    .attr("r", 15)
+                    .transition()
+                    .duration(600)
                     .attr("r", 5);
             });
     });
@@ -120,7 +126,7 @@
                     return isBrushed(brush_coords, cx, cy);
                 })
                     .attr("class", "murderLocation brushed");
-                console.log(murderPerHour(d3.selectAll(".murderLocation .brushed")));
+                console.log(murderPerHour(d3.selectAll(".murderLocation,.brushed")));
             }
         })
         .on("end", function() {
