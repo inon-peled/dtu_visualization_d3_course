@@ -11,15 +11,13 @@ DATA_CSV_PATH = os.path.join(DATA_DIR, 'NYPD_Complaint_Data_Historic.csv')
 def get_murders_simpler(output_file_path, data_file_path, year):
     with open(data_file_path) as f_in, open(output_file_path, 'w') as f_out:
         reader = csv.reader(f_in)
-        header = next(reader)
+        header = next(reader) + ['HR']
         f_out.write(','.join(header) + '\n')
         for line in reader:
             d = dict(zip(header, line))
             if str(year) in d['CMPLNT_FR_DT'] and 'MURDER' in d['OFNS_DESC']:
                 d['HR'] = d['CMPLNT_FR_TM'][:2]
-                for h in header + ['HR']:
-                    f_out.write(d[h] + ',')
-                f_out.write('\n')
+                f_out.write(','.join(d[h] for h in header) + '\n')
 
 
 # def get_murders(data_file_path, year):
