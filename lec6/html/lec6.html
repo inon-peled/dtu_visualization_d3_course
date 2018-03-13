@@ -17,6 +17,7 @@
     var w = 600 * svgResizeFactor;
     var h = 400 * svgResizeFactor;
     var murders = [];
+    var boroughColors= d3.scaleOrdinal(d3.schemeCategory10);
 
     //Define map projection
     var projection = d3.geoMercator()
@@ -42,7 +43,9 @@
             .enter()
             .append("path")
             .attr("d", path)
-            .style("fill", "steelblue");
+            .style("fill", function (d, i) {
+                return boroughColors(i);
+            });
         // Place circles for murder occurences in 2016.
         d3.csv("murders_2016.csv",
             function (d) {
