@@ -68,7 +68,9 @@
                         return projection([d.lon, d.lat])[1];
                     })
                     .attr("r", 5)
-                    .style("fill", "yellow");
+                    .style("fill", "lightgrey")
+                    .style("fill-opacity", "0.85")
+                    .style("stroke", "black");
             });
     });
 
