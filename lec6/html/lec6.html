@@ -53,7 +53,19 @@
                 };
             },
             function (data) {
-                murders = data;
+                murders = _.filter(data, function (d) { return !_.isNaN(d.lat); });
+                svg.selectAll("circle")
+                    .data(murders)
+                    .enter()
+                    .append("circle")
+                    .attr("cx", function(d) {
+                        return projection([d.lon, d.lat])[0];
+                    })
+                    .attr("cy", function(d) {
+                        return projection([d.lon, d.lat])[1];
+                    })
+                    .attr("r", 5)
+                    .style("fill", "yellow");
             });
     });
 
