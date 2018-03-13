@@ -92,7 +92,7 @@
                     .attr("r", 0)
                     .transition()
                     .duration(400)
-                    .attr("r", 15)
+                    .attr("r", 30)
                     .transition()
                     .duration(600)
                     .attr("r", 5);
@@ -140,6 +140,10 @@
         d3.selectAll(".murderLocation")
             .attr("class", "murderLocation nonBrushed");
     });
+
+//    TODO: 1) select all by default, 2) select all button, 3) legend of boroughs.
+    // TODO: 4) instructions in text about what you can do with the interactive plot.
+    // TODO: 5) Total count. 6) Stacked bar plot with rects colored by borrough. Use online code examples.
 
 </script>
 
