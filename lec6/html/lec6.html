@@ -147,126 +147,151 @@
 
 </script>
 
-<!--<script type="text/javascript">-->
-    <!--var axisPadding = 60;-->
-    <!--var xLabels = _.range(24);-->
+<script type="text/javascript">
+    var barplotAxisPadding = 60;
+    var barplotSvgWidth = 800;
+    var barplotSvgHeight = 500;
 
-    <!--var xScale = d3-->
-        <!--.scaleBand()-->
-        <!--.domain(d3.range(xLabels.length))-->
-        <!--.rangeRound([axisPadding, svgWidth])-->
-        <!--.paddingInner(0.05);-->
-    <!--var yScale = d3.scaleLinear();-->
-    <!--var yScaleRev = d3.scaleLinear();-->
+    var dataset = [
+        [0, 0, 0, 0, 0, 1, 7, 8, 10, 5, 0, 0],
+        [2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 2, 2],
+        [0, 0, 0, 2, 11, 16, 23, 28, 33, 31, 11, 3],
+        [9, 9, 6, 3, 3, 3, 2, 1, 0, 0, 6, 8]
+    ];
 
-    <!--var xAxis = d3-->
-        <!--.axisBottom(xScale)-->
-        <!--.tickFormat(function (d, i) {-->
-            <!--return xLabels[i];-->
-        <!--});-->
-    <!--var yAxis = d3-->
-        <!--.axisLeft(yScaleRev)-->
-        <!--.tickFormat(function (e) {-->
-            <!--return Math.floor(e) !== e ? "" : e;-->
-        <!--});-->
+    var barColors = [
+        'red',
+        'pink',
+        'blue',
+        'lightblue'
+    ];
 
-    <!--var refreshPlot = function (dataset, idx) {-->
-        <!--yScale-->
-            <!--.domain([1 + d3.max(dataset[idx]), 0]);-->
-        <!--yScaleRev-->
-            <!--.domain([1 + d3.max(dataset[idx]), 0]);-->
-        <!--svg-->
-            <!--.selectAll(".bar")-->
-            <!--.data(dataset[idx])-->
-            <!--.transition()-->
-            <!--.attr("y", function (d) {-->
-                <!--return svgHeight - yScale(d);-->
-            <!--})-->
-            <!--.attr("height", function (d) {-->
-                <!--return yScale(d) - axisPadding;-->
-            <!--})-->
-            <!--.attr("fill", barColors[idx]);-->
-        <!--svg-->
-            <!--.selectAll(".barLabel")-->
-            <!--.data(dataset[idx])-->
-            <!--.transition()-->
-            <!--.attr("y", function (d) {-->
-                <!--return yScaleRev(d) - 10;-->
-            <!--})-->
-            <!--.text(function (d) {-->
-                <!--return d;-->
-            <!--});-->
-        <!--svg.select(".yAxis")-->
-            <!--.transition()-->
-            <!--.call(yAxis);-->
-    <!--};-->
+    var xLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    <!--var initializePlot = function (dataset, idx) {-->
-        <!--yScale-->
-            <!--.range([svgHeight - axisPadding, axisPadding]);-->
-        <!--yScaleRev-->
-            <!--.range([axisPadding, svgHeight - axisPadding]);-->
-        <!--svg-->
-            <!--.selectAll("rect")-->
-            <!--.data(dataset[idx])-->
-            <!--.enter()-->
-            <!--.append("rect")-->
-            <!--.attr("class", "bar")-->
-            <!--.attr("x", function (d, i) {-->
-                <!--return xScale(i);-->
-            <!--})-->
-            <!--.attr("width", xScale.bandwidth());-->
-        <!--svg.selectAll("text")-->
-            <!--.data(dataset[idx])-->
-            <!--.enter()-->
-            <!--.append("text")-->
-            <!--.attr("class", "barLabel")-->
-            <!--.attr("x", function (d, i) {-->
-                <!--return xScale(i) + xScale.bandwidth() / 2;-->
-            <!--})-->
-            <!--.attr("text-anchor", "middle")-->
-            <!--.attr("font-family", "sans-serif")-->
-            <!--.attr("font-size", 16  + "px");-->
-        <!--svg.append("g")-->
-            <!--.attr("class", "xAxis")-->
-            <!--.attr("transform", "translate(0, " + (svgHeight - axisPadding) + ")")-->
-            <!--.call(xAxis);-->
-        <!--svg.append("g")-->
-            <!--.attr("class", "yAxis")-->
-            <!--.attr("transform", "translate(" + axisPadding + ", 0)")-->
-            <!--.call(yAxis);-->
+    var xScale = d3
+        .scaleBand()
+        .domain(d3.range(xLabels.length))
+        .rangeRound([barplotAxisPadding, barplotSvgWidth])
+        .paddingInner(0.05);
+    var yScale = d3.scaleLinear();
+    var yScaleRev = d3.scaleLinear();
 
-        <!--svg.append("text")-->
-            <!--.attr("x", svgWidth / 2)-->
-            <!--.attr("y", axisPadding / 2)-->
-            <!--.attr("text-anchor", "middle")-->
-            <!--.style("font-size", "22px")-->
-            <!--.text("NYC Green Markets: Unique Produce Types");-->
-        <!--svg.append("text")-->
-            <!--.attr("transform", "rotate(-90)")-->
-            <!--.attr("y", 0)-->
-            <!--.attr("x", -svgHeight / 2)-->
-            <!--.attr("dy", "1em")-->
-            <!--.style("text-anchor", "middle")-->
-            <!--.text("No. Unique Types of Produce");-->
-        <!--svg.append("text")-->
-            <!--.attr("y", svgHeight - axisPadding / 2)-->
-            <!--.attr("x", svgWidth / 2)-->
-            <!--.attr("dy", "1em")-->
-            <!--.style("text-anchor", "middle")-->
-            <!--.text("Month");-->
+    var svgBarplot = d3
+        .select("#interactive1")
+        .append("svg")
+        .attr("class", "interactive")
+        .attr("width", barplotSvgWidth)
+        .attr("height", barplotSvgHeight);
 
-        <!--refreshPlot(dataset, idx);-->
-    <!--};-->
+    var xAxis = d3
+        .axisBottom(xScale)
+        .tickFormat(function (d, i) {
+            return xLabels[i];
+        });
+    var yAxis = d3
+        .axisLeft(yScaleRev)
+        .tickFormat(function (e) {
+            return Math.floor(e) !== e ? "" : e;
+        });
 
-    <!--initializePlot(dataset, 0);-->
+    var refreshPlot = function (dataset, idx) {
+        yScale
+            .domain([1 + d3.max(dataset[idx]), 0]);
+        yScaleRev
+            .domain([1 + d3.max(dataset[idx]), 0]);
+        svgBarplot
+            .selectAll(".bar")
+            .data(dataset[idx])
+            .transition()
+            .attr("y", function (d) {
+                return barplotSvgHeight - yScale(d);
+            })
+            .attr("height", function (d) {
+                return yScale(d) - barplotAxisPadding;
+            })
+            .attr("fill", barColors[idx]);
+        svgBarplot
+            .selectAll(".barLabel")
+            .data(dataset[idx])
+            .transition()
+            .attr("y", function (d) {
+                return yScaleRev(d) - 10;
+            })
+            .text(function (d) {
+                return d;
+            });
+        svgBarplot.select(".yAxis")
+            .transition()
+            .call(yAxis);
+    };
 
-    <!--d3-->
-        <!--.select("#whatToDisplay")-->
-        <!--.on("change", function () {-->
-            <!--refreshPlot(dataset, d3.select("#whatToDisplay").property("value"));-->
-        <!--});-->
-<!--</script>-->
+    var initializePlot = function (dataset, idx) {
+        console.log("HERE")
+        yScale
+            .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding]);
+        yScaleRev
+            .range([barplotAxisPadding, barplotSvgHeight - barplotAxisPadding]);
+        svgBarplot
+            .selectAll("rect")
+            .data(dataset[idx])
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d, i) {
+                return xScale(i);
+            })
+            .attr("width", xScale.bandwidth());
+        svgBarplot.selectAll("text")
+            .data(dataset[idx])
+            .enter()
+            .append("text")
+            .attr("class", "barLabel")
+            .attr("x", function (d, i) {
+                return xScale(i) + xScale.bandwidth() / 2;
+            })
+            .attr("text-anchor", "middle")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 16  + "px");
+        svgBarplot.append("g")
+            .attr("class", "xAxis")
+            .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
+            .call(xAxis);
+        svgBarplot.append("g")
+            .attr("class", "yAxis")
+            .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+            .call(yAxis);
+
+        svgBarplot.append("text")
+            .attr("x", barplotSvgWidth / 2)
+            .attr("y", barplotAxisPadding / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "22px")
+            .text("NYC Green Markets: Unique Produce Types");
+        svgBarplot.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr("x", -barplotSvgHeight / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("No. Unique Types of Produce");
+        svgBarplot.append("text")
+            .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
+            .attr("x", barplotSvgWidth / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Month");
+
+        refreshPlot(dataset, idx);
+    };
+
+    initializePlot(dataset, 0);
+
+    d3
+        .select("#whatToDisplay")
+        .on("change", function () {
+            refreshPlot(dataset, d3.select("#whatToDisplay").property("value"));
+        });
+</script>
 
 </body>
 </html>
