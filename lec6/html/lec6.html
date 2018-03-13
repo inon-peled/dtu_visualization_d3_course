@@ -118,7 +118,7 @@
                     return isBrushed(brush_coords, cx, cy);
                 })
                     .attr("class", "murderLocation brushed");
-                console.log(murderPerHour(d3.selectAll(".brushed")));
+                console.log(murderPerHour(d3.selectAll(".murderLocation .brushed")));
             }
         })
         .on("end", function() {
