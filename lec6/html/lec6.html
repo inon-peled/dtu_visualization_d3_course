@@ -6,7 +6,16 @@
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
     <style type="text/css">
-        /* No style rules here yet */
+        .brushed {
+            fill: yellow;
+            stroke: black;
+            opacity: 1.0;
+        }
+        .nonBrushed {
+            fill: lightgrey;
+            stroke: grey;
+            opacity: 0.85;
+        }
     </style>
 </head>
 <body>
@@ -71,18 +80,48 @@
                     .data(murders)
                     .enter()
                     .append("circle")
+                    .attr("class", "murderLocation nonBrushed")
                     .attr("cx", function(d) {
                         return projection([d.lon, d.lat])[0];
                     })
                     .attr("cy", function(d) {
                         return projection([d.lon, d.lat])[1];
                     })
-                    .attr("r", 5)
-                    .style("fill", "lightgrey")
-                    .style("fill-opacity", "0.85")
-                    .style("stroke", "black");
+                    .attr("r", 5);
             });
     });
+
+    var brush = d3.brush()
+        .on("brush", function () {
+            if (d3.event.selection != null) {
+                // revert circles to initial style
+                d3.selectAll(".murderLocation")
+                    .attr("class", "murderLocation nonBrushed");
+
+                var brush_coords = d3.brushSelection(this);
+
+                // style brushed circles
+                d3.selectAll(".murderLocation").filter(function (){
+                    var cx = d3.select(this).attr("cx"),
+                        cy = d3.select(this).attr("cy");
+
+                    function isBrushed(brush_coords, cx, cy) {
+
+                        var x0 = brush_coords[0][0],
+                            x1 = brush_coords[1][0],
+                            y0 = brush_coords[0][1],
+                            y1 = brush_coords[1][1];
+
+                        return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+                    }
+
+                    return isBrushed(brush_coords, cx, cy);
+                })
+                    .attr("class", "murderLocation brushed");
+            }
+        });
+    svg.append("g")
+        .call(brush);
 
 </script>
 
