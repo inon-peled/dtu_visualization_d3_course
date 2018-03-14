@@ -199,6 +199,8 @@
             .attr("fill", "red");
         svgBarplot.select(".yAxis")
             .transition()
+            .duration(100)
+            .ease(d3.easeLinear)
             .call(yAxis);
     };
 
