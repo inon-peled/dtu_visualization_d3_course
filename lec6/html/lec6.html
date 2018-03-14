@@ -202,6 +202,11 @@
             .duration(100)
             .ease(d3.easeLinear)
             .call(yAxis);
+        d3.select("#barplotTitle")
+            .transition()
+            .duration(100)
+            .ease(d3.easeLinear)
+            .text("Hourly Count: " + _.sum(perHourArray) + " Selected");
     };
 
     var initializePlot = function () {
@@ -224,12 +229,15 @@
             .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
             .call(yAxis);
         svgBarplot.append("text")
+            .attr("id", "barplotTitle")
+            .attr("class", "plotitle")
             .attr("x", barplotSvgWidth / 2)
             .attr("y", barplotAxisPadding / 2)
             .attr("text-anchor", "middle")
             .style("font-size", "22px")
-            .text("");
+            .text("Hourly Count: 0 Selected");
         svgBarplot.append("text")
+            .attr("class", "axisLabel")
             .attr("transform", "rotate(-90)")
             .attr("y", 0)
             .attr("x", -barplotSvgHeight / 2)
@@ -237,6 +245,7 @@
             .style("text-anchor", "middle")
             .text("Count");
         svgBarplot.append("text")
+            .attr("class", "axisLabel")
             .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
             .attr("x", barplotSvgWidth / 2)
             .attr("dy", "1em")
