@@ -22,9 +22,9 @@
 </head>
 <body>
 <script type="text/javascript">
-    var murderPerHour = function(selectedCircles) {
+    var murderPerHour = function() {
         return _.reduce(
-            selectedCircles.data(),
+            d3.selectAll(".brushed").data(),
             function (counts, d) {
                 counts[d.hour] += 1;
                 return counts;
@@ -126,7 +126,7 @@
                     return isBrushed(brush_coords, cx, cy);
                 })
                     .attr("class", "murderLocation brushed");
-                console.log(murderPerHour(d3.selectAll(".brushed")));
+                updateBarplot();
             }
         })
         .on("end", function() {
@@ -139,6 +139,7 @@
     svg.on("click", function() {
         d3.selectAll(".murderLocation")
             .attr("class", "murderLocation nonBrushed");
+        updateBarplot()
     });
 
 //    TODO: select all button, 3) legend of boroughs.
@@ -156,7 +157,8 @@
         .rangeRound([barplotAxisPadding, barplotSvgWidth])
         .paddingInner(0.05);
     var yScale = d3.scaleLinear()
-        .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding]);
+        .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
+        .domain([0, 0]);
 
     var svgBarplot = d3
         .select("body")
@@ -175,18 +177,22 @@
             return Math.floor(e) !== e ? "" : e;
         });
 
-    var refreshPlot = function (perHourCount) {
-        yScale
-            .domain([1 + d3.max(perHourCount)]);
+    var updateBarplot = function () {
+        var perHourCount = murderPerHour();
+        var perHourArray = [];
+        for (i = 0 ; i < 24 ; i++) {
+            perHourArray[i] = perHourCount[i];
+        }
+        yScale.domain([0, d3.max(perHourArray)]);
         svgBarplot
             .selectAll(".bar")
-            .data(perHourCount)
+            .data(perHourArray)
             .transition()
             .attr("y", function (d) {
-                return barplotSvgHeight - yScale(d);
+                return yScale(d);
             })
             .attr("height", function (d) {
-                return yScale(d) - barplotAxisPadding;
+                return barplotSvgHeight - yScale(d) - barplotAxisPadding;
             })
             .attr("fill", "red");
         svgBarplot.select(".yAxis")
