@@ -206,7 +206,7 @@
             .transition()
             .duration(100)
             .ease(d3.easeLinear)
-            .text("Hourly Count: " + _.sum(perHourArray) + " Selected");
+            .text("Hourly Count, " + _.sum(perHourArray) + " Selected");
     };
 
     var initializePlot = function () {
@@ -235,7 +235,7 @@
             .attr("y", barplotAxisPadding / 2)
             .attr("text-anchor", "middle")
             .style("font-size", "22px")
-            .text("Hourly Count: 0 Selected");
+            .text("Hourly Count, 0 Selected");
         svgBarplot.append("text")
             .attr("class", "axisLabel")
             .attr("transform", "rotate(-90)")
