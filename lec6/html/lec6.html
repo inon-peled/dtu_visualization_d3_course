@@ -22,237 +22,243 @@
 </head>
 <body>
 <script type="text/javascript">
-    var murderPerHour = function() {
-        return _.reduce(
-            d3.selectAll(".brushed").data(),
-            function (counts, d) {
-                counts[d.hour] += 1;
-                return counts;
-            },
-            _.fromPairs(_.map(_.range(24), function (h) { return [h, 0] }))
-        );
-    };
+    var noGlobalsLec6 = function() { // No global variables
+        var murderPerHour = function () {
+            return _.reduce(
+                d3.selectAll(".brushed").data(),
+                function (counts, d) {
+                    counts[d.hour] += 1;
+                    return counts;
+                },
+                _.fromPairs(_.map(_.range(24), function (h) {
+                    return [h, 0]
+                }))
+            );
+        };
 
-    //Width and height
-    var svgResizeFactor = 1.5;
-    var svgWiodth = 600 * svgResizeFactor;
-    var svgHeight = 400 * svgResizeFactor;
-    var murders = [];
-    var boroughColors= d3.scaleOrdinal(d3.schemeCategory10);
+        //Width and height
+        var svgResizeFactor = 1.5;
+        var svgWiodth = 600 * svgResizeFactor;
+        var svgHeight = 400 * svgResizeFactor;
+        var murders = [];
+        var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
-    //Define map projection
-    var projection = d3.geoMercator()
-        .center([-74.0, 40.7]) // Approximate center point of NYC.
-        .translate([svgWiodth / 2, svgHeight / 2])
-        .scale([100000 * 0.6]);
+        //Define map projection
+        var projection = d3.geoMercator()
+            .center([-74.0, 40.7]) // Approximate center point of NYC.
+            .translate([svgWiodth / 2, svgHeight / 2])
+            .scale([100000 * 0.6]);
 
-    //Define path generator
-    var path = d3.geoPath()
-        .projection(projection);
+        //Define path generator
+        var path = d3.geoPath()
+            .projection(projection);
 
-    //Create SVG element
-    var svg = d3.select("body")
-        .append("svg")
-        .attr("width", svgWiodth)
-        .attr("height", svgHeight);
+        //Create SVG element
+        var svg = d3.select("body")
+            .append("svg")
+            .attr("width", svgWiodth)
+            .attr("height", svgHeight);
 
-    //Load in GeoJSON data
-    d3.json("boroughs.geojson", function (json) {
-        //Bind data and create one path per GeoJSON feature
-        svg.selectAll("path")
-            .data(json.features)
-            .enter()
-            .append("path")
-            .attr("d", path)
-            .style("fill", function (d, i) {
-                return boroughColors(i);
-            });
-        // Place circles for murder occurences in 2016.
-        d3.csv("murders_2016.csv",
-            function (d) {
-                return {
-                    "lat": parseFloat(d.Latitude),
-                    "lon": parseFloat(d.Longitude),
-                    "hour": parseInt(d.HR)
-                };
-            },
-            function (data) {
-                murders = _.filter(data, function (d) { return !_.isNaN(d.lat); });
-                svg.selectAll("circle")
-                    .data(murders)
-                    .enter()
-                    .append("circle")
-                    .attr("class", "murderLocation nonBrushed")
-                    .attr("cx", function(d) {
-                        return projection([d.lon, d.lat])[0];
-                    })
-                    .attr("cy", function(d) {
-                        return projection([d.lon, d.lat])[1];
-                    })
-                    .attr("r", 0)
-                    .transition()
-                    .duration(400)
-                    .attr("r", 30)
-                    .transition()
-                    .duration(600)
-                    .attr("r", 5);
-            });
-    });
-
-    var brush = d3.brush()
-        .on("brush", function () {
-            if (d3.event.selection != null) {
-                // revert circles to initial style
-                d3.selectAll(".murderLocation")
-                    .attr("class", "murderLocation nonBrushed");
-
-                var brush_coords = d3.brushSelection(this);
-
-                // style brushed circles
-                d3.selectAll(".murderLocation").filter(function (){
-                    var cx = d3.select(this).attr("cx"),
-                        cy = d3.select(this).attr("cy");
-
-                    function isBrushed(brush_coords, cx, cy) {
-
-                        var x0 = brush_coords[0][0],
-                            x1 = brush_coords[1][0],
-                            y0 = brush_coords[0][1],
-                            y1 = brush_coords[1][1];
-
-                        return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
-                    }
-
-                    return isBrushed(brush_coords, cx, cy);
-                })
-                    .attr("class", "murderLocation brushed");
-                updateBarplot();
-            }
-        })
-        .on("end", function() {
-            if (!d3.event.selection) return;
-            d3.select(this).call(brush.move, null);
+        //Load in GeoJSON data
+        d3.json("boroughs.geojson", function (json) {
+            //Bind data and create one path per GeoJSON feature
+            svg.selectAll("path")
+                .data(json.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .style("fill", function (d, i) {
+                    return boroughColors(i);
+                });
+            // Place circles for murder occurences in 2016.
+            d3.csv("murders_2016.csv",
+                function (d) {
+                    return {
+                        "lat": parseFloat(d.Latitude),
+                        "lon": parseFloat(d.Longitude),
+                        "hour": parseInt(d.HR)
+                    };
+                },
+                function (data) {
+                    murders = _.filter(data, function (d) {
+                        return !_.isNaN(d.lat);
+                    });
+                    svg.selectAll("circle")
+                        .data(murders)
+                        .enter()
+                        .append("circle")
+                        .attr("class", "murderLocation nonBrushed")
+                        .attr("cx", function (d) {
+                            return projection([d.lon, d.lat])[0];
+                        })
+                        .attr("cy", function (d) {
+                            return projection([d.lon, d.lat])[1];
+                        })
+                        .attr("r", 0)
+                        .transition()
+                        .duration(400)
+                        .attr("r", 30)
+                        .transition()
+                        .duration(600)
+                        .attr("r", 5);
+                });
         });
-    svg.append("g")
-        .call(brush);
 
-    svg.on("click", function() {
-        d3.selectAll(".murderLocation")
-            .attr("class", "murderLocation nonBrushed");
-        updateBarplot()
-    });
+        var brush = d3.brush()
+            .on("brush", function () {
+                if (d3.event.selection != null) {
+                    // revert circles to initial style
+                    d3.selectAll(".murderLocation")
+                        .attr("class", "murderLocation nonBrushed");
+
+                    var brush_coords = d3.brushSelection(this);
+
+                    // style brushed circles
+                    d3.selectAll(".murderLocation").filter(function () {
+                        var cx = d3.select(this).attr("cx"),
+                            cy = d3.select(this).attr("cy");
+
+                        function isBrushed(brush_coords, cx, cy) {
+
+                            var x0 = brush_coords[0][0],
+                                x1 = brush_coords[1][0],
+                                y0 = brush_coords[0][1],
+                                y1 = brush_coords[1][1];
+
+                            return x0 <= cx && cx <= x1 && y0 <= cy && cy <= y1;
+                        }
+
+                        return isBrushed(brush_coords, cx, cy);
+                    })
+                        .attr("class", "murderLocation brushed");
+                    updateBarplot();
+                }
+            })
+            .on("end", function () {
+                if (!d3.event.selection) return;
+                d3.select(this).call(brush.move, null);
+            });
+        svg.append("g")
+            .call(brush);
+
+        svg.on("click", function () {
+            d3.selectAll(".murderLocation")
+                .attr("class", "murderLocation nonBrushed");
+            updateBarplot()
+        });
 
 //    TODO: select all button, 3) legend of boroughs.
-    // TODO: 4) instructions in text about what you can do with the interactive plot.
-    // TODO: Hover over bar to highlight corresponding circles within selection.
+        // TODO: 4) instructions in text about what you can do with the interactive plot.
+        // TODO: Hover over bar to highlight corresponding circles within selection.
 
-    var barplotAxisPadding = 40;
-    var barplotSvgWidth = 800;
-    var barplotSvgHeight = 500;
+        var barplotAxisPadding = 40;
+        var barplotSvgWidth = 800;
+        var barplotSvgHeight = 500;
 
-    var xScale = d3
-        .scaleBand()
-        .domain(_.range(24))
-        .rangeRound([barplotAxisPadding, barplotSvgWidth])
-        .paddingInner(0.05);
-    var yScale = d3.scaleLinear()
-        .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
-        .domain([0, 0]);
+        var xScale = d3
+            .scaleBand()
+            .domain(_.range(24))
+            .rangeRound([barplotAxisPadding, barplotSvgWidth])
+            .paddingInner(0.05);
+        var yScale = d3.scaleLinear()
+            .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
+            .domain([0, 0]);
 
-    var svgBarplot = d3
-        .select("body")
-        .append("svg")
-        .attr("width", barplotSvgWidth)
-        .attr("height", barplotSvgHeight);
+        var svgBarplot = d3
+            .select("body")
+            .append("svg")
+            .attr("width", barplotSvgWidth)
+            .attr("height", barplotSvgHeight);
 
-    var xAxis = d3
-        .axisBottom(xScale)
-        .tickFormat(function (d, i) {
-            return i;
-        });
-    var yAxis = d3
-        .axisLeft(yScale)
-        .tickFormat(function (e) {
-            return Math.floor(e) !== e ? "" : e;
-        });
+        var xAxis = d3
+            .axisBottom(xScale)
+            .tickFormat(function (d, i) {
+                return i;
+            });
+        var yAxis = d3
+            .axisLeft(yScale)
+            .tickFormat(function (e) {
+                return Math.floor(e) !== e ? "" : e;
+            });
 
-    var updateBarplot = function () {
-        var perHourCount = murderPerHour();
-        var perHourArray = [];
-        for (i = 0 ; i < 24 ; i++) {
-            perHourArray[i] = perHourCount[i];
-        }
-        yScale.domain([0, d3.max(perHourArray)]);
-        svgBarplot
-            .selectAll(".bar")
-            .data(perHourArray)
-            .transition()
-            .duration(100)
-            .ease(d3.easeLinear)
-            .attr("y", function (d) {
-                return yScale(d);
-            })
-            .attr("height", function (d) {
-                return barplotSvgHeight - yScale(d) - barplotAxisPadding;
-            })
-            .attr("fill", "red");
-        svgBarplot.select(".yAxis")
-            .transition()
-            .duration(100)
-            .ease(d3.easeLinear)
-            .call(yAxis);
-        d3.select("#barplotTitle")
-            .transition()
-            .duration(100)
-            .ease(d3.easeLinear)
-            .text("Hourly Count, " + _.sum(perHourArray) + " Selected");
-    };
+        var updateBarplot = function () {
+            var perHourCount = murderPerHour();
+            var perHourArray = [];
+            for (i = 0; i < 24; i++) {
+                perHourArray[i] = perHourCount[i];
+            }
+            yScale.domain([0, d3.max(perHourArray)]);
+            svgBarplot
+                .selectAll(".bar")
+                .data(perHourArray)
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .attr("y", function (d) {
+                    return yScale(d);
+                })
+                .attr("height", function (d) {
+                    return barplotSvgHeight - yScale(d) - barplotAxisPadding;
+                })
+                .attr("fill", "red");
+            svgBarplot.select(".yAxis")
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .call(yAxis);
+            d3.select("#barplotTitle")
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .text("Hourly Count, " + _.sum(perHourArray) + " Selected");
+        };
 
-    var initializePlot = function () {
-        svgBarplot
-            .selectAll("rect")
-            .data(_.times(24, _.constant(0)))
-            .enter()
-            .append("rect")
-            .attr("class", "bar")
-            .attr("x", function (d, i) {
-                return xScale(i);
-            })
-            .attr("width", xScale.bandwidth());
-        svgBarplot.append("g")
-            .attr("class", "xAxis")
-            .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
-            .call(xAxis);
-        svgBarplot.append("g")
-            .attr("class", "yAxis")
-            .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
-            .call(yAxis);
-        svgBarplot.append("text")
-            .attr("id", "barplotTitle")
-            .attr("class", "plotitle")
-            .attr("x", barplotSvgWidth / 2)
-            .attr("y", barplotAxisPadding / 2)
-            .attr("text-anchor", "middle")
-            .style("font-size", "22px")
-            .text("Hourly Count, 0 Selected");
-        svgBarplot.append("text")
-            .attr("class", "axisLabel")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0)
-            .attr("x", -barplotSvgHeight / 2)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("Count");
-        svgBarplot.append("text")
-            .attr("class", "axisLabel")
-            .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
-            .attr("x", barplotSvgWidth / 2)
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text("Hour");
-    };
+        var initializePlot = function () {
+            svgBarplot
+                .selectAll("rect")
+                .data(_.times(24, _.constant(0)))
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d, i) {
+                    return xScale(i);
+                })
+                .attr("width", xScale.bandwidth());
+            svgBarplot.append("g")
+                .attr("class", "xAxis")
+                .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
+                .call(xAxis);
+            svgBarplot.append("g")
+                .attr("class", "yAxis")
+                .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+                .call(yAxis);
+            svgBarplot.append("text")
+                .attr("id", "barplotTitle")
+                .attr("class", "plotitle")
+                .attr("x", barplotSvgWidth / 2)
+                .attr("y", barplotAxisPadding / 2)
+                .attr("text-anchor", "middle")
+                .style("font-size", "22px")
+                .text("Hourly Count, 0 Selected");
+            svgBarplot.append("text")
+                .attr("class", "axisLabel")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0)
+                .attr("x", -barplotSvgHeight / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Count");
+            svgBarplot.append("text")
+                .attr("class", "axisLabel")
+                .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
+                .attr("x", barplotSvgWidth / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Hour");
+        };
 
-    initializePlot();
+        initializePlot();
+    }();
 </script>
 
 </body>
