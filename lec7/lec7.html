@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Lec7</title>
+    <script type="text/javascript" src="./d3.js"></script>
+    <script type="text/javascript" src="./lodash.js"></script>
+    <style type="text/css">
+        .murderLocation {
+            fill: lightgrey;
+            stroke: black;
+            stroke-width: 1;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+    // var noGlobalsLec6 = function() { // No global variables
+    var murderPerHour = function () {
+        return _.reduce(
+            d3.selectAll(".brushed").data(),
+            function (counts, d) {
+                counts[d.hour] += 1;
+                return counts;
+            },
+            _.fromPairs(_.map(_.range(24), function (h) {
+                return [h, 0]
+            }))
+        );
+    };
+
+    //Width and height
+    var svgResizeFactor = 1.5;
+    var svgWiodth = 600 * svgResizeFactor;
+    var svgHeight = 400 * svgResizeFactor;
+    var murders = [];
+    var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
+
+    //Define map projection
+    var projection = d3.geoMercator()
+        .center([-74.0, 40.7]) // Approximate center point of NYC.
+        .translate([svgWiodth / 2, svgHeight / 2])
+        .scale([100000 * 0.6]);
+
+    //Define path generator
+    var path = d3.geoPath()
+        .projection(projection);
+
+    //Create SVG element
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", svgWiodth)
+        .attr("height", svgHeight);
+
+    //Load in GeoJSON data
+    d3.json("boroughs.geojson", function (json) {
+        //Bind data and create one path per GeoJSON feature
+        svg.selectAll("path")
+            .data(json.features)
+            .enter()
+            .append("path")
+            .attr("d", path)
+            .style("fill", function (d, i) {
+                return boroughColors(i);
+            });
+        // Place circles for murder occurences in 2016.
+        d3.csv("murders_2016.csv",
+            function (d) {
+                return {
+                    "lat": parseFloat(d.Latitude),
+                    "lon": parseFloat(d.Longitude),
+                    "hour": parseInt(d.HR)
+                };
+            },
+            function (data) {
+                murders = _.filter(data, function (d) {
+                    return !_.isNaN(d.lat);
+                });
+                svg.selectAll("circle")
+                    .data(murders)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "murderLocation")
+                    .attr("cx", function (d) {
+                        return projection([d.lon, d.lat])[0];
+                    })
+                    .attr("cy", function (d) {
+                        return projection([d.lon, d.lat])[1];
+                    })
+                    .attr("r", 0)
+                    .transition()
+                    .duration(400)
+                    .attr("r", 30)
+                    .transition()
+                    .duration(600)
+                    .attr("r", 5);
+            });
+    });
+    //}();
+</script>
+
+</body>
+</html>
