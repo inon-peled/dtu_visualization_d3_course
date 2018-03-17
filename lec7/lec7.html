@@ -49,12 +49,12 @@
                     }; });
 
                     var svgTimelineMargin = { top: 20, right: 20, bottom: 30, left: 50 };
-                    var svgTimelineWidth = 1000;
+                    var svgTimelineWidth = 960;
                     var svgTimelineHeight = 200;
                     var svgTimeline = d3.select("body")
                         .append("svg")
-                        .attr("width", svgTimelineWidth - svgTimelineMargin.left - svgTimelineMargin.right)
-                        .attr("height", svgTimelineHeight - svgTimelineMargin.top - svgTimelineMargin.bottom);
+                        .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
+                        .attr("height", svgTimelineHeight + svgTimelineMargin.top + svgTimelineMargin.bottom);
                     var g = svgTimeline.append("g")
                         .attr("transform", "translate(" + svgTimelineMargin.left + "," + svgTimelineMargin.top + ")");
 
@@ -73,8 +73,8 @@
                     g.append("g")
                         .attr("transform", "translate(0," + svgTimelineHeight + ")")
                         .call(d3.axisBottom(xTimeline))
-                        .select(".domain")
-                        .remove();
+                        // .select(".domain")
+                        // .remove();
 
                     g.append("g")
                         .call(d3.axisLeft(yTimeline))
