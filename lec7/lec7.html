@@ -49,8 +49,8 @@
                     }; });
 
                     var svgTimelineMargin = { top: 20, right: 20, bottom: 30, left: 50 };
-                    var svgTimelineWidth = 960;
-                    var svgTimelineHeight = 200;
+                    var svgTimelineWidth = 1200;
+                    var svgTimelineHeight = 150;
                     var svgTimeline = d3.select("body")
                         .append("svg")
                         .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
@@ -71,12 +71,11 @@
                     yTimeline.domain(d3.extent(daily_murder_count, function(d) { return d.value; }));
 
                     g.append("g")
-                        .attr("transform", "translate(0," + svgTimelineHeight + ")")
-                        .call(d3.axisBottom(xTimeline))
-                        // .select(".domain")
-                        // .remove();
+                        .attr("transform", "translate(0, " + (svgTimelineHeight + svgTimelineMargin.bottom / 3) + ")")
+                        .call(d3.axisBottom(xTimeline));
 
                     g.append("g")
+                        .attr("transform", "translate(" + (-svgTimelineMargin.left / 4) +", 0)")
                         .call(d3.axisLeft(yTimeline))
                         .append("text")
                         .attr("fill", "#000")
