@@ -21,7 +21,7 @@
     var all_murder = null;
     var murders = [];
 
-    var createTimeLine = function() {
+    var createTimeline = function() {
         d3.csv("all_murder.csv",
             function (d) {
                 return {
@@ -35,16 +35,61 @@
             },
             function (data) {
                 all_murder = _.sortBy(data, "date");
-                daily_murder_count = d3.nest()
+                daily_murder_count = _.map(d3.nest()
                     .key(function (d) {
-                        return d.date;
+                        return d.date_str;
                     })
                     .rollup(function (v) {
                         return v.length;
                     })
-                    .entries(all_murder);
-            }
-        );
+                    .entries(all_murder),
+                    function (d) { return {
+                        date: d3.timeParse("%m/%d/%Y")(d.key),
+                        value: d.value
+                    }; });
+                var svgTimeline = d3.select("svg"),
+                    margin = {top: 20, right: 20, bottom: 30, left: 50},
+                    width = +svgTimeline.attr("width") - margin.left - margin.right,
+                    height = +svgTimeline.attr("height") - margin.top - margin.bottom,
+                    g = svgTimeline.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+                var xTimeline = d3.scaleTime().rangeRound([0, width]);
+
+                var yTimeline = d3.scaleLinear()
+                    .rangeRound([height, 0]);
+
+                var line = d3.line()
+                    .x(function(d) { return xTimeline(d.date); })
+                    .y(function(d) { return yTimeline(d.close); });
+
+                    xTimeline.domain(d3.extent(daily_murder_count, function(d) { return d.date; }));
+                    yTimeline.domain(d3.extent(daily_murder_count, function(d) { return d.value; }));
+
+                    g.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(xTimeline))
+                        .select(".domain")
+                        .remove();
+
+                    g.append("g")
+                        .call(d3.axisLeft(yTimeline))
+                        .append("text")
+                        .attr("fill", "#000")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", "0.71em")
+                        .attr("text-anchor", "end")
+                        .text("#Murders");
+
+                    g.append("path")
+                        .datum(data)
+                        .attr("fill", "none")
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", line);
+            });
     }();
 
     var createMap = function() {
