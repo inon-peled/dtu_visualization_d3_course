@@ -47,26 +47,31 @@
                         date: d3.timeParse("%m/%d/%Y")(d.key),
                         value: d.value
                     }; });
-                var svgTimeline = d3.select("svg"),
-                    margin = {top: 20, right: 20, bottom: 30, left: 50},
-                    width = +svgTimeline.attr("width") - margin.left - margin.right,
-                    height = +svgTimeline.attr("height") - margin.top - margin.bottom,
-                    g = svgTimeline.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-                var xTimeline = d3.scaleTime().rangeRound([0, width]);
+                    var svgTimelineMargin = { top: 20, right: 20, bottom: 30, left: 50 };
+                    var svgTimelineWidth = 1000;
+                    var svgTimelineHeight = 200;
+                    var svgTimeline = d3.select("body")
+                        .append("svg")
+                        .attr("width", svgTimelineWidth - svgTimelineMargin.left - svgTimelineMargin.right)
+                        .attr("height", svgTimelineHeight - svgTimelineMargin.top - svgTimelineMargin.bottom);
+                    var g = svgTimeline.append("g")
+                        .attr("transform", "translate(" + svgTimelineMargin.left + "," + svgTimelineMargin.top + ")");
 
-                var yTimeline = d3.scaleLinear()
-                    .rangeRound([height, 0]);
+                    var xTimeline = d3.scaleTime()
+                        .rangeRound([0, svgTimelineWidth]);
+                    var yTimeline = d3.scaleLinear()
+                        .rangeRound([svgTimelineHeight, 0]);
 
-                var line = d3.line()
-                    .x(function(d) { return xTimeline(d.date); })
-                    .y(function(d) { return yTimeline(d.close); });
+                    var line = d3.line()
+                        .x(function(d) { return xTimeline(d.date); })
+                        .y(function(d) { return yTimeline(d.value); });
 
                     xTimeline.domain(d3.extent(daily_murder_count, function(d) { return d.date; }));
                     yTimeline.domain(d3.extent(daily_murder_count, function(d) { return d.value; }));
 
                     g.append("g")
-                        .attr("transform", "translate(0," + height + ")")
+                        .attr("transform", "translate(0," + svgTimelineHeight + ")")
                         .call(d3.axisBottom(xTimeline))
                         .select(".domain")
                         .remove();
@@ -82,7 +87,7 @@
                         .text("#Murders");
 
                     g.append("path")
-                        .datum(data)
+                        .datum(daily_murder_count)
                         .attr("fill", "none")
                         .attr("stroke", "steelblue")
                         .attr("stroke-linejoin", "round")
@@ -92,68 +97,68 @@
             });
     }();
 
-    var createMap = function() {
-        var svgMapResizeFactor = 1.5;
-        var svgMapWidth = 600 * svgMapResizeFactor;
-        var svgMapHeight = 400 * svgMapResizeFactor;
-        var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
-
-        var projection = d3.geoMercator()
-            .center([-74.0, 40.7]) // Approximate center point of NYC.
-            .translate([svgMapWidth / 2, svgMapHeight / 2])
-            .scale([100000 * 0.6]);
-
-        var path = d3.geoPath()
-            .projection(projection);
-
-        var svg = d3.select("body")
-            .append("svg")
-            .attr("width", svgMapWidth)
-            .attr("height", svgMapHeight);
-
-        d3.json("boroughs.geojson", function (json) {
-            //Bind data and create one path per GeoJSON feature
-            svg.selectAll("path")
-                .data(json.features)
-                .enter()
-                .append("path")
-                .attr("d", path)
-                .style("fill", function (d, i) {
-                    return boroughColors(i);
-                });
-            d3.csv("murders_2016.csv",
-                function (d) {
-                    return {
-                        "lat": parseFloat(d.Latitude),
-                        "lon": parseFloat(d.Longitude),
-                        "hour": parseInt(d.HR)
-                    };
-                },
-                function (data) {
-                    murders = _.filter(data, function (d) {
-                        return !_.isNaN(d.lat);
-                    });
-                    svg.selectAll("circle")
-                        .data(murders)
-                        .enter()
-                        .append("circle")
-                        .attr("class", "murderLocation")
-                        .attr("cx", function (d) {
-                            return projection([d.lon, d.lat])[0];
-                        })
-                        .attr("cy", function (d) {
-                            return projection([d.lon, d.lat])[1];
-                        })
-                        .attr("r", 0)
-                        .transition()
-                        .duration(400)
-                        .attr("r", 30)
-                        .transition()
-                        .duration(600)
-                        .attr("r", 5);
-                });
-        });
-    }();
+    // var createMap = function() {
+    //     var svgMapResizeFactor = 1.5;
+    //     var svgMapWidth = 600 * svgMapResizeFactor;
+    //     var svgMapHeight = 400 * svgMapResizeFactor;
+    //     var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
+    //
+    //     var projection = d3.geoMercator()
+    //         .center([-74.0, 40.7]) // Approximate center point of NYC.
+    //         .translate([svgMapWidth / 2, svgMapHeight / 2])
+    //         .scale([100000 * 0.6]);
+    //
+    //     var path = d3.geoPath()
+    //         .projection(projection);
+    //
+    //     var svg = d3.select("body")
+    //         .append("svg")
+    //         .attr("width", svgMapWidth)
+    //         .attr("height", svgMapHeight);
+    //
+    //     d3.json("boroughs.geojson", function (json) {
+    //         //Bind data and create one path per GeoJSON feature
+    //         svg.selectAll("path")
+    //             .data(json.features)
+    //             .enter()
+    //             .append("path")
+    //             .attr("d", path)
+    //             .style("fill", function (d, i) {
+    //                 return boroughColors(i);
+    //             });
+    //         d3.csv("murders_2016.csv",
+    //             function (d) {
+    //                 return {
+    //                     "lat": parseFloat(d.Latitude),
+    //                     "lon": parseFloat(d.Longitude),
+    //                     "hour": parseInt(d.HR)
+    //                 };
+    //             },
+    //             function (data) {
+    //                 murders = _.filter(data, function (d) {
+    //                     return !_.isNaN(d.lat);
+    //                 });
+    //                 svg.selectAll("circle")
+    //                     .data(murders)
+    //                     .enter()
+    //                     .append("circle")
+    //                     .attr("class", "murderLocation")
+    //                     .attr("cx", function (d) {
+    //                         return projection([d.lon, d.lat])[0];
+    //                     })
+    //                     .attr("cy", function (d) {
+    //                         return projection([d.lon, d.lat])[1];
+    //                     })
+    //                     .attr("r", 0)
+    //                     .transition()
+    //                     .duration(400)
+    //                     .attr("r", 30)
+    //                     .transition()
+    //                     .duration(600)
+    //                     .attr("r", 5);
+    //             });
+    //     });
+    // }();
     //}();
 </script>
 
