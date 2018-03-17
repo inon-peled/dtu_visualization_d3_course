@@ -17,6 +17,8 @@
 <body>
 <script type="text/javascript">
     // var noGlobalsLec6 = function() { // No global variables
+    var daily_murder_count = null;
+    var all_murder = null;
     var svgResizeFactor = 1.5;
     var svgWiodth = 600 * svgResizeFactor;
     var svgHeight = 400 * svgResizeFactor;
@@ -35,6 +37,28 @@
         .append("svg")
         .attr("width", svgWiodth)
         .attr("height", svgHeight);
+
+    d3.csv("all_murder.csv",
+        function (d) {
+            return {
+                lat: parseFloat(d.Latitude),
+                lon: parseFloat(d.Longitude),
+                hour: parseInt(d.CMPLNT_FR_TM),
+                borough: d.BORO_NM,
+                date_str: d.RPT_DT,
+                date: new Date(d.RPT_DT)
+            };
+        },
+        function (data) {
+            all_murder = _.sortBy(data, "date");
+            daily_murder_count = d3.nest()
+                .key(function(d) { return d.date; })
+                .rollup(function(v) {
+                    return v.length;
+                })
+                .entries(all_murder);
+        }
+    );
 
     d3.json("boroughs.geojson", function (json) {
         //Bind data and create one path per GeoJSON feature
