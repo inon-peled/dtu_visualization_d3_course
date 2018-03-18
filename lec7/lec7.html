@@ -6,6 +6,22 @@
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
     <style type="text/css">
+        .animateButton rect {
+            fill: black;
+            opacity: 0.2;
+            rx: 5;
+            ry: 5;
+        }
+
+        .animateButton text {
+            fill: black;
+            font-size: 18px;
+            text-anchor: middle;
+        }
+        .animateButton:hover rect,
+        .animateButton:hover text {
+            fill: blue;
+        }
         .murderLocation {
             fill: lightgrey;
             stroke: black;
@@ -212,6 +228,22 @@
             .attr("id", "svgMap")
             .attr("width", svgMapWidth)
             .attr("height", svgMapHeight);
+
+        var animateButton = svgMap.append("g")
+            .attr("class", "animateButton")
+            .attr("transform", "translate(" + (svgMapWidth - 110) + "," + (svgMapHeight - 70) + ")");
+
+        animateButton.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 80)
+            .attr("height", 30);
+
+        animateButton.append("text")
+            .attr("id", "animateText")
+            .attr("x", 40)
+            .attr("y", 20)
+            .text("Animate!");
 
         d3.json("boroughs.geojson", function (json) {
             //Bind data and create one path per GeoJSON feature
