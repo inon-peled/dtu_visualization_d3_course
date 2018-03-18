@@ -23,6 +23,7 @@ Note that we display only murders for which the date, hour, and location are all
     var daily_murder_count = null;
     var all_murder = null;
     var projection;
+    var svgMapWidth;
 
     var dateToNiceStr = function(date) {
         var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -103,9 +104,9 @@ Note that we display only murders for which the date, hour, and location are all
                     });
                 createAllCircles();
 
-                var svgTimelineMargin = {top: 80, right: 20, bottom: 30, left: 50};
+                var svgTimelineMargin = {top: 0, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
-                var svgTimelineHeight = 160;
+                var svgTimelineHeight = 120;
                 var svgTimeline = d3.select("body")
                     .append("svg")
                     .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
@@ -113,10 +114,11 @@ Note that we display only murders for which the date, hour, and location are all
                 var g = svgTimeline.append("g")
                     .attr("transform", "translate(" + svgTimelineMargin.left + "," + svgTimelineMargin.top + ")");
 
-                svgTimeline.append("text")
+                d3.select("#svgMap")
+                    .append("text")
                     .attr("id", "timelineTitle")
-                    .attr("x", svgTimelineWidth / 2 - svgTimelineMargin.left - svgTimelineMargin.right)
-                    .attr("y", 20)
+                    .attr("x", svgMapWidth / 2 - 100)
+                    .attr("y", 30)
                     .style("font-size", 24)
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                         " (" + all_murder.length + " Murders)");
@@ -193,8 +195,9 @@ Note that we display only murders for which the date, hour, and location are all
 
     var createMap = function() {
         var svgMapResizeFactor = 1.5;
-        var svgMapWidth = 800 * svgMapResizeFactor;
-        var svgMapHeight = 400 * svgMapResizeFactor;
+        var svgMapTopMargin = 120;
+        svgMapWidth = 800 * svgMapResizeFactor;
+        var svgMapHeight = 400 * svgMapResizeFactor + svgMapTopMargin;
         var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
         projection = d3.geoMercator()
