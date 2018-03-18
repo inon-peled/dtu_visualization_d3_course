@@ -200,6 +200,7 @@
 
                 // create svg group with class brush and call brush on it
                 var brushGroupTimeline = svgTimeline.append("g")
+                    .attr("id", "brushGroupTimeline")
                     .attr("class", "brush")
                     .call(brushTimeline);
 
@@ -244,6 +245,13 @@
             .attr("x", 40)
             .attr("y", 20)
             .text("Animate!");
+
+        animateButton.on("click", function () {
+            if (d3.select("#brushGroupTimeline").select(".selection").attr("width")) {
+                var currentX = d3.select("#brushGroupTimeline").select(".selection").attr("x");
+                d3.select("#brushGroupTimeline").select(".selection").attr("x", parseInt(currentX) + 1);
+            }
+        });
 
         d3.json("boroughs.geojson", function (json) {
             //Bind data and create one path per GeoJSON feature
