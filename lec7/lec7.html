@@ -115,8 +115,9 @@ Note that we display only murders for which the date, hour, and location are all
 
                 svgTimeline.append("text")
                     .attr("id", "timelineTitle")
-                    .attr("x", (svgTimelineWidth - svgTimelineMargin.left - svgTimelineMargin.right) / 2)
+                    .attr("x", svgTimelineWidth / 2 - svgTimelineMargin.left - svgTimelineMargin.right)
                     .attr("y", 20)
+                    .style("font-size", 24)
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                         " (" + all_murder.length + " Murders)");
 
