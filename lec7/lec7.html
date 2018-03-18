@@ -21,6 +21,33 @@
     var all_murder = null;
     var projection;
 
+    var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
+        var murdersInBrushedTimeline = brushSelection === null ?
+            all_murder :
+            _.filter(all_murder, function (d) {
+                var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
+                var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
+                return (d.date >= fromDate) && (d.date <= toDate);
+            });
+        d3.select("#svgMap")
+            .selectAll("circle")
+            .remove()
+            .data(murdersInBrushedTimeline)
+            .enter()
+            .append("circle")
+            .attr("class", "murderLocation nonBrushed")
+            .attr("cx", function (d) {
+                return projection([d.lon, d.lat])[0];
+            })
+            .attr("cy", function (d) {
+                return projection([d.lon, d.lat])[1];
+            })
+            .attr("r", 0)
+            .transition()
+            .ease(d3.easeLinear)
+            .attr("r", 4);
+    };
+
     var createTimeline = function () {
         d3.csv("all_murder.csv",
             function (d) {
@@ -34,7 +61,7 @@
                 };
             },
             function (data) {
-                all_murder = _.sortBy(data, "date");
+                all_murder = _(data).filter(function (d) { return !_.isNaN(d.lat); }).sortBy("date").value();
                 daily_murder_count = _.map(d3.nest()
                         .key(function (d) {
                             return d.date_str;
@@ -49,6 +76,7 @@
                             value: d.value
                         };
                     });
+                placeCircles(null);
 
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
@@ -104,41 +132,18 @@
                     .attr("stroke-width", 1.5)
                     .attr("d", line);
 
-                var placeCircles = function (brushSelection) {
-                    var murdersInBrushedTimeline = brushSelection === null ?
-                        all_murder :
-                        _.filter(all_murder, function (d) {
-                            var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
-                            var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
-                            return (d.date >= fromDate) && (d.date <= toDate);
-                        });
-                    d3.select("#svgMap")
-                        .selectAll("circle")
-                        .data(murdersInBrushedTimeline)
-                        .enter()
-                        .append("circle")
-                        .attr("class", "murderLocation nonBrushed")
-                        .attr("cx", function (d) {
-                            return projection([d.lon, d.lat])[0];
-                        })
-                        .attr("cy", function (d) {
-                            return projection([d.lon, d.lat])[1];
-                        })
-                        .attr("r", 4);
-                };
-
                 var brushTimeline = d3.brushX()
                     .extent([
                         [svgTimelineMargin.left, svgTimelineMargin.top - 3],
                         [svgTimelineWidth + svgTimelineMargin.left, svgTimelineHeight + svgTimelineMargin.top + 3]])
                     .on("brush", function () {
                         if (d3.event.selection != null) {
-                            console.log(placeCircles(d3.brushSelection(this)));
+                            placeCircles(d3.brushSelection(this), xTimeline, svgTimelineMargin);
                         }
                     })
                     .on("end", function () {
                         if (d3.brushSelection(this) === null) {
-                            console.log(placeCircles(null));
+                            placeCircles(null);
                         }
                     });
 
