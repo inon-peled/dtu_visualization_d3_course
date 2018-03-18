@@ -42,6 +42,7 @@
     var svgMapWidth;
     var xTimeline;
     var svgTimelineMargin;
+    var svgTimelineWidth = 1200;
 
     var dateToNiceStr = function(date) {
         var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -123,7 +124,6 @@
                 createAllCircles();
 
                 svgTimelineMargin = {top: 10, right: 20, bottom: 30, left: 50};
-                var svgTimelineWidth = 1200;
                 var svgTimelineHeight = 120;
                 var svgTimeline = d3.select("body")
                     .append("svg")
@@ -251,9 +251,13 @@
         animateButton.on("click", function () {
             var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
             if (selectionWidth) {
-                var newX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
-                d3.select("#brushGroupTimeline").select(".selection").attr("x", newX);
-                placeCircles([newX, newX + parseInt(selectionWidth)]);
+                var newStartX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
+                var newEndX = newStartX + parseInt(selectionWidth);
+                console.log(newStartX, newEndX)
+                if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
+                    d3.select("#brushGroupTimeline").select(".selection").attr("x", newStartX);
+                    placeCircles([newStartX, newEndX]);
+                }
             }
         });
 
