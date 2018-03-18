@@ -21,18 +21,10 @@
     var all_murder = null;
     var projection;
 
-    var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
-        var murdersInBrushedTimeline = brushSelection === null ?
-            all_murder :
-            _.filter(all_murder, function (d) {
-                var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
-                var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
-                return (d.date >= fromDate) && (d.date <= toDate);
-            });
+    var createAllCircles = function() {
         d3.select("#svgMap")
             .selectAll("circle")
-            .remove()
-            .data(murdersInBrushedTimeline)
+            .data(all_murder, function (d) { return d.complnt_num; })
             .enter()
             .append("circle")
             .attr("class", "murderLocation nonBrushed")
@@ -42,16 +34,27 @@
             .attr("cy", function (d) {
                 return projection([d.lon, d.lat])[1];
             })
-            .attr("r", 0)
-            .transition()
-            .ease(d3.easeLinear)
             .attr("r", 4);
+    };
+
+    var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
+        var murdersInBrushedTimeline = brushSelection === null ?
+            _.map(all_murder, function (d) { return _.assign(d, { selected: true });}) :
+            _.map(all_murder, function (d) {
+                var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
+                var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
+                return _.assign(d, { selected: (d.date >= fromDate) && (d.date <= toDate) });
+            });
+        d3.selectAll(".murderLocation")
+            .data(murdersInBrushedTimeline, function (d) { return d.murder_id; })
+            .attr("r", function (d) { return d.selected ? 4 : 0 });
     };
 
     var createTimeline = function () {
         d3.csv("all_murder.csv",
             function (d) {
                 return {
+                    murder_id: d.INDEX,
                     lat: parseFloat(d.Latitude),
                     lon: parseFloat(d.Longitude),
                     hour: parseInt(d.CMPLNT_FR_TM),
@@ -76,7 +79,7 @@
                             value: d.value
                         };
                     });
-                placeCircles(null);
+                createAllCircles();
 
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
