@@ -115,17 +115,20 @@
                             console.log(xTimeline.invert(d3.brushSelection(this)[0]))
                             console.log(xTimeline.invert(d3.brushSelection(this)[1]))
                         }
+                    })
+                    .on("end", function () {
+                        console.log("End")
+                        console.log(d3.brushSelection(this) === null)
                     });
 
                 // create svg group with class brush and call brush on it
-                var brushgTimeline = svgTimeline.append("g")
+                var brushGroupTimeline = svgTimeline.append("g")
                     .attr("class", "brush")
                     .call(brushTimeline);
 
                 // set brush extent to rect and define objects height
-                brushgTimeline.selectAll("rect")
+                brushGroupTimeline.selectAll("rect")
                     .attr("height", svgTimelineHeight);
-
             });
     }();
 
