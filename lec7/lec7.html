@@ -40,6 +40,8 @@
     var all_murder = null;
     var projection;
     var svgMapWidth;
+    var xTimeline;
+    var svgTimelineMargin;
 
     var dateToNiceStr = function(date) {
         var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -68,7 +70,7 @@
         placeCircles(null);
     };
 
-    var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
+    var placeCircles = function (brushSelection) {
         var fromDate = brushSelection === null ?
             _.first(all_murder).date :
             xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
@@ -120,7 +122,7 @@
                     });
                 createAllCircles();
 
-                var svgTimelineMargin = {top: 10, right: 20, bottom: 30, left: 50};
+                svgTimelineMargin = {top: 10, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
                 var svgTimelineHeight = 120;
                 var svgTimeline = d3.select("body")
@@ -139,7 +141,7 @@
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                         " (" + all_murder.length + " Murders)");
 
-                var xTimeline = d3.scaleTime()
+                xTimeline = d3.scaleTime()
                     .rangeRound([0, svgTimelineWidth]);
                 var yTimeline = d3.scaleLinear()
                     .rangeRound([svgTimelineHeight, 0]);
@@ -247,9 +249,12 @@
             .text("Animate!");
 
         animateButton.on("click", function () {
-            if (d3.select("#brushGroupTimeline").select(".selection").attr("width")) {
-                var currentX = d3.select("#brushGroupTimeline").select(".selection").attr("x");
-                d3.select("#brushGroupTimeline").select(".selection").attr("x", parseInt(currentX) + 1);
+            var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
+            console.log(selectionWidth)
+            if (selectionWidth) {
+                var newX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
+                d3.select("#brushGroupTimeline").select(".selection").attr("x", newX);
+                placeCircles([newX, newX + parseInt(selectionWidth)]);
             }
         });
 
