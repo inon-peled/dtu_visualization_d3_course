@@ -112,8 +112,8 @@
                     .on("brush", function () {
                         if (d3.event.selection != null) {
                             console.log(d3.brushSelection(this));
-                            console.log(xTimeline.invert(d3.brushSelection(this)[0]))
-                            console.log(xTimeline.invert(d3.brushSelection(this)[1]))
+                            console.log(xTimeline.invert(d3.brushSelection(this)[0] - svgTimelineMargin.left))
+                            console.log(xTimeline.invert(d3.brushSelection(this)[1] - svgTimelineMargin.left))
                         }
                     })
                     .on("end", function () {
