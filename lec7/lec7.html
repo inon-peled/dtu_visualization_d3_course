@@ -254,7 +254,7 @@
         var step = function() {
             var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
             if (selectionWidth) {
-                var newStartX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
+                var newStartX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 3;
                 var newEndX = newStartX + parseInt(selectionWidth);
                 // console.log(newStartX, newEndX);
                 if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
@@ -262,7 +262,7 @@
                         .select(".selection")
                         .attr("x", newStartX);
                     placeCircles([newStartX, newEndX], function() {
-                        setTimeout(step, 250);
+                        setTimeout(step, 100);
                     });
                 }
             }
