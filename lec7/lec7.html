@@ -15,12 +15,21 @@
     </style>
 </head>
 <body>
+
+Note that we display only murders for which the date, hour, and location are all known.
+
 <script type="text/javascript">
     // var noGlobalsLec7 = function() { // No global variables
     var daily_murder_count = null;
     var all_murder = null;
     var projection;
-    var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    var dateToNiceStr = function(date) {
+        var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        return date.getDate() +
+            '-' + MONTH_NAMES[date.getMonth()] +
+            "-" + date.getFullYear();
+    };
 
     var createAllCircles = function() {
         d3.select("#svgMap")
@@ -35,25 +44,28 @@
             .attr("cy", function (d) {
                 return projection([d.lon, d.lat])[1];
             })
-            .attr("r", 4)
             .append("title")
-            .text(function(d) { return d.date.getDate() +
-                '-' + MONTH_NAMES[d.date.getMonth()] +
-                "-" + d.date.getFullYear() +
+            .text(function(d) { return dateToNiceStr(d.date) +
                 ", " + d.hour + " hr, " +
                 _.startCase(_.toLower(d.borough)); });
+        placeCircles(null);
     };
 
     var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
-        var murdersInBrushedTimeline = brushSelection === null ?
-            _.map(all_murder, function (d) { return _.assign(d, { selected: true });}) :
-            _.map(all_murder, function (d) {
-                var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
-                var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
-                return _.assign(d, { selected: (d.date >= fromDate) && (d.date <= toDate) });
-            });
+        var fromDate = brushSelection === null ?
+            _.first(all_murder).date :
+            xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
+        var toDate = brushSelection === null ?
+            _.last(all_murder).date :
+            xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
+        var murdersSelected = _.map(all_murder, function (d) {
+            return _.assign(d, { selected: (d.date >= fromDate) && (d.date <= toDate) });
+        });
+        d3.select("#timelineTitle")
+            .text(dateToNiceStr(fromDate) + " to " + dateToNiceStr(toDate) +
+                " (" + _.filter(murdersSelected, function (d) { return d.selected === true; }).length + " Murders)");
         d3.selectAll(".murderLocation")
-            .data(murdersInBrushedTimeline, function (d) { return d.murder_id; })
+            .data(murdersSelected, function (d) { return d.murder_id; })
             .attr("r", function (d) { return d.selected ? 4 : 0 });
     };
 
@@ -91,15 +103,22 @@
                     });
                 createAllCircles();
 
-                var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
+                var svgTimelineMargin = {top: 80, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
-                var svgTimelineHeight = 150;
+                var svgTimelineHeight = 160;
                 var svgTimeline = d3.select("body")
                     .append("svg")
                     .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
                     .attr("height", svgTimelineHeight + svgTimelineMargin.top + svgTimelineMargin.bottom);
                 var g = svgTimeline.append("g")
                     .attr("transform", "translate(" + svgTimelineMargin.left + "," + svgTimelineMargin.top + ")");
+
+                svgTimeline.append("text")
+                    .attr("id", "timelineTitle")
+                    .attr("x", (svgTimelineWidth - svgTimelineMargin.left - svgTimelineMargin.right) / 2)
+                    .attr("y", 20)
+                    .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
+                        " (" + all_murder.length + " Murders)");
 
                 var xTimeline = d3.scaleTime()
                     .rangeRound([0, svgTimelineWidth]);
@@ -173,7 +192,7 @@
 
     var createMap = function() {
         var svgMapResizeFactor = 1.5;
-        var svgMapWidth = 600 * svgMapResizeFactor;
+        var svgMapWidth = 800 * svgMapResizeFactor;
         var svgMapHeight = 400 * svgMapResizeFactor;
         var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
