@@ -16,7 +16,7 @@
 </head>
 <body>
 
-Note that we display only murders for which the date, hour, and location are all known.<br/>
+<p>Note that we display only murders for which the date, hour, and location are all known.</p>
 
 <script type="text/javascript">
     // var noGlobalsLec7 = function() { // No global variables
@@ -104,7 +104,7 @@ Note that we display only murders for which the date, hour, and location are all
                     });
                 createAllCircles();
 
-                var svgTimelineMargin = {top: 0, right: 20, bottom: 30, left: 50};
+                var svgTimelineMargin = {top: 10, right: 20, bottom: 30, left: 50};
                 var svgTimelineWidth = 1200;
                 var svgTimelineHeight = 120;
                 var svgTimeline = d3.select("body")
@@ -117,8 +117,8 @@ Note that we display only murders for which the date, hour, and location are all
                 d3.select("#svgMap")
                     .append("text")
                     .attr("id", "timelineTitle")
-                    .attr("x", svgMapWidth / 2 - 100)
-                    .attr("y", 30)
+                    .attr("x", svgMapWidth / 12)
+                    .attr("y", 75)
                     .style("font-size", 24)
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                         " (" + all_murder.length + " Murders)");
@@ -195,9 +195,8 @@ Note that we display only murders for which the date, hour, and location are all
 
     var createMap = function() {
         var svgMapResizeFactor = 1.5;
-        var svgMapTopMargin = 120;
         svgMapWidth = 800 * svgMapResizeFactor;
-        var svgMapHeight = 400 * svgMapResizeFactor + svgMapTopMargin;
+        var svgMapHeight = 400 * svgMapResizeFactor;
         var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
         projection = d3.geoMercator()
