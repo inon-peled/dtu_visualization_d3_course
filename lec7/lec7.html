@@ -71,7 +71,7 @@
         placeCircles(null);
     };
 
-    var placeCircles = function (brushSelection) {
+    var placeCircles = function (brushSelection, callback) {
         var fromDate = brushSelection === null ?
             _.first(all_murder).date :
             xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
@@ -87,6 +87,9 @@
         d3.selectAll(".murderLocation")
             .data(murdersSelected, function (d) { return d.murder_id; })
             .attr("r", function (d) { return d.selected ? 4 : 0 });
+        if (callback) {
+            callback();
+        }
     };
 
     var createTimeline = function () {
@@ -248,18 +251,24 @@
             .attr("y", 20)
             .text("Animate!");
 
-        animateButton.on("click", function () {
+        var step = function() {
             var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
             if (selectionWidth) {
                 var newStartX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
                 var newEndX = newStartX + parseInt(selectionWidth);
-                console.log(newStartX, newEndX)
+                // console.log(newStartX, newEndX);
                 if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
-                    d3.select("#brushGroupTimeline").select(".selection").attr("x", newStartX);
-                    placeCircles([newStartX, newEndX]);
+                    d3.select("#brushGroupTimeline")
+                        .select(".selection")
+                        .attr("x", newStartX);
+                    placeCircles([newStartX, newEndX], function() {
+                        setTimeout(step, 250);
+                    });
                 }
             }
-        });
+        };
+
+        animateButton.on("click", step);
 
         d3.json("boroughs.geojson", function (json) {
             //Bind data and create one path per GeoJSON feature
