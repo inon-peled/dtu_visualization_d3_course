@@ -250,7 +250,6 @@
 
         animateButton.on("click", function () {
             var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
-            console.log(selectionWidth)
             if (selectionWidth) {
                 var newX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 1;
                 d3.select("#brushGroupTimeline").select(".selection").attr("x", newX);
