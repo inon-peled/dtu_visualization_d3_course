@@ -20,11 +20,12 @@
     var daily_murder_count = null;
     var all_murder = null;
     var projection;
+    var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
     var createAllCircles = function() {
         d3.select("#svgMap")
             .selectAll("circle")
-            .data(all_murder, function (d) { return d.complnt_num; })
+            .data(all_murder, function (d) { return d.murder_id; })
             .enter()
             .append("circle")
             .attr("class", "murderLocation nonBrushed")
@@ -34,7 +35,13 @@
             .attr("cy", function (d) {
                 return projection([d.lon, d.lat])[1];
             })
-            .attr("r", 4);
+            .attr("r", 4)
+            .append("title")
+            .text(function(d) { return d.date.getDate() +
+                '-' + MONTH_NAMES[d.date.getMonth()] +
+                "-" + d.date.getFullYear() +
+                ", " + d.hour + " hr, " +
+                _.startCase(_.toLower(d.borough)); });
     };
 
     var placeCircles = function (brushSelection, xTimeline, svgTimelineMargin) {
@@ -64,7 +71,10 @@
                 };
             },
             function (data) {
-                all_murder = _(data).filter(function (d) { return !_.isNaN(d.lat); }).sortBy("date").value();
+                all_murder = _(data)
+                    .filter(function (d) { return !_.some(_.map(_.values(d), _.isNaN)) })
+                    .sortBy("date")
+                    .value();
                 daily_murder_count = _.map(d3.nest()
                         .key(function (d) {
                             return d.date_str;
