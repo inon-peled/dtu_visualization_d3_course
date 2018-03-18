@@ -21,6 +21,7 @@
     var all_murder = null;
     var murders = [];
 
+
     var createTimeline = function () {
         d3.csv("all_murder.csv",
             function (d) {
@@ -105,20 +106,27 @@
                     .attr("d", line);
 
                 // define brush control element and its events
+                var murdersInBrushedTimeline = function (brushSelection) {
+                    return brushSelection === null ? all_murder : _.filter(all_murder, function (d) {
+                        var fromDate = xTimeline.invert(brushSelection[0] - svgTimelineMargin.left);
+                        var toDate = xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
+                        return (d.date >= fromDate) && (d.date <= toDate);
+                    });
+                };
+
                 var brushTimeline = d3.brushX()
                     .extent([
                         [svgTimelineMargin.left, svgTimelineMargin.top - 3],
                         [svgTimelineWidth + svgTimelineMargin.left, svgTimelineHeight + svgTimelineMargin.top + 3]])
                     .on("brush", function () {
                         if (d3.event.selection != null) {
-                            console.log(d3.brushSelection(this));
-                            console.log(xTimeline.invert(d3.brushSelection(this)[0] - svgTimelineMargin.left))
-                            console.log(xTimeline.invert(d3.brushSelection(this)[1] - svgTimelineMargin.left))
+                            console.log(murdersInBrushedTimeline(d3.brushSelection(this)));
                         }
                     })
                     .on("end", function () {
-                        console.log("End")
-                        console.log(d3.brushSelection(this) === null)
+                        if (d3.brushSelection(this) === null) {
+                            console.log(murdersInBrushedTimeline(null));
+                        }
                     });
 
                 // create svg group with class brush and call brush on it
