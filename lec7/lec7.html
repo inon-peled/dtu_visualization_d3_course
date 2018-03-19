@@ -237,13 +237,16 @@
                     var newStartX = parseInt(brushGroupTimeline.select(".selection").attr("x")) + stepSize;
                     var newEndX = newStartX + selectionWidth;
                     if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
-                        brushGroupTimeline.select(".selection").attr("x", newStartX);
-                        placeCircles([newStartX, newEndX], function() {
-                            setTimeout(step, 150);
-                        });
+                        brushGroupTimeline.select(".selection")
+                            .transition()
+                            .ease(d3.easeLinear)
+                            .attr("x", newStartX)
+                            .on("end", function() {
+                                placeCircles([newStartX, newEndX], step);
+                            });
                     } else {
                         var finalStartX = svgTimelineWidth + svgTimelineMargin.left - selectionWidth;
-                        brushGroupTimeline.select(".selection").attr("x", finalStartX);
+                        brushGroupTimeline.select(".selection").transition().attr("x", finalStartX);
                         placeCircles([finalStartX, finalStartX + selectionWidth]);
                     }
                 };
