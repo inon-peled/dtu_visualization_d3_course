@@ -367,7 +367,7 @@
             .attr("y", barplotAxisPadding / 2)
             .attr("text-anchor", "middle")
             .style("font-size", "22px")
-            .text("Hourly Count, 0 Selected");
+            .text("Hourly Count");
         svgBarplot.append("text")
             .attr("class", "axisLabel")
             .attr("transform", "rotate(-90)")
@@ -391,7 +391,7 @@
                 .value();
             var perHourArray = Array.apply(null, Array(24)).map(Number.prototype.valueOf, 0);
             for (i = 0; i < selectedHours.length ; i++) {
-                perHourArray[i] = selectedHours[i];
+                perHourArray[selectedHours[i]] += 1;
             }
             console.log(selectedHours);
             yScale.domain([0, d3.max(perHourArray)]);
@@ -413,11 +413,6 @@
                 .duration(100)
                 .ease(d3.easeLinear)
                 .call(yAxis);
-            d3.select("#barplotTitle")
-                .transition()
-                .duration(100)
-                .ease(d3.easeLinear)
-                .text("Hourly Count, " + _.sum(perHourArray) + " Selected");
         };
     };
 </script>
