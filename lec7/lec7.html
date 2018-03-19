@@ -305,7 +305,9 @@
                 .attr("d", path)
                 .style("fill", function (d, i) {
                     return boroughColors(i);
-                });
+                })
+                .append("title")
+                .text(function (d) { return d.properties.BoroName; });
             createBarPlot();
             createTimeline();
         });
