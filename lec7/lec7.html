@@ -45,7 +45,7 @@
     var xTimeline;
     var svgTimelineMargin;
     var svgTimeline;
-    var svgTimelineWidth = 1200;
+    var svgTimelineWidth = 1700;
     var svgTimelineHeight = 120;
     var updateBarplot;
 
@@ -155,7 +155,7 @@
                 d3.select("#svgMap")
                     .append("text")
                     .attr("id", "timelineTitle")
-                    .attr("x", svgMapWidth / 12)
+                    .attr("x", svgMapWidth / 20)
                     .attr("y", 110)
                     .style("font-size", 24)
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
@@ -278,7 +278,7 @@
 
     var createMap = function () {
         var svgMapResizeFactor = 1.5;
-        svgMapWidth = 800 * svgMapResizeFactor;
+        svgMapWidth = 700 * svgMapResizeFactor;
         var svgMapHeight = 400 * svgMapResizeFactor;
         var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -315,7 +315,7 @@
 
     var createBarPlot = function () {
         var barplotAxisPadding = 40;
-        var barplotSvgWidth = 800;
+        var barplotSvgWidth = 700;
         var barplotSvgHeight = 500;
 
         var xScale = d3
