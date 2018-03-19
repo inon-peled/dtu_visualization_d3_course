@@ -42,7 +42,9 @@
     var svgMapWidth;
     var xTimeline;
     var svgTimelineMargin;
+    var svgTimeline;
     var svgTimelineWidth = 1200;
+    var svgTimelineHeight = 120;
 
     var dateToNiceStr = function(date) {
         var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -126,9 +128,8 @@
                     });
                 createAllCircles();
 
-                svgTimelineMargin = {top: 10, right: 20, bottom: 30, left: 50};
-                var svgTimelineHeight = 120;
-                var svgTimeline = d3.select("body")
+                svgTimelineMargin = {top: 60, right: 20, bottom: 30, left: 50};
+                svgTimeline = d3.select("body")
                     .append("svg")
                     .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
                     .attr("height", svgTimelineHeight + svgTimelineMargin.top + svgTimelineMargin.bottom);
@@ -212,6 +213,47 @@
                 // set brush extent to rect and define objects height
                 brushGroupTimeline.selectAll("rect")
                     .attr("height", svgTimelineHeight);
+
+                // Animate
+                var animateButton = svgTimeline.append("g")
+                    .attr("class", "animateButton")
+                    .attr("transform", "translate(" + (svgTimelineWidth / 2) + "," + 0 + ")");
+
+                animateButton.append("rect")
+                    .attr("x", 0)
+                    .attr("y", 0)
+                    .attr("width", 80)
+                    .attr("height", 30);
+
+                animateButton.append("text")
+                    .attr("id", "animateText")
+                    .attr("x", 40)
+                    .attr("y", 20)
+                    .text("Animate!");
+
+                var stepSize = 30;
+                var step = function() {
+                    var selectionWidth = parseInt(brushGroupTimeline.select(".selection").attr("width"));
+                    var newStartX = parseInt(brushGroupTimeline.select(".selection").attr("x")) + stepSize;
+                    var newEndX = newStartX + selectionWidth;
+                    if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
+                        brushGroupTimeline.select(".selection").attr("x", newStartX);
+                        placeCircles([newStartX, newEndX], function() {
+                            setTimeout(step, 150);
+                        });
+                    } else {
+                        var finalStartX = svgTimelineWidth + svgTimelineMargin.left - selectionWidth;
+                        brushGroupTimeline.select(".selection").attr("x", finalStartX);
+                        placeCircles([finalStartX, finalStartX + selectionWidth]);
+                    }
+                };
+
+                animateButton.on("click", function() {
+                    brushGroupTimeline.select(".selection").attr("x", 0);
+                    brushGroupTimeline.select(".selection").attr("width", stepSize * 2);
+                    step();
+                });
+
             });
     };
 
@@ -234,41 +276,6 @@
             .attr("id", "svgMap")
             .attr("width", svgMapWidth)
             .attr("height", svgMapHeight);
-
-        var animateButton = svgMap.append("g")
-            .attr("class", "animateButton")
-            .attr("transform", "translate(" + (svgMapWidth - 110) + "," + (svgMapHeight - 70) + ")");
-
-        animateButton.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 80)
-            .attr("height", 30);
-
-        animateButton.append("text")
-            .attr("id", "animateText")
-            .attr("x", 40)
-            .attr("y", 20)
-            .text("Animate!");
-
-        var step = function() {
-            var selectionWidth = d3.select("#brushGroupTimeline").select(".selection").attr("width");
-            if (selectionWidth) {
-                var newStartX = parseInt(d3.select("#brushGroupTimeline").select(".selection").attr("x")) + 3;
-                var newEndX = newStartX + parseInt(selectionWidth);
-                // console.log(newStartX, newEndX);
-                if (newEndX <= svgTimelineWidth + svgTimelineMargin.left) {
-                    d3.select("#brushGroupTimeline")
-                        .select(".selection")
-                        .attr("x", newStartX);
-                    placeCircles([newStartX, newEndX], function() {
-                        setTimeout(step, 100);
-                    });
-                }
-            }
-        };
-
-        animateButton.on("click", step);
 
         d3.json("boroughs.geojson", function (json) {
             //Bind data and create one path per GeoJSON feature
