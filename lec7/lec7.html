@@ -400,7 +400,6 @@
                 .selectAll(".bar")
                 .data(perHourArray)
                 .transition()
-                .duration(100)
                 .ease(d3.easeLinear)
                 .attr("y", function (d) {
                     return yScale(d);
@@ -411,7 +410,6 @@
                 .attr("fill", "red");
             svgBarplot.select(".yAxis")
                 .transition()
-                .duration(100)
                 .ease(d3.easeLinear)
                 .call(yAxis);
         };
