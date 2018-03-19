@@ -6,6 +6,9 @@
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
     <style type="text/css">
+        #timelineTitle {
+            font-size: 24px;
+        }
         .boroughNameLabel {
             text-anchor: middle;
             /*text-shadow: -1px 0 lightgrey, 0 1px lightgrey, 1px 0 lightgrey, 0 -1px lightgrey;*/
@@ -47,8 +50,11 @@
 </head>
 <body>
 
-<p>We display only murders for which the date, hour, and location are all known.</p>
-<p>Hover over any circle for more information about the corresponding murder.</p>
+<p>
+    We display only murders for which the date, hour, and location are all known.
+    Hover over any circle for more information about the corresponding murder.
+    Press animate for a sliding window over all available dates.
+</p>
 
 <script type="text/javascript">
     // var noGlobalsLec7 = function() { // No global variables
