@@ -187,7 +187,7 @@
             var perHourCount = murderPerHour();
             var perHourArray = [];
             for (i = 0; i < 24; i++) {
-                perHourArray[i] = perHourCount[i];
+                perHourArray[i] = selectedHours[i];
             }
             yScale.domain([0, d3.max(perHourArray)]);
             svgBarplot

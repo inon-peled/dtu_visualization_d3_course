@@ -385,15 +385,15 @@
             .text("Hour");
 
         updateBarplot = function (murdersSelected) {
-            perHourCount = _(murdersSelected)
+            selectedHours = _(murdersSelected)
                 .filter("selected")
                 .map("hour")
                 .value();
-            console.log(perHourCount);
-            var perHourArray = [];
-            for (i = 0; i < 24; i++) {
-                perHourArray[i] = perHourCount[i];
+            var perHourArray = Array.apply(null, Array(24)).map(Number.prototype.valueOf, 0);
+            for (i = 0; i < selectedHours.length ; i++) {
+                perHourArray[i] = selectedHours[i];
             }
+            console.log(selectedHours);
             yScale.domain([0, d3.max(perHourArray)]);
             svgBarplot
                 .selectAll(".bar")
