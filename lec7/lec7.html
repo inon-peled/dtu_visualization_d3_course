@@ -18,10 +18,12 @@
             font-size: 18px;
             text-anchor: middle;
         }
+
         .animateButton:hover rect,
         .animateButton:hover text {
             fill: blue;
         }
+
         .murderLocation {
             fill: lightgrey;
             stroke: black;
@@ -45,18 +47,21 @@
     var svgTimeline;
     var svgTimelineWidth = 1200;
     var svgTimelineHeight = 120;
+    var updateBarplot;
 
-    var dateToNiceStr = function(date) {
+    var dateToNiceStr = function (date) {
         var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
         return date.getDate() +
             '-' + MONTH_NAMES[date.getMonth()] +
             "-" + date.getFullYear();
     };
 
-    var createAllCircles = function() {
+    var createAllCircles = function () {
         d3.select("#svgMap")
             .selectAll("circle")
-            .data(all_murder, function (d) { return d.murder_id; })
+            .data(all_murder, function (d) {
+                return d.murder_id;
+            })
             .enter()
             .append("circle")
             .attr("class", "murderLocation nonBrushed")
@@ -67,9 +72,11 @@
                 return projection([d.lon, d.lat])[1];
             })
             .append("title")
-            .text(function(d) { return dateToNiceStr(d.date) +
-                ", " + d.hour + " hr, " +
-                _.startCase(_.toLower(d.borough)); });
+            .text(function (d) {
+                return dateToNiceStr(d.date) +
+                    ", " + d.hour + " hr, " +
+                    _.startCase(_.toLower(d.borough));
+            });
         placeCircles(null);
     };
 
@@ -81,14 +88,21 @@
             _.last(all_murder).date :
             xTimeline.invert(brushSelection[1] - svgTimelineMargin.left);
         var murdersSelected = _.map(all_murder, function (d) {
-            return _.assign(d, { selected: (d.date >= fromDate) && (d.date <= toDate) });
+            return _.assign(d, {selected: (d.date >= fromDate) && (d.date <= toDate)});
         });
         d3.select("#timelineTitle")
             .text(dateToNiceStr(fromDate) + " to " + dateToNiceStr(toDate) +
-                " (" + _.filter(murdersSelected, function (d) { return d.selected === true; }).length + " Murders)");
+                " (" + _.filter(murdersSelected, function (d) {
+                    return d.selected === true;
+                }).length + " Murders)");
         d3.selectAll(".murderLocation")
-            .data(murdersSelected, function (d) { return d.murder_id; })
-            .attr("r", function (d) { return d.selected ? 4 : 0 });
+            .data(murdersSelected, function (d) {
+                return d.murder_id;
+            })
+            .attr("r", function (d) {
+                return d.selected ? 4 : 0
+            });
+        updateBarplot(murdersSelected);
         if (callback) {
             callback();
         }
@@ -109,7 +123,9 @@
             },
             function (data) {
                 all_murder = _(data)
-                    .filter(function (d) { return !_.some(_.map(_.values(d), _.isNaN)) })
+                    .filter(function (d) {
+                        return !_.some(_.map(_.values(d), _.isNaN))
+                    })
                     .sortBy("date")
                     .value();
                 daily_murder_count = _.map(d3.nest()
@@ -232,7 +248,7 @@
                     .text("Animate!");
 
                 var stepSize = 30;
-                var step = function() {
+                var step = function () {
                     var selectionWidth = parseInt(brushGroupTimeline.select(".selection").attr("width"));
                     var newStartX = parseInt(brushGroupTimeline.select(".selection").attr("x")) + stepSize;
                     var newEndX = newStartX + selectionWidth;
@@ -241,7 +257,7 @@
                             .transition()
                             .ease(d3.easeLinear)
                             .attr("x", newStartX)
-                            .on("end", function() {
+                            .on("end", function () {
                                 placeCircles([newStartX, newEndX], step);
                             });
                     } else {
@@ -251,7 +267,7 @@
                     }
                 };
 
-                animateButton.on("click", function() {
+                animateButton.on("click", function () {
                     brushGroupTimeline.select(".selection").attr("x", 0);
                     brushGroupTimeline.select(".selection").attr("width", stepSize * 2);
                     step();
@@ -260,7 +276,7 @@
             });
     };
 
-    var createMap = function() {
+    var createMap = function () {
         var svgMapResizeFactor = 1.5;
         svgMapWidth = 800 * svgMapResizeFactor;
         var svgMapHeight = 400 * svgMapResizeFactor;
@@ -290,9 +306,120 @@
                 .style("fill", function (d, i) {
                     return boroughColors(i);
                 });
+            createBarPlot();
             createTimeline();
         });
     }();
+
+    var createBarPlot = function () {
+        var barplotAxisPadding = 40;
+        var barplotSvgWidth = 800;
+        var barplotSvgHeight = 500;
+
+        var xScale = d3
+            .scaleBand()
+            .domain(_.range(24))
+            .rangeRound([barplotAxisPadding, barplotSvgWidth])
+            .paddingInner(0.05);
+        var yScale = d3.scaleLinear()
+            .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
+            .domain([0, 0]);
+
+        var svgBarplot = d3
+            .select("body")
+            .append("svg")
+            .attr("width", barplotSvgWidth)
+            .attr("height", barplotSvgHeight);
+
+        var xAxis = d3
+            .axisBottom(xScale)
+            .tickFormat(function (d, i) {
+                return i;
+            });
+        var yAxis = d3
+            .axisLeft(yScale)
+            .tickFormat(function (e) {
+                return Math.floor(e) !== e ? "" : e;
+            });
+
+        svgBarplot
+            .selectAll("rect")
+            .data(_.times(24, _.constant(0)))
+            .enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", function (d, i) {
+                return xScale(i);
+            })
+            .attr("width", xScale.bandwidth());
+        svgBarplot.append("g")
+            .attr("class", "xAxis")
+            .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
+            .call(xAxis);
+        svgBarplot.append("g")
+            .attr("class", "yAxis")
+            .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+            .call(yAxis);
+        svgBarplot.append("text")
+            .attr("id", "barplotTitle")
+            .attr("class", "plotitle")
+            .attr("x", barplotSvgWidth / 2)
+            .attr("y", barplotAxisPadding / 2)
+            .attr("text-anchor", "middle")
+            .style("font-size", "22px")
+            .text("Hourly Count, 0 Selected");
+        svgBarplot.append("text")
+            .attr("class", "axisLabel")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0)
+            .attr("x", -barplotSvgHeight / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Count");
+        svgBarplot.append("text")
+            .attr("class", "axisLabel")
+            .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
+            .attr("x", barplotSvgWidth / 2)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .text("Hour");
+
+        updateBarplot = function (murdersSelected) {
+            perHourCount = _(murdersSelected)
+                .filter("selected")
+                .map("hour")
+                .value();
+            console.log(perHourCount);
+            var perHourArray = [];
+            for (i = 0; i < 24; i++) {
+                perHourArray[i] = perHourCount[i];
+            }
+            yScale.domain([0, d3.max(perHourArray)]);
+            svgBarplot
+                .selectAll(".bar")
+                .data(perHourArray)
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .attr("y", function (d) {
+                    return yScale(d);
+                })
+                .attr("height", function (d) {
+                    return barplotSvgHeight - yScale(d) - barplotAxisPadding;
+                })
+                .attr("fill", "red");
+            svgBarplot.select(".yAxis")
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .call(yAxis);
+            d3.select("#barplotTitle")
+                .transition()
+                .duration(100)
+                .ease(d3.easeLinear)
+                .text("Hourly Count, " + _.sum(perHourArray) + " Selected");
+        };
+    };
 </script>
 
 </body>
