@@ -156,7 +156,7 @@
                     .append("text")
                     .attr("id", "timelineTitle")
                     .attr("x", svgMapWidth / 12)
-                    .attr("y", 75)
+                    .attr("y", 110)
                     .style("font-size", 24)
                     .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                         " (" + all_murder.length + " Murders)");
@@ -366,7 +366,7 @@
             .attr("x", barplotSvgWidth / 2)
             .attr("y", barplotAxisPadding / 2)
             .attr("text-anchor", "middle")
-            .style("font-size", "22px")
+            .style("font-size", "24px")
             .text("Hourly Count");
         svgBarplot.append("text")
             .attr("class", "axisLabel")
@@ -393,7 +393,6 @@
             for (i = 0; i < selectedHours.length ; i++) {
                 perHourArray[selectedHours[i]] += 1;
             }
-            console.log(selectedHours);
             yScale.domain([0, d3.max(perHourArray)]);
             svgBarplot
                 .selectAll(".bar")
