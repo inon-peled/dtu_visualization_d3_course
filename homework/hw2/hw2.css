@@ -1,3 +1,7 @@
+.inlineTable {
+    display: inline-block;
+}
+
 table {
     text-align: left;
 }
@@ -88,7 +92,7 @@ div.tooltip {
     font-size: 40px;
 }
 
-#part2 ol, ul, li {
+#part2 ol, #part2 ul, #part2 li {
     margin: 0 0 5px 0;
     font-family: Georgia;
     font-size: 18px;
