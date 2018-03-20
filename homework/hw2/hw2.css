@@ -3,6 +3,11 @@ table {
     width: 40%;
 }
 
+th {
+    font-weight: normal;
+    font-style: italic;
+}
+
 th, td {
     padding: 8px;
     text-align: left;
