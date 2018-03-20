@@ -57,6 +57,10 @@
     </ul>
 </p>
 
+<svg id="svgTimeline"></svg>
+<svg id="svgMap"></svg>
+<svg id="svgBarplot"></svg>
+
 <script type="text/javascript">
     // var noGlobalsLec7 = function() { // No global variables
     var daily_murder_count = null;
@@ -163,24 +167,13 @@
                             value: d.value
                         };
                     });
-                createAllCircles();
 
                 svgTimelineMargin = {top: 60, right: 20, bottom: 30, left: 50};
-                svgTimeline = d3.select("body")
-                    .append("svg")
+                svgTimeline = d3.select("#svgTimeline")
                     .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
                     .attr("height", svgTimelineHeight + svgTimelineMargin.top + svgTimelineMargin.bottom);
                 var g = svgTimeline.append("g")
                     .attr("transform", "translate(" + svgTimelineMargin.left + "," + svgTimelineMargin.top + ")");
-
-                d3.select("#svgMap")
-                    .append("text")
-                    .attr("id", "timelineTitle")
-                    .attr("x", svgMapWidth / 20)
-                    .attr("y", 110)
-                    .style("font-size", 24)
-                    .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
-                        " (" + all_murder.length + " Murders)");
 
                 xTimeline = d3.scaleTime()
                     .rangeRound([0, svgTimelineWidth]);
@@ -284,6 +277,8 @@
                     svgTimelineWidth + svgTimelineMargin.left - brushWidth,
                     svgTimelineWidth + svgTimelineMargin.left]);
         });
+
+        createMap();
     };
 
     var createMap = function () {
@@ -300,9 +295,7 @@
         var path = d3.geoPath()
             .projection(projection);
 
-        var svgMap = d3.select("body")
-            .append("svg")
-            .attr("id", "svgMap")
+        var svgMap = d3.select("#svgMap")
             .attr("width", svgMapWidth)
             .attr("height", svgMapHeight);
 
@@ -330,10 +323,20 @@
                 .text(function (d) {
                     return d.properties.BoroName;
                 });
+
+        svgMap
+            .append("text")
+            .attr("id", "timelineTitle")
+            .attr("x", svgMapWidth / 20)
+            .attr("y", 110)
+            .style("font-size", 24)
+            .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
+                " (" + all_murder.length + " Murders)");
+
             createBarPlot();
-            createTimeline();
+            createAllCircles();
         });
-    }();
+    };
 
     var createBarPlot = function () {
         var barplotAxisPadding = 40;
@@ -350,8 +353,7 @@
             .domain([0, 0]);
 
         var svgBarplot = d3
-            .select("body")
-            .append("svg")
+            .select("#svgBarplot")
             .attr("width", barplotSvgWidth)
             .attr("height", barplotSvgHeight);
 
@@ -436,6 +438,8 @@
                 .call(yAxis);
         };
     };
+
+    createTimeline();
 </script>
 
 </body>
