@@ -1,9 +1,16 @@
-.inlineTable {
-    display: inline-block;
+.mostCommon {
+    font-size: 18px;
+    font-weight: bold;
 }
 
-table {
+.inlineTable {
+    display: inline-block;
+    font-size: 18px;
+}
+
+table li {
     text-align: left;
+    font-size: 14px;
 }
 
 #part1 p, #part2 p {
