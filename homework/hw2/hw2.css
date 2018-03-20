@@ -1,16 +1,30 @@
+table {
+    border-collapse: collapse;
+    width: 40%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
+
 .mostCommon {
     font-size: 18px;
     font-weight: bold;
 }
 
 .inlineTable {
+    font-family: Georgia;
     display: inline-block;
     font-size: 18px;
 }
 
-table li {
-    text-align: left;
-    font-size: 14px;
+table ul {
+    font-size: 16px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
 #part1 p, #part2 p {
