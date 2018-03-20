@@ -482,7 +482,7 @@
                         .attr("id", "timelineTitle")
                         .attr("x", svgMapWidth / 20)
                         .attr("y", 110)
-                        .style("font-size", 24)
+                        .style("font-size", "24px")
                         .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                             " (" + all_murder.length + " Murders)");
 
@@ -541,7 +541,6 @@
                     .call(yAxis);
                 svgBarplot.append("text")
                     .attr("id", "barplotTitle")
-                    .attr("class", "plotitle")
                     .attr("x", barplotSvgWidth / 2)
                     .attr("y", barplotAxisPadding / 2)
                     .attr("text-anchor", "middle")

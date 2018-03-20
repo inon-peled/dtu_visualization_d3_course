@@ -69,10 +69,6 @@ h1, h2, h3 {
     margin-left: 20px;
 }
 
-#timelineTitle {
-    font-size: 24px;
-}
-
 .boroughNameLabel {
     text-anchor: middle;
     /*text-shadow: -1px 0 lightgrey, 0 1px lightgrey, 1px 0 lightgrey, 0 -1px lightgrey;*/
@@ -146,6 +142,6 @@ div.tooltip {
 }
 
 #part2Plots * {
-    font-size: 100%;
+    font-size: 14px;
     font-family: Arial;
 }
