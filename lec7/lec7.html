@@ -129,7 +129,7 @@
                     murder_id: d.INDEX,
                     lat: parseFloat(d.Latitude),
                     lon: parseFloat(d.Longitude),
-                    hour: parseInt(d.CMPLNT_FR_TM),
+                    hour: _.isEmpty(d.CMPLNT_FR_TM) ? 0 : parseInt(d.CMPLNT_FR_TM),
                     borough: d.BORO_NM,
                     date_str: d.RPT_DT,
                     date: d3.timeParse("%m/%d/%Y")(d.RPT_DT)
