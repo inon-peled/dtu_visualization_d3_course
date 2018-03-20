@@ -65,7 +65,7 @@
     <p>
         You can filter the displayed murders:
     <ul>
-        <li>Drag a selection over the timeline to define the actively displayed time period.</li>
+        <li>Drag a brush over the timeline to define the actively displayed time period.</li>
         <li>Hover over any murder in the map for more information.</li>
         <li>Press the button to animate a sliding window over all years. To stop, click anywhere within the timeline.
         </li>
@@ -86,7 +86,7 @@
         var xTimeline;
         var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
         var svgTimeline;
-        var svgTimelineWidth = 1700;
+        var svgTimelineWidth = 1750;
         var svgTimelineHeight = 150;
         var updateBarplot;
 
@@ -362,8 +362,8 @@
         };
 
         var createBarPlot = function () {
-            var barplotAxisPadding = 40;
-            var barplotSvgWidth = 700;
+            var barplotAxisPadding = 60;
+            var barplotSvgWidth = 750;
             var barplotSvgHeight = 500;
 
             var xScale = d3
