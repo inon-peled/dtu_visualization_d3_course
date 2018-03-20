@@ -1,3 +1,7 @@
+table {
+    text-align: left;
+}
+
 #part1 p, #part2 p {
     -webkit-margin-before: 1em;
     -webkit-margin-after: 1em;
