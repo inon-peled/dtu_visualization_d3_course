@@ -275,7 +275,7 @@
                         .call(brushTimeline.move,
                             [svgTimelineMargin.left, svgTimelineMargin.left + brushWidth])
                         .transition()
-                        // .ease(d3.scaleLinear)
+                        .ease(d3.easeLinear)
                         .duration(10000)
                         // .call(brushTimeline.move, [
                         //     xTimeline.range()[1] - brushWidth,
