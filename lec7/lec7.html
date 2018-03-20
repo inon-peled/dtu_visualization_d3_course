@@ -58,6 +58,7 @@
 </p>
 
 <svg id="svgTimeline"></svg>
+<svg id="svgAnimate"></svg>
 <svg id="svgMap"></svg>
 <svg id="svgBarplot"></svg>
 
@@ -68,7 +69,7 @@
     var projection;
     var svgMapWidth;
     var xTimeline;
-    var svgTimelineMargin;
+    var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
     var svgTimeline;
     var svgTimelineWidth = 1700;
     var svgTimelineHeight = 120;
@@ -168,7 +169,6 @@
                         };
                     });
 
-                svgTimelineMargin = {top: 60, right: 20, bottom: 30, left: 50};
                 svgTimeline = d3.select("#svgTimeline")
                     .attr("width", svgTimelineWidth + svgTimelineMargin.left + svgTimelineMargin.right)
                     .attr("height", svgTimelineHeight + svgTimelineMargin.top + svgTimelineMargin.bottom);
@@ -249,9 +249,15 @@
     };
 
     var createAnimation = function(brushTimeline) {
-        var animateButton = svgTimeline.append("g")
+        var svgAnimateHeight = 60;
+        d3.select("#svgAnimate")
+            .attr("width", svgTimelineWidth)
+            .attr("height", svgAnimateHeight);
+
+        var animateButton = d3.select("#svgAnimate")
+            .append("g")
             .attr("class", "animateButton")
-            .attr("transform", "translate(" + (svgTimelineWidth / 2) + "," + 0 + ")");
+            .attr("transform", "translate(" + (svgTimelineWidth / 2) + "," + svgAnimateHeight / 3 + ")");
 
         animateButton.append("rect")
             .attr("x", 0)
