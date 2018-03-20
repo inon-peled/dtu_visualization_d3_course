@@ -45,12 +45,16 @@
 <body>
 
 <p>
-    We display only murders for which the date and location are known.
-    Empty hour information is treated as hour 0, i.e. midnight.
+    We display only murders for which the date and location are known,
+    and interpret empty hour information as hour 0, i.e. midnight.
 </p>
 <p>
-    Hover over any circle for more information about the corresponding murder.
-    Press animate for a sliding window over all available dates.
+    Interactivity:
+    <ul>
+    <li>Drag a selection over the timeline for filtering corresponding murders in the other plots.</li>
+    <li>Hover over any circle for more information about the corresponding murder.</li>
+    <li>Press the button for a sliding window over all available dates. To stop, click anywhere within the timeline.</li>
+    </ul>
 </p>
 
 <script type="text/javascript">
@@ -244,39 +248,42 @@
                     .call(brushTimeline);
 
                 // set brush extent to rect and define objects height
-                // brushGroupTimeline.selectAll("rect")
-                //     .attr("height", svgTimelineHeight);
+                brushGroupTimeline.selectAll("rect")
+                    .attr("height", svgTimelineHeight);
 
-                // Animate
-                var animateButton = svgTimeline.append("g")
-                    .attr("class", "animateButton")
-                    .attr("transform", "translate(" + (svgTimelineWidth / 2) + "," + 0 + ")");
-
-                animateButton.append("rect")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 80)
-                    .attr("height", 30);
-
-                animateButton.append("text")
-                    .attr("id", "animateText")
-                    .attr("x", 40)
-                    .attr("y", 20)
-                    .text("Animate!");
-
-                animateButton.on("click", function () {
-                    var brushWidth = 60;
-                    d3.select("#brushGroupTimeline")
-                        .call(brushTimeline.move,
-                            [svgTimelineMargin.left, svgTimelineMargin.left + brushWidth])
-                        .transition()
-                        .ease(d3.easeLinear)
-                        .duration(10000)
-                        .call(brushTimeline.move, [
-                            svgTimelineWidth + svgTimelineMargin.left - brushWidth,
-                            svgTimelineWidth + svgTimelineMargin.left]);
-                });
+                createAnimation(brushTimeline);
             });
+    };
+
+    var createAnimation = function(brushTimeline) {
+        var animateButton = svgTimeline.append("g")
+            .attr("class", "animateButton")
+            .attr("transform", "translate(" + (svgTimelineWidth / 2) + "," + 0 + ")");
+
+        animateButton.append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 80)
+            .attr("height", 30);
+
+        animateButton.append("text")
+            .attr("id", "animateText")
+            .attr("x", 40)
+            .attr("y", 20)
+            .text("Animate!");
+
+        animateButton.on("click", function () {
+            var brushWidth = 60;
+            d3.select("#brushGroupTimeline")
+                .call(brushTimeline.move,
+                    [svgTimelineMargin.left, svgTimelineMargin.left + brushWidth])
+                .transition()
+                .ease(d3.easeLinear)
+                .duration(10000)
+                .call(brushTimeline.move, [
+                    svgTimelineWidth + svgTimelineMargin.left - brushWidth,
+                    svgTimelineWidth + svgTimelineMargin.left]);
+        });
     };
 
     var createMap = function () {
