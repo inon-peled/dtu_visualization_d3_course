@@ -1,3 +1,15 @@
+#part1 p, #part2 p {
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-family: Georgia;
+    font-size: 18px;
+    line-height: 1.6em;
+    margin-right: 400px;
+    margin-left: 20px;
+}
+
 h1, h2, h3 {
     margin-left: 20px;
 }
@@ -62,31 +74,6 @@ div.tooltip {
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
 }
 
-#part2 p {
-    display: block;
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    font-family: Georgia;
-    font-size: 18px;
-    line-height: 1.6em;
-    margin-right: 400px;
-    margin-left: 100px;
-}
-
-#part1 p {
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    font-family: Georgia;
-    font-size: 18px;
-    line-height: 1.6em;
-    margin-right: 400px;
-    margin-left: 20px;
-}
-
 .partTitle {
     font-size: 30px;
 }
@@ -96,9 +83,10 @@ div.tooltip {
 }
 
 #part2 ol, ul, li {
+    margin: 0 0 5px 0;
     font-family: Georgia;
     font-size: 18px;
-    margin-left: 50px;
+    margin-left: 20px;
     margin-right: 200px;
 }
 
