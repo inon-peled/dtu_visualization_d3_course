@@ -346,6 +346,7 @@
                             .rangeRound([svgTimelineHeight, 0]);
 
                         var line = d3.line()
+                            .defined(function(d) { return d; })
                             .x(function (d) {
                                 return xTimeline(d.date);
                             })
@@ -356,9 +357,9 @@
                         xTimeline.domain(d3.extent(daily_murder_count, function (d) {
                             return d.date;
                         }));
-                        yTimeline.domain(d3.extent(daily_murder_count, function (d) {
+                        yTimeline.domain([0, d3.max(daily_murder_count, function (d) {
                             return d.value;
-                        }));
+                        })]);
 
                         g.append("g")
                             .attr("transform", "translate(0, " + (svgTimelineHeight + svgTimelineMargin.bottom / 3) + ")")
@@ -376,7 +377,7 @@
                             .text("#Murders");
 
                         g.append("path")
-                            .datum(dailyMurderCountWithZeros(daily_murder_count))
+                            .datum(daily_murder_count)
                             .attr("fill", "none")
                             .attr("stroke", "red")
                             .attr("stroke-linejoin", "round")
