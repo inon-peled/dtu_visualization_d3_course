@@ -223,6 +223,7 @@
             var svgTimelineWidth = 1750;
             var svgTimelineHeight = 150;
             var updateBarplot;
+            var dateRangeWithZeroValues;
 
             var dateToNiceStr = function (date) {
                 var MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -293,10 +294,17 @@
                     }
                     return dateArray;
                 }
-                var dateRangeWithZeroValues = _.map(
+                dateRangeWithZeroValues = _.map(
                     getDates(new Date(2006, 0, 1), new Date(2016, 11, 31)),
                     function (d) { return { date: d, value: 0 }; });
-                return _.unionWith(dailyMurderCount, dateRangeWithZeroValues, 'date');
+
+                function strftime(dt) {
+                    return dt.getFullYear() + '/' + dt.getMonth() + '/' + dt.getDate();
+                }
+
+                return _.sortBy(_.unionBy(dailyMurderCount, dateRangeWithZeroValues, function (obj) {
+                    return strftime(obj.date);
+                }), 'date');
             };
 
             var createTimeline = function () {
@@ -346,7 +354,6 @@
                             .rangeRound([svgTimelineHeight, 0]);
 
                         var line = d3.line()
-                            .defined(function(d) { return d; })
                             .x(function (d) {
                                 return xTimeline(d.date);
                             })
@@ -377,7 +384,7 @@
                             .text("#Murders");
 
                         g.append("path")
-                            .datum(daily_murder_count)
+                            .datum(dailyMurderCountWithZeros(daily_murder_count))
                             .attr("fill", "none")
                             .attr("stroke", "red")
                             .attr("stroke-linejoin", "round")
