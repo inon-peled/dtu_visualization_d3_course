@@ -469,13 +469,13 @@
 
                 var createMap = function () {
                     svgMapWidth = 500;
-                    var svgMapHeight = 350;
+                    var svgMapHeight = 450;
                     var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
                     projection = d3.geoMercator()
                         .center([-74.0, 40.7]) // Approximate center point of NYC.
                         .translate([svgMapWidth / 2, svgMapHeight / 2])
-                        .scale([30000]);
+                        .scale([45000]);
 
                     var path = d3.geoPath()
                         .projection(projection);
