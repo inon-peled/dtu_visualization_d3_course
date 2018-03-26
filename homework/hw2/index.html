@@ -220,7 +220,7 @@
                 var projection;
                 var svgMapWidth;
                 var xTimeline;
-                var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
+                var svgTimelineMargin = {top: 20, right: 20, bottom: 40, left: 50};
                 var svgTimeline;
                 var svgTimelineWidth = 1000;
                 var svgTimelineHeight = 150;
@@ -374,8 +374,12 @@
                             })]);
 
                             g.append("g")
-                                .attr("transform", "translate(0, " + (svgTimelineHeight + svgTimelineMargin.bottom / 3) + ")")
+                                .attr("transform", "translate(0, " + (svgTimelineHeight + 5) + ")")
                                 .call(d3.axisBottom(xTimeline));
+
+                            g.append("text")
+                                .attr("transform", "translate(" + ((svgTimelineWidth / 2)) + ", " + (svgTimelineHeight + svgTimelineMargin.bottom) + ")")
+                                .text("Date");
 
                             g.append("g")
                                 .attr("transform", "translate(" + (-svgTimelineMargin.left / 4) + ", 0)")
@@ -595,7 +599,7 @@
                     svgBarplot.append("text")
                         .attr("class", "axisLabel")
                         .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
-                        .attr("x", barplotSvgWidth / 2)
+                        .attr("x", barplotSvgWidth / 2 + 20)
                         .attr("dy", "1em")
                         .style("text-anchor", "middle")
                         .text("Hour of Day");
