@@ -224,7 +224,7 @@
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 40, left: 50};
                 var svgTimeline;
                 var svgTimelineWidth = 1100;
-                var svgTimelineHeight = 150;
+                var svgTimelineHeight = 130;
                 var updateBarplot;
                 var dateRangeWithZeroValues;
 
@@ -475,13 +475,13 @@
 
                 var createMap = function () {
                     svgMapWidth = 550;
-                    var svgMapHeight = 450;
+                    var svgMapHeight = 380;
                     var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
                     projection = d3.geoMercator()
                         .center([-74.0, 40.7]) // Approximate center point of NYC.
                         .translate([svgMapWidth / 2, svgMapHeight / 2])
-                        .scale([45000]);
+                        .scale([38000]);
 
                     var path = d3.geoPath()
                         .projection(projection);
@@ -538,7 +538,7 @@
                 var createBarPlot = function () {
                     var barplotAxisPadding = 60;
                     var barplotSvgWidth = 550;
-                    var barplotSvgHeight = 400;
+                    var barplotSvgHeight = 380;
 
                     var xScale = d3
                         .scaleBand()
