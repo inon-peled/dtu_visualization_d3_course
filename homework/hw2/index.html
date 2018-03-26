@@ -263,11 +263,11 @@
                     var murdersSelected = _.map(all_murder, function (d) {
                         return _.assign(d, {selected: (d.date >= fromDate) && (d.date <= toDate)});
                     });
-                    d3.select("#timelineTitle")
-                        .text(dateToNiceStr(fromDate) + " to " + dateToNiceStr(toDate) +
-                            " (" + _.filter(murdersSelected, function (d) {
-                                return d.selected === true;
-                            }).length + " Murders)");
+                    d3.select("#timelineTitle1")
+                        .text(dateToNiceStr(fromDate) + " to " + dateToNiceStr(toDate));
+                    d3.select("#timelineTitle2")
+                        .text(_.filter(murdersSelected, function (d) { return d.selected === true; }).length +
+                            " Murders");
                     d3.selectAll(".murderLocation")
                         .data(murdersSelected, function (d) {
                             return d.murder_id;
@@ -511,12 +511,18 @@
 
                         svgMap
                             .append("text")
-                            .attr("id", "timelineTitle")
+                            .attr("id", "timelineTitle2")
+                            .attr("x", svgMapWidth / 20)
+                            .attr("y", 80)
+                            .style("font-size", "16px")
+                            .text("");
+                        svgMap
+                            .append("text")
+                            .attr("id", "timelineTitle1")
                             .attr("x", svgMapWidth / 20)
                             .attr("y", 110)
-                            .style("font-size", "14px")
-                            .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
-                                " (" + all_murder.length + " Murders)");
+                            .style("font-size", "16px")
+                            .text("");
 
                         createBarPlot();
                         createAllCircles();
@@ -526,7 +532,7 @@
                 var createBarPlot = function () {
                     var barplotAxisPadding = 60;
                     var barplotSvgWidth = 500;
-                    var barplotSvgHeight = 350;
+                    var barplotSvgHeight = 400;
 
                     var xScale = d3
                         .scaleBand()
@@ -573,10 +579,10 @@
                         .call(yAxis);
                     svgBarplot.append("text")
                         .attr("id", "barplotTitle")
-                        .attr("x", barplotSvgWidth / 2)
+                        .attr("x", barplotSvgWidth / 2 + 20)
                         .attr("y", barplotAxisPadding / 2)
                         .attr("text-anchor", "middle")
-                        .style("font-size", "24px")
+                        .style("font-size", "16px")
                         .text("Hourly Count");
                     svgBarplot.append("text")
                         .attr("class", "axisLabel")
@@ -585,14 +591,14 @@
                         .attr("x", -barplotSvgHeight / 2)
                         .attr("dy", "1em")
                         .style("text-anchor", "middle")
-                        .text("Count");
+                        .text("#Murders");
                     svgBarplot.append("text")
                         .attr("class", "axisLabel")
                         .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
                         .attr("x", barplotSvgWidth / 2)
                         .attr("dy", "1em")
                         .style("text-anchor", "middle")
-                        .text("Hour");
+                        .text("Hour of Day");
 
                     updateBarplot = function (murdersSelected) {
                         selectedHours = _(murdersSelected)
