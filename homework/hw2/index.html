@@ -194,7 +194,8 @@
     </p>
     <p>
         The values in the two lower plots correspond to the selection of
-        dates in the timeline plot ; no selection means all dates. You can interact with the displayed murders:
+        dates in the timeline plot. With no selection, all dates apply.
+        You can interact with the displayed murders:
         <ul>
         <li><b>Drag a brush</b> over the timeline to define the active date range.
             You can also move and resize the selection.</li>
@@ -206,7 +207,7 @@
     </p>
     <p>Remember that for the visualizations to show, you must view this page through a (local) HTTP server.</p>
 
-    <div id="part2Plots" width="1100px" align="center">
+    <div id="part2Plots" width="1190px" align="center">
         <svg id="svgTimeline"></svg>
         <div><svg id="svgAnimate"></svg></div>
         <svg id="svgMap"></svg>
@@ -222,7 +223,7 @@
                 var xTimeline;
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 40, left: 50};
                 var svgTimeline;
-                var svgTimelineWidth = 1000;
+                var svgTimelineWidth = 1190;
                 var svgTimelineHeight = 150;
                 var updateBarplot;
                 var dateRangeWithZeroValues;
@@ -453,6 +454,7 @@
                         .attr("id", "animateText")
                         .attr("x", 45)
                         .attr("y", 25)
+                        .style("font-size", "16px")
                         .text("Animate!");
 
                     animateButton.on("click", function () {
@@ -472,7 +474,7 @@
                 };
 
                 var createMap = function () {
-                    svgMapWidth = 500;
+                    svgMapWidth = 550;
                     var svgMapHeight = 450;
                     var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -535,7 +537,7 @@
 
                 var createBarPlot = function () {
                     var barplotAxisPadding = 60;
-                    var barplotSvgWidth = 500;
+                    var barplotSvgWidth = 550;
                     var barplotSvgHeight = 400;
 
                     var xScale = d3
