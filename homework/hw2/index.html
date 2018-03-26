@@ -224,7 +224,7 @@
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 40, left: 50};
                 var svgTimeline;
                 var svgTimelineWidth = 1100;
-                var svgTimelineHeight = 130;
+                var svgTimelineHeight = 120;
                 var updateBarplot;
                 var dateRangeWithZeroValues;
 
@@ -432,7 +432,7 @@
                 };
 
                 var createAnimation = function (brushTimeline) {
-                    var svgAnimateHeight = 60;
+                    var svgAnimateHeight = 40;
                     d3.select("#svgAnimate")
                         .attr("width", svgTimelineWidth)
                         .attr("height", svgAnimateHeight);
@@ -445,16 +445,16 @@
                     animateButton.append("rect")
                         .attr("x", 0)
                         .attr("y", 0)
-                        .attr("width", 90)
-                        .attr("height", 40)
+                        .attr("width", 80)
+                        .attr("height", 25)
                         .attr("rx", 10)
                         .attr("ry", 10);
 
                     animateButton.append("text")
                         .attr("id", "animateText")
-                        .attr("x", 45)
-                        .attr("y", 25)
-                        .style("font-size", "16px")
+                        .attr("x", 40)
+                        .attr("y", 17)
+                        .style("font-size", "14px")
                         .text("Animate!");
 
                     animateButton.on("click", function () {
