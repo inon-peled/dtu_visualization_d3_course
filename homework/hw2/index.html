@@ -206,9 +206,9 @@
     </p>
     <p>Remember that for the visualizations to show, you must view this page through a (local) HTTP server.</p>
 
-    <div id="part2Plots">
+    <div id="part2Plots" width="1100px" align="center">
         <svg id="svgTimeline"></svg>
-        <svg id="svgAnimate"></svg>
+        <div><svg id="svgAnimate"></svg></div>
         <svg id="svgMap"></svg>
         <svg id="svgBarplot"></svg>
 
@@ -222,7 +222,7 @@
                 var xTimeline;
                 var svgTimelineMargin = {top: 20, right: 20, bottom: 30, left: 50};
                 var svgTimeline;
-                var svgTimelineWidth = 1750;
+                var svgTimelineWidth = 1000;
                 var svgTimelineHeight = 150;
                 var updateBarplot;
                 var dateRangeWithZeroValues;
@@ -468,15 +468,14 @@
                 };
 
                 var createMap = function () {
-                    var svgMapResizeFactor = 1.5;
-                    svgMapWidth = 700 * svgMapResizeFactor;
-                    var svgMapHeight = 400 * svgMapResizeFactor;
+                    svgMapWidth = 500;
+                    var svgMapHeight = 350;
                     var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
 
                     projection = d3.geoMercator()
                         .center([-74.0, 40.7]) // Approximate center point of NYC.
                         .translate([svgMapWidth / 2, svgMapHeight / 2])
-                        .scale([100000 * 0.6]);
+                        .scale([30000]);
 
                     var path = d3.geoPath()
                         .projection(projection);
@@ -515,7 +514,7 @@
                             .attr("id", "timelineTitle")
                             .attr("x", svgMapWidth / 20)
                             .attr("y", 110)
-                            .style("font-size", "24px")
+                            .style("font-size", "14px")
                             .text(dateToNiceStr(_.first(all_murder).date) + " to " + dateToNiceStr(_.last(all_murder).date) +
                                 " (" + all_murder.length + " Murders)");
 
@@ -526,8 +525,8 @@
 
                 var createBarPlot = function () {
                     var barplotAxisPadding = 60;
-                    var barplotSvgWidth = 750;
-                    var barplotSvgHeight = 500;
+                    var barplotSvgWidth = 500;
+                    var barplotSvgHeight = 350;
 
                     var xScale = d3
                         .scaleBand()
