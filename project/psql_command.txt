@@ -1,0 +1,18 @@
+psql -d 'nyc-taxi-data' -c "COPY (`cat meow`) TO '/tmp/events.csv' DELIMITER '|'  CSV HEADER;"
+
+Where meow contains:
+
+SELECT id, source, start_time, end_time, latitude, longitude, postal_code, all_day, free, featured, watching_count, comment_count, view_count,
+	count_attending, count_not_replied, count_unsure, count_declined, vote_score, score, location, location_zone, location_tract,
+	replace(title, '|', ':') AS title_escaped,
+	replace(venue, '|', ':') AS venue_escaped,
+	replace(address, '|', ':') AS address_escaped,
+	replace(description, '|', ':') AS description_escaped,
+	replace(categories, '|', ':') AS categories_escaped,
+	replace(tags, '|', ':') AS tags_escaped,
+	replace(recurrent, '|', ':') AS recurrent_escaped,
+	replace(performers, '|', ':') AS performers_escaped,
+	replace(price, '|', ':') AS price_escaped,
+	replace(url, '|', '%7C') AS url_escaped,
+	replace(city, '|', ':') AS city_escaped
+FROM events WHERE start_time >= '2016-01-01' AND start_time < '2017-01-01'
