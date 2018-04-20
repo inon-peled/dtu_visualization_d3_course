@@ -15,4 +15,4 @@ SELECT id, source, start_time, end_time, latitude, longitude, postal_code, all_d
 	replace(price, '|', ':') AS price_escaped,
 	replace(url, '|', '%7C') AS url_escaped,
 	replace(city, '|', ':') AS city_escaped
-FROM events WHERE start_time >= '2016-01-01' AND start_time < '2017-01-01'
+FROM events
