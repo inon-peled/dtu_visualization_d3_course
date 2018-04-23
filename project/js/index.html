@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Project</title>
+    <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
+    <script type="text/javascript" src="./d3.js"></script>
+    <script type="text/javascript" src="./lodash.js"></script>
+    <link rel="stylesheet" href="project.css">
+</head>
+<body>
+
+<div id="events">
+    <svg id="svgMap"></svg>
+
+    <script type="text/javascript">
+        var svgMapWidth = 800;
+        var svgMapHeight = 600;
+        var circleRadius = 6;
+
+        function createTooltips() {
+            var tooltipDiv = d3
+                .select("body")
+                .append("div")
+                .attr("class", "tooltip");
+
+            d3.selectAll(".venueLocation")
+                .on("mouseover", function (d) {
+                    if (d3.select(this).attr("r") > 0) {
+                        tooltipDiv.transition()
+                            .style("display", "inline")
+                            .style("background", "yellow");
+                        tooltipDiv
+                            .html(d.venue)
+                            .style("left", (d3.event.pageX + 20) + "px")
+                            .style("top", (d3.event.pageY - 20) + "px");
+                        d3.select(this)
+                            .transition()
+                            .style("fill", "yellow")
+                            .attr("r", circleRadius * 2);
+                    }
+                })
+                .on("mouseout", function (d) {
+                    tooltipDiv.transition()
+                        .style("display", "none");
+                    if (d3.select(this).attr("r") > 0) {
+                        d3.select(this)
+                            .transition()
+                            .style("fill", "lightgrey")
+                            .attr("r", circleRadius);
+                    }
+                });
+        };
+
+        function getProjection() {
+            return d3.geoMercator()
+                .center([-74.0, 40.7]) // Approximate center point of NYC.
+                .translate([svgMapWidth / 2, svgMapHeight / 2 + 140])
+                .scale([38000 * 5]);
+        }
+
+        var createMap = function (venueLocations) {
+            var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
+
+            var path = d3.geoPath()
+                .projection(getProjection());
+
+            var svgMap = d3.select("#svgMap")
+                .attr("width", svgMapWidth)
+                .attr("height", svgMapHeight);
+
+            d3.json("boroughs.geojson", function (json) {
+                svgMap.selectAll("path")
+                    .data(json.features)
+                    .enter()
+                    .append("path")
+                    .attr("d", path)
+                    .style("fill", function (d, i) {
+                        return boroughColors(i);
+                    });
+                svgMap.selectAll("text")
+                    .data(json.features)
+                    .enter()
+                    .append("text")
+                    .attr("class", "boroughNameLabel")
+                    .attr("x", function (d) {
+                        return path.centroid(d)[0];
+                    })
+                    .attr("y", function (d) {
+                        return path.centroid(d)[1];
+                    })
+                    .text(function (d) {
+                        return d.properties.BoroName;
+                    });
+                createAllCircles(venueLocations);
+            });
+        };
+
+        var createAllCircles = function (venueLocations) {
+            d3.select("#svgMap")
+                .selectAll("circle")
+                .data(venueLocations, function (d) {
+                    return d.venue;
+                })
+                .enter()
+                .append("circle")
+                .attr("class", "venueLocation")
+                .attr("cx", function (d) {
+                    return getProjection()([d.lon, d.lat])[0];
+                })
+                .attr("cy", function (d) {
+                    return getProjection()([d.lon, d.lat])[1];
+                })
+                .attr("r", circleRadius);
+            createTooltips();
+        };
+
+        d3.csv("venue_locations.csv",
+            function (d) {
+                return {
+                    venue: d.venue,
+                    lat: parseFloat(d.lat),
+                    lon: parseFloat(d.lon)
+                };
+            },
+            function (venueLocations) {
+                createMap(venueLocations);
+            });
+    </script>
+</div>
+
+</body>
+</html>
