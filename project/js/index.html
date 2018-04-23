@@ -15,49 +15,43 @@
     <svg id="svgHourlyEvents"></svg>
 
     <script type="text/javascript">
+        var yAxis;
+        var hourlyEventsYScale = d3.scaleLinear();
+        var barplotAxisPadding = 60;
+        var barplotSvgWidth = 550;
+        var barplotSvgHeight = 380;
         var svgMapWidth = 800;
         var svgMapHeight = 600;
         var circleRadius = 6;
 
-        function updateBarplot(venuesSelected) {
-            selectedHours = _(venuesSelected)
-                .filter("selected")
-                .map("hour")
-                .value();
-            var perHourArray = Array.apply(null, Array(24)).map(Number.prototype.valueOf, 0);
-            for (i = 0; i < selectedHours.length; i++) {
-                perHourArray[selectedHours[i]] += 1;
-            }
-            yScale.domain([0, d3.max(perHourArray)]);
-            svgBarplot
+        function updateBarplot(d) {
+            hourlyEventsYScale.domain([0, d3.max(d.startTime)]);
+            d3.select("#svgHourlyEvents")
                 .selectAll(".bar")
-                .data(perHourArray)
+                .data(d.startTime)
                 .transition()
                 .ease(d3.easeLinear)
                 .attr("y", function (d) {
-                    return yScale(d);
+                    return hourlyEventsYScale(d);
                 })
                 .attr("height", function (d) {
-                    return barplotSvgHeight - yScale(d) - barplotAxisPadding;
+                    return barplotSvgHeight - hourlyEventsYScale(d) - barplotAxisPadding;
                 })
-                .attr("fill", "red");
-            svgBarplot.select(".yAxis")
+                .attr("fill", "blue");
+            d3.select("#svgHourlyEvents")
+                .select(".yAxis")
                 .transition()
                 .ease(d3.easeLinear)
                 .call(yAxis);
         }
 
         function createBarPlotHourlyCountEvents() {
-            var barplotAxisPadding = 60;
-            var barplotSvgWidth = 550;
-            var barplotSvgHeight = 380;
-
             var xScale = d3
                 .scaleBand()
                 .domain(_.range(24))
                 .rangeRound([barplotAxisPadding, barplotSvgWidth])
                 .paddingInner(0.05);
-            var yScale = d3.scaleLinear()
+            hourlyEventsYScale
                 .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
                 .domain([0, 0]);
 
@@ -71,8 +65,8 @@
                 .tickFormat(function (d, i) {
                     return i;
                 });
-            var yAxis = d3
-                .axisLeft(yScale)
+            yAxis = d3
+                .axisLeft(hourlyEventsYScale)
                 .tickFormat(function (e) {
                     return Math.floor(e) !== e ? "" : e;
                 });
@@ -150,7 +144,8 @@
                             .style("fill", "lightgrey")
                             .attr("r", circleRadius);
                     }
-                });
+                })
+                .on("click", updateBarplot);
         };
 
         function getProjection() {
@@ -194,6 +189,7 @@
                         return d.properties.BoroName;
                     });
                 createAllCircles(venueLocations);
+                createBarPlotHourlyCountEvents();
             });
         };
 
@@ -201,7 +197,7 @@
             d3.select("#svgMap")
                 .selectAll("circle")
                 .data(venueLocations, function (d) {
-                    return d.venue;
+                    return d;
                 })
                 .enter()
                 .append("circle")
@@ -230,7 +226,6 @@
                 return info;
             },
             function (venueLocations) {
-                console.log(venueLocations);
                 createMap(venueLocations);
             });
     </script>
