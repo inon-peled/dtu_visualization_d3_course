@@ -113,6 +113,19 @@
                 .text("Hour of Day");
         }
 
+        function toggleVenueSelection(d) {
+            var currentClass = _.includes(d3.select(this).attr("class"), "notSelected") ? "notSelected" : "selected";
+            if (currentClass === "notSelected") {
+                d3.selectAll(".venueLocation")
+                    .classed("selected", false)
+                    .classed("notSelected", true);
+                d3.select(this)
+                    .classed("selected", true)
+                    .classed("notSelected", false);
+            }
+            updateBarplot(d);
+        }
+
         function createTooltips() {
             var tooltipDiv = d3
                 .select("body")
@@ -131,7 +144,6 @@
                             .style("top", (d3.event.pageY - 20) + "px");
                         d3.select(this)
                             .transition()
-                            .style("fill", "yellow")
                             .attr("r", circleRadius * 2);
                     }
                 })
@@ -141,11 +153,10 @@
                     if (d3.select(this).attr("r") > 0) {
                         d3.select(this)
                             .transition()
-                            .style("fill", "lightgrey")
                             .attr("r", circleRadius);
                     }
                 })
-                .on("click", updateBarplot);
+                .on("click", toggleVenueSelection);
         };
 
         function getProjection() {
@@ -202,6 +213,7 @@
                 .enter()
                 .append("circle")
                 .attr("class", "venueLocation")
+                .classed("notSelected", true)
                 .attr("cx", function (d) {
                     return getProjection()([d.lon, d.lat])[0];
                 })
