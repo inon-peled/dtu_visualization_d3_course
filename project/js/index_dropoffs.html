@@ -16,7 +16,7 @@
     <svg id="svgDailyEvents"></svg>
 
     <script type="text/javascript">
-        var dailyEventCountAllVenues;
+        var hourlyCountDropoffsAllVenues;
         var startDate = new Date('2016-01-01');
         var endDate = new Date('2016-08-31');
         var dateRange = rangeOfDates(startDate, endDate);
@@ -38,7 +38,7 @@
                 return k.getFullYear() + '-' + k.getMonth() + '-' + k.getDate();
             }
 
-            var dailyCountForVenue = _(dailyEventCountAllVenues)
+            var dailyCountForVenue = _(hourlyCountDropoffsAllVenues)
                 .filter(function (o) { return o.venue === _.lowerCase(d.venue)})
                 .keyBy('day')
                 .mapValues('value')
@@ -344,7 +344,7 @@
             createTooltips();
         };
 
-        function readHourlyInfo() {
+        function readMeanHourly() {
             d3.csv("data/venue_dropoffs_hourly.csv",
                 function (d) {
                     var info = {
@@ -364,17 +364,18 @@
         }
 
         function readDailyInfo() {
-            d3.csv("data/daily_event_count.csv",
+            d3.csv("data/dropoffs_time_series_hourly.csv",
                 function (d) {
                     return {
-                        day: new Date(d.day),
-                        value: parseInt(d.daily_total),
+                        day: new Date(d.date),
+                        hour: parseInt(d.hour),
+                        value: parseInt(d.dropoffs),
                         venue: d.venue
                     };
                 },
-                function (allDailyInfo) {
-                    dailyEventCountAllVenues = allDailyInfo;
-                    readHourlyInfo();
+                function (allHourlyInfo) {
+                    hourlyCountDropoffsAllVenues = allHourlyInfo;
+                    readMeanHourly();
                 }
             );
         }
