@@ -125,10 +125,13 @@
                 return d.venue == venue;
             });
 
-            var thresh = 10;
+            var thresh = 2;
             var datascatter = data.filter(function(d){
                 var ms = meanAndStd.filter(function (statsDatum) {
-                    return (statsDatum.weekday === d.date.getDay()) && (statsDatum.hour === d.date.getHours() && (statsDatum.venue === venue));
+                    return (
+                        (statsDatum.weekday === d.date.getDay()) &&
+                        (statsDatum.hour === d.date.getHours()) &&
+                        (statsDatum.venue === venue));
                 })[0];
                 // console.log(ms);
                 return d.dropoffs >= ms.mean + thresh * ms.std;
@@ -136,6 +139,7 @@
             //debugger;
             xScale.domain(d3.extent(data, function(d) { return d.date; }));
             timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }))
+
 
 
             svgTimeSeries.append("path")
