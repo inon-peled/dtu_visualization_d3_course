@@ -16,6 +16,9 @@
     <svg id="svgHourlyTimeSeries"></svg>
 
     <script type="text/javascript">
+        var timeSeriesLine;
+        var timeSeriesXAxis;
+        var timeSeriesXScale;
         var meanAndStd;
         var hourlyCountDropoffsAllVenues;
         var startDate = new Date('2016-01-01');
@@ -33,13 +36,6 @@
         var svgMapWidth = 800;
         var svgMapHeight = 600;
         var circleRadius = 6;
-
-        function updateTimeSeries(d) {
-            var venueDropoffs = _(hourlyCountDropoffsAllVenues)
-                .filter(function (o) { return o.venue === _.lowerCase(d.venue)})
-                .value();
-            console.log(venueDropoffs);
-        }
 
         function updateDailyBarplot(d) {
             function dateStr(k) {
@@ -94,33 +90,7 @@
             return dateArray;
         }
 
-        function createTimeSeriesPlot(venue) {
-            var svgTimeSeries = d3
-                .select("#svgHourlyTimeSeries")
-                .attr("width", svgDailyEventsWidth)
-                .attr("height", barplotSvgHeight);
-
-            var xScale = d3.scaleTime()
-                .rangeRound([barplotAxisPadding, svgDailyEventsWidth]);
-            var xAxis = d3
-                .axisBottom(xScale);
-
-            timeSeriesYScale
-                .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding]);
-            dailyYAxis = d3
-                .axisLeft(timeSeriesYScale)
-                .tickFormat(function (e) {
-                    return Math.floor(e) !== e ? "" : e;
-                });
-
-            var line = d3.line()
-                .x(function (d) {
-                    return xScale(d.date);
-                })
-                .y(function (d) {
-                    return timeSeriesYScale(parseInt(d.dropoffs));
-                });
-
+        function updateTimeSeriesPlot(venue) {
             var data = hourlyCountDropoffsAllVenues.filter(function(d){
                 return d.venue == venue;
             });
@@ -136,13 +106,10 @@
                 // console.log(ms);
                 return d.dropoffs >= ms.mean + thresh * ms.std;
             });
-            //debugger;
-            xScale.domain(d3.extent(data, function(d) { return d.date; }));
-            timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }))
+            timeSeriesXScale.domain(d3.extent(data, function(d) { return d.date; }));
+            timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }));
 
-
-
-            svgTimeSeries.append("path")
+            d3.select("#timeSeriesPath")
                 .datum(data)
                 .attr("fill", "none")
                 .attr("stroke", "steelblue")
@@ -150,24 +117,58 @@
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
                 .attr("opacity", 0.5)
-                .attr("d", line);
+                .attr("d", timeSeriesLine);
 
-            svgTimeSeries.selectAll(".dot")
+            d3.select("#svgHourlyTimeSeries")
+                .selectAll(".dot")
                 .data(datascatter)
-                .enter().append("circle")
+                .enter()
+                .append("circle")
                 .attr("class", "dot")
                 .attr("r", 3.5)
-                .attr("cx", function(d) { return xScale(d.date); })
+                .attr("cx", function(d) { return timeSeriesXScale(d.date); })
                 .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
                 .style("fill", "blue");
 
-            svgTimeSeries.append("text")
-                .attr("id", "dailyBarPlotTitle")
-                .attr("x", svgDailyEventsWidth / 2 + 20)
-                .attr("y", barplotAxisPadding / 2)
-                .attr("text-anchor", "middle")
-                .style("font-size", "16px")
-                .text("Daily Events Count");
+            //Create axis
+            d3.select("#timeSeriesGXAxis")
+                .call(d3.axisBottom(timeSeriesXScale));
+
+
+            d3.select("#timeSeriesGYAxis")
+                .call(d3.axisLeft(timeSeriesYScale))
+        }
+
+        function createTimeSeriesPlot() {
+            var svgTimeSeries = d3
+                .select("#svgHourlyTimeSeries")
+                .attr("width", svgDailyEventsWidth)
+                .attr("height", barplotSvgHeight);
+
+            timeSeriesXScale = d3.scaleTime()
+                .rangeRound([barplotAxisPadding, svgDailyEventsWidth]);
+            timeSeriesXAxis = d3
+                .axisBottom(timeSeriesXScale);
+
+            timeSeriesYScale
+                .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding]);
+            dailyYAxis = d3
+                .axisLeft(timeSeriesYScale)
+                .tickFormat(function (e) {
+                    return Math.floor(e) !== e ? "" : e;
+                });
+
+            timeSeriesLine = d3.line()
+                .x(function (d) {
+                    return timeSeriesXScale(d.date);
+                })
+                .y(function (d) {
+                    return timeSeriesYScale(parseInt(d.dropoffs));
+                });
+
+            svgTimeSeries.append("path")
+                .attr("id", "timeSeriesPath");
+
             svgTimeSeries.append("text")
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
@@ -179,12 +180,12 @@
 
             //Create axis
             svgTimeSeries.append("g")
-                .attr("transform", "translate(0," + (barplotSvgHeight - barplotAxisPadding) + ")")
-                .call(d3.axisBottom(xScale))
+                .attr("id", "timeSeriesGXAxis")
+                .attr("transform", "translate(0," + (barplotSvgHeight - barplotAxisPadding) + ")");
 
             svgTimeSeries.append("g")
-                .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)")
-                .call(d3.axisLeft(timeSeriesYScale))
+                .attr("id", "timeSeriesGYAxis")
+                .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)");
         }
 
         function updateHourlyBarplot(d) {
@@ -288,7 +289,7 @@
             }
             updateHourlyBarplot(d);
             // updateDailyBarplot(d);
-            updateTimeSeries(d);
+            updateTimeSeriesPlot(d.venue.toLowerCase());
         }
 
         function createTooltips() {
@@ -366,7 +367,7 @@
                     });
                 createAllCircles(venueLocations);
                 createBarPlotHourlyCountEvents();
-                createTimeSeriesPlot("beacon theatre");
+                createTimeSeriesPlot();
             });
         };
 
