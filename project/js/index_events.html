@@ -39,7 +39,7 @@
             }
 
             var dailyCountForVenue = _(dailyEventCountAllVenues)
-                .filter(function (o) { return o.venue === _.lowerCase(d.venue)})
+                .filter(function (o) { return o.venue === _.toLower(d.venue)})
                 .keyBy('day')
                 .mapValues('value')
                 .mapKeys(function (v, k) {return dateStr(new Date(k));})
@@ -69,6 +69,8 @@
                 .transition()
                 .ease(d3.easeLinear)
                 .call(dailyYAxis);
+           
+
         }
 
         function rangeOfDates(startDate, stopDate) {
