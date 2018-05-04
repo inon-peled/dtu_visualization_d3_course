@@ -22,7 +22,7 @@
         var endDate = new Date('2016-08-31');
         var dateRange = rangeOfDates(startDate, endDate);
 
-        var svgDailyEventsWidth = 1000;
+        var svgDailyEventsWidth = 1600;
         var dailyYAxis;
         var timeSeriesYScale = d3.scaleLinear();
         var hourlyYAxis;
@@ -94,7 +94,7 @@
             return dateArray;
         }
 
-        function createTimeSeriesPlot() {
+        function createTimeSeriesPlot(venue) {
             var svgTimeSeries = d3
                 .select("#svgHourlyTimeSeries")
                 .attr("width", svgDailyEventsWidth)
@@ -122,19 +122,16 @@
                 });
 
             var data = hourlyCountDropoffsAllVenues.filter(function(d){
-                return d.venue == "the town hall";
+                return d.venue == venue;
             });
 
-            var thresh = 4;
-            var mean = 24;
-            var std = 100
-            var hourmean = [58.24561403508772,36.57488986784141,24.08149779735683,16.770925110132158,15.592511013215859,25.665198237885463,84.73788546255507,144.95154185022025,148.8237885462555,144.79515418502203,126.44052863436123,124.53083700440529,134.93832599118943,146.91629955947135,139.8281938325991,126.97136563876651,112.68942731277534,119.03083700440529,153.69383259911893,158.4229074889868,102.20925110132158,98.81718061674009,94.79074889867842,79.9647577092511]
-
-            console.log(meanAndStd)
-
+            var thresh = 10;
             var datascatter = data.filter(function(d){
-                console.log(d.date.getDay())
-                return d.dropoffs - hourmean[d.date.getHours()] >= thresh * std;
+                var ms = meanAndStd.filter(function (statsDatum) {
+                    return (statsDatum.weekday === d.date.getDay()) && (statsDatum.hour === d.date.getHours() && (statsDatum.venue === venue));
+                })[0];
+                // console.log(ms);
+                return d.dropoffs >= ms.mean + thresh * ms.std;
             });
             //debugger;
             xScale.domain(d3.extent(data, function(d) { return d.date; }));
@@ -365,7 +362,7 @@
                     });
                 createAllCircles(venueLocations);
                 createBarPlotHourlyCountEvents();
-                createTimeSeriesPlot();
+                createTimeSeriesPlot("beacon theatre");
             });
         };
 
