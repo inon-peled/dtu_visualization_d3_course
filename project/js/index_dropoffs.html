@@ -116,13 +116,7 @@
             });
 
             var datascatter = data.filter(function(d){
-                var ms = meanAndStd.filter(function (statsDatum) {
-                    return (
-                        (statsDatum.weekday === d.date.getDay()) &&
-                        (statsDatum.hour === d.date.getHours()) &&
-                        (statsDatum.venue === venue));
-                })[0];
-                // console.log(ms);
+                var ms = meanAndStd[venue][d.date.getDay()][d.date.getHours()];
                 return d.dropoffs >= ms.mean + thresh * ms.std;
             });
             timeSeriesXScale.domain(d3.extent(data, function(d) { return d.date; }));
@@ -433,17 +427,7 @@
         }
 
         function readDailyInfo() {
-            d3.csv("data/mean_and_std_for_dow_and_hour.csv",
-                function (d) {
-                    return {
-                        weekday: +d.weekday,
-                        hour: +d.hour,
-                        mean: +d.mean,
-                        std: +d.std,
-                        venue: d.venue
-                    };
-                },
-                function (meanAndStdData) {
+            d3.json("data/mean_and_std_dropoffs.json", function (meanAndStdData) {
                     meanAndStd = meanAndStdData;
                     d3.csv("data/dropoffs_time_series_hourly.csv",
                         function (d) {
