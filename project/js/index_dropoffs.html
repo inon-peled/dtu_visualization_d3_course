@@ -117,26 +117,45 @@
                     return xScale(d.date);
                 })
                 .y(function (d) {
-                    return timeSeriesYScale(d.dropoffs);
+                    return timeSeriesYScale(parseInt(d.dropoffs));
                 });
 
+            var data = hourlyCountDropoffsAllVenues.filter(function(d){
+                return d.venue == "the town hall";
+            });
+
+            var thresh = 4;
+            var mean = 24;
+            var std = 100
+            var hourmean = [58.24561403508772,36.57488986784141,24.08149779735683,16.770925110132158,15.592511013215859,25.665198237885463,84.73788546255507,144.95154185022025,148.8237885462555,144.79515418502203,126.44052863436123,124.53083700440529,134.93832599118943,146.91629955947135,139.8281938325991,126.97136563876651,112.68942731277534,119.03083700440529,153.69383259911893,158.4229074889868,102.20925110132158,98.81718061674009,94.79074889867842,79.9647577092511]
+
+            var datascatter = data.filter(function(d){
+                console.log(d.date.getHours())
+                return d.dropoffs - hourmean[d.date.getHours()] >= thresh * std;
+            });
+            //debugger;
             xScale.domain(d3.extent(data, function(d) { return d.date; }));
-            timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }));
+            timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }))
 
-            g.append("g")
-                .attr("transform", "translate(0," + height + ")")
-                .call(d3.axisBottom(x))
-                .select(".domain")
-                .remove();
 
-            g.append("path")
+            svgTimeSeries.append("path")
                 .datum(data)
                 .attr("fill", "none")
                 .attr("stroke", "steelblue")
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 1.5)
+                .attr("opacity", 0.5)
                 .attr("d", line);
+
+            svgTimeSeries.selectAll(".dot")
+                .data(datascatter)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("r", 3.5)
+                .attr("cx", function(d) { return xScale(d.date); })
+                .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
+                .style("fill", "blue");
 
             svgTimeSeries.append("text")
                 .attr("id", "dailyBarPlotTitle")
@@ -153,6 +172,15 @@
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
+
+            //Create axis
+            svgTimeSeries.append("g")
+                .attr("transform", "translate(0," + (barplotSvgHeight - barplotAxisPadding) + ")")
+                .call(d3.axisBottom(xScale))
+
+            svgTimeSeries.append("g")
+                .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)")
+                .call(d3.axisLeft(timeSeriesYScale))
         }
 
         function updateHourlyBarplot(d) {
@@ -381,8 +409,8 @@
             d3.csv("data/dropoffs_time_series_hourly.csv",
                 function (d) {
                     return {
-                        day: new Date(d.date + " " + parseInt(d.hour) + ":00"),
-                        value: parseInt(d.dropoffs),
+                        date: new Date(d.date + " " + parseInt(d.hour) + ":00"),
+                        dropoffs: parseInt(d.dropoffs),
                         venue: d.venue
                     };
                 },
