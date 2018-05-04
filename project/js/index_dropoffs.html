@@ -14,6 +14,23 @@
     <svg id="svgMap"></svg>
     <svg id="svgHourlyEvents"></svg>
     <svg id="svgHourlyTimeSeries"></svg>
+    <div class="slidecontainer">
+        <input type="range" min="0" max="10" value="1" class="slider" id="timeSeriesSlider" step="0.1" list="tickmarks"
+               oninput="updateTimeSeriesPlot()" onchange="updateTimeSeriesPlot()">
+        <datalist id="tickmarks">
+            <option value="0">
+            <option value="1">
+            <option value="2">
+            <option value="3">
+            <option value="4">
+            <option value="5">
+            <option value="6">
+            <option value="7">
+            <option value="8">
+            <option value="9">
+            <option value="10">
+        </datalist>
+    </div>
 
     <script type="text/javascript">
         var timeSeriesLine;
@@ -90,12 +107,14 @@
             return dateArray;
         }
 
-        function updateTimeSeriesPlot(venue) {
+        function updateTimeSeriesPlot() {
+            var venue = d3.select(".selected").data()[0].venue.toLowerCase();
+            var thresh = +document.getElementById('timeSeriesSlider').value;
+
             var data = hourlyCountDropoffsAllVenues.filter(function(d){
                 return d.venue == venue;
             });
 
-            var thresh = 2;
             var datascatter = data.filter(function(d){
                 var ms = meanAndStd.filter(function (statsDatum) {
                     return (
