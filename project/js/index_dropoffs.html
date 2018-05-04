@@ -121,6 +121,9 @@
 
             d3.select("#svgHourlyTimeSeries")
                 .selectAll(".dot")
+                .remove();
+            d3.select("#svgHourlyTimeSeries")
+                .selectAll(".dot")
                 .data(datascatter)
                 .enter()
                 .append("circle")
