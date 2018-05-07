@@ -6,6 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
+    <script type="text/javascript" src="picker.js"></script>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
@@ -69,7 +70,7 @@
                 .transition()
                 .ease(d3.easeLinear)
                 .call(dailyYAxis);
-           
+
 
         }
 
@@ -234,15 +235,19 @@
         }
 
         function toggleVenueSelection(d) {
-            var currentClass = _.includes(d3.select(this).attr("class"), "notSelected") ? "notSelected" : "selected";
-            if (currentClass === "notSelected") {
-                d3.selectAll(".venueLocation")
-                    .classed("selected", false)
-                    .classed("notSelected", true);
-                d3.select(this)
-                    .classed("selected", true)
-                    .classed("notSelected", false);
-            }
+            //Expect circle as input (d)
+
+            f = d3.selectAll(".venueLocation")
+                .classed("selected", false)
+                .classed("notSelected", true);
+            f2 = f.filter(function(d2){
+                return d2.venue === d.venue;
+            })
+                .classed("selected", true)
+                .classed("notSelected", false);
+
+            updatePicker(d3.select("#svgMap"), d.venue)
+
             updateHourlyBarplot(d);
             updateDailyBarplot(d);
         }
@@ -297,14 +302,14 @@
                 .attr("width", svgMapWidth)
                 .attr("height", svgMapHeight);
 
-            d3.json("data/boroughs.geojson", function (json) {
+            d3.json("data/manhattan.geojson", function (json) {
                 svgMap.selectAll("path")
                     .data(json.features)
                     .enter()
                     .append("path")
                     .attr("d", path)
                     .style("fill", function (d, i) {
-                        return boroughColors(i);
+                        return "teal";
                     });
                 svgMap.selectAll("text")
                     .data(json.features)
@@ -382,7 +387,7 @@
         }
 
         readDailyInfo();
-
+        createPicker(d3.select("#svgMap"), toggleVenueSelection);
     </script>
 </div>
 
