@@ -6,6 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
+    <script type="text/javascript" src="events_on_time_series.js"></script>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
@@ -33,6 +34,7 @@
     </div>
 
     <script type="text/javascript">
+        var eventsVenues;
         var timeSeriesLine;
         var timeSeriesXAxis;
         var timeSeriesXScale;
@@ -446,7 +448,14 @@
             );
         }
 
-        readDailyInfo();
+        function readEventsVenues() {
+            read_events_venues_csv(function (data) {
+                eventsVenues = data;
+                readDailyInfo();
+            });
+        }
+
+        readEventsVenues()
 
     </script>
 </div>
