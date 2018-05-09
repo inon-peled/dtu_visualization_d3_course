@@ -61,10 +61,14 @@ function createPicker(fig, func) {
 function updatePicker(fig, venue){
     g = fig.selectAll("g")
     g.selectAll("rect")
+        .transition()
+        .duration(200)
         .attr("fill", "grey").attr("fill-opacity", 0.3)
     g.selectAll("rect").filter(function (d) {
         return d == venue;
     })
+        .transition()
+        .duration(200)
         .attr("fill", "orange")
         .attr("fill-opacity", 0.6);
 }
