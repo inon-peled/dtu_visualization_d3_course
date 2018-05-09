@@ -6,6 +6,7 @@
     <link rel="shortcut icon" type="image/png" href="favicon.ico"/>
     <script type="text/javascript" src="./d3.js"></script>
     <script type="text/javascript" src="./lodash.js"></script>
+    <script type="text/javascript" src="picker.js"></script>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
@@ -60,7 +61,7 @@
             }
 
             var dailyCountForVenue = _(hourlyCountDropoffsAllVenues)
-                .filter(function (o) { return o.venue === _.lowerCase(d.venue)})
+                .filter(function (o) { return o.venue === _.toLower(d.venue)})
                 .keyBy('day')
                 .mapValues('value')
                 .mapKeys(function (v, k) {return dateStr(new Date(k));})
@@ -112,7 +113,7 @@
             var thresh = +document.getElementById('timeSeriesSlider').value;
 
             var data = hourlyCountDropoffsAllVenues.filter(function(d){
-                return d.venue == venue;
+                return d.venue.toLowerCase() == venue;
             });
 
             var datascatter = data.filter(function(d){
@@ -294,15 +295,16 @@
         }
 
         function toggleVenueSelection(d) {
-            var currentClass = _.includes(d3.select(this).attr("class"), "notSelected") ? "notSelected" : "selected";
-            if (currentClass === "notSelected") {
-                d3.selectAll(".venueLocation")
-                    .classed("selected", false)
-                    .classed("notSelected", true);
-                d3.select(this)
-                    .classed("selected", true)
-                    .classed("notSelected", false);
-            }
+            f = d3.selectAll(".venueLocation")
+                .classed("selected", false)
+                .classed("notSelected", true);
+            f2 = f.filter(function(d2){
+                return d2.venue === d.venue;
+            })
+                .classed("selected", true)
+                .classed("notSelected", false);
+
+            updatePicker(d3.select("#svgMap"), d.venue)
             updateHourlyBarplot(d);
             // updateDailyBarplot(d);
             updateTimeSeriesPlot(d.venue.toLowerCase());
@@ -344,8 +346,8 @@
         function getProjection() {
             return d3.geoMercator()
                 .center([-74.0, 40.7]) // Approximate center point of NYC.
-                .translate([svgMapWidth / 2, svgMapHeight / 2 + 140])
-                .scale([38000 * 5]);
+                .translate([svgMapWidth / 2 - 120, svgMapHeight / 2 + 200])
+                .scale([38000 * 4]);
         }
 
         var createMap = function (venueLocations) {
@@ -358,13 +360,14 @@
                 .attr("width", svgMapWidth)
                 .attr("height", svgMapHeight);
 
-            d3.json("data/boroughs.geojson", function (json) {
+            d3.json("data/manhattan.geojson", function (json) {
                 svgMap.selectAll("path")
                     .data(json.features)
                     .enter()
                     .append("path")
                     .attr("d", path)
                     .style("fill", function (d, i) {
+                        return "teal";
                         return boroughColors(i);
                     });
                 svgMap.selectAll("text")
@@ -447,7 +450,7 @@
         }
 
         readDailyInfo();
-
+        createPicker(d3.select("#svgMap"), toggleVenueSelection);
     </script>
 </div>
 
