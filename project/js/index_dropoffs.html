@@ -17,7 +17,11 @@
 
 <div id="dropoffsAndEvents" class="centered">
     <div id="explain">
-        <p id="pExplain">Explore correlations between yellow taxi dropoffs and big events in Manhattan, April-June 2016! Follow the circled numbers for guidance :)</p>
+        <p id="pExplain">
+            Explore correlations between taxi dropoffs and big events in Manhattan, April-June 2016! Follow the circled numbers for guidance and additional info.<br/>
+            Also see the <a target="_blank" href="../explainer.html">explainer page</a>, download <a target="_blank" href="./taxi_events_data.zip">the data</a>,
+            or visit our <a target="_blank" href="https://github.com/inon-peled/dtu_visualization_d3_course/tree/master/project">github repo</a>.
+        </p>
     </div>
 
     <svg id="svgMap"></svg>
@@ -87,7 +91,13 @@
                 "Click anywhere for a zoomed display of the same day " +
                 "-- with contemporaneous big events.", 720, 55);
             createCue(d3.select("#svgZoomed"), 4, "See how extraordinary counts of taxi dropoffs co-occur with " +
-                "big events near the selected venue.<br/><br/>Hover over event lines for more information.", 150, 70);
+                "big events near the selected venue.<br/><br/>Hover over event lines for more information.<br/><br/>" +
+                "<b>Findings:</b><ol>" +
+                    "<li>All venues are active during noon and afternoon. Some venues (e.g. Lincoln Theatre) are most active late at night, others (e.g. Radio City Music Hall) at morning.</li>" +
+                    "<li>Hourly dropoffs vary more wildly for some venues (e.g. MoMA Museum, Terminal 5) than others (e.g. The Town Hall, Carnegie Hall).</li>" +
+                    "<li>There are many cases in which dropoffs significantly deviate (at least 2 std. dev.) from historical average one hour before a nearby big event. " +
+                    "However, this happens more often for some venues (e.g. MoMA Museum) than for others (e.g. Playstation Theatre).</li>" +
+                "</ol>", 150, 70);
         }
 
         function clearZoomed(){

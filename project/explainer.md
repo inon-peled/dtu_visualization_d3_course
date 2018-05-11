@@ -2,55 +2,75 @@
 
 ## Motivation
 
-We are working with two datasets in this project:
+This project presents two datasets which pertain to Manhattan, NYC: taxi dropoffs, and big events.
 
-1. New York taxi data: A dataset containing a lot of information, e.g dropoffs, price, time etc of trips with the yellow New York Taxis. 
-2. New York event data: A dataset that has been scraped from eventful, containing information about events happening all over new york. For the events we focused on a small group of selected venues. 
-
-The motivation for this project is to create a research tool for the *machine learning for mobility*-group at DTU. Right now the group use a lot of manual labor to explore event data in NYC. They construct a large amount of plots to see which events could be interesting to look at in regards to impact on the flow of traffic in the vicinity of the event. We wish to make a interactive tool, that let's the user explore interesting points in time, simply by moving a slider that controls how extreme deviations from the normal he wants to see and then he can just simply click on these points to get a zoomed in view of both the flow of traffic at that time frame, as well as data about the events at that time. 
-
-This tool will be a great help to the group, as it will be much easier to find relevant points in the big dataset, enabling acceleration of future research. 
+The motivation for this project is to create an interactive research tool for the *machine learning for mobility* (ML^2) group at DTU Transport.
+Currently, the group does a lot of manual labor to explore correlations between changes in taxi dropoffs and big events in NYC.
+This project provides a tool which relieves such manual labor. The tool will greatly help the ML^2 group,
+by making it much easier and quicker to spot possible correlations, and thus accelerate future research.
 
 ## Basic stats
 
+The original taxi dataset comprises of about 120M rows of trip data, taken from the Open NYC website.
+Data features include pickup and dropoff location and time, as well as trip price.
+To avoid visual clutter, we focus on taxi dropoffs only in Manhattan during three months: April-June 2016.
+We extract dropoffs information, and aggregate it into hourly resolution.
 
+The big events dataset was scraped from several online sources, mainly timeoutworld.com and eventful.com, and
+comprises of about 30K events in the aforementioned period. Data features include event title, location, and time.
+We focus the visualization on 11 large venues in Manhattan, including e.g. MoMA Museum and Beacon Theatre.
+For each event, we display only the event title and start time, because this is enough information for highlighting correlations with taxi dropoffs.
 
 ## Genre
 
-We will argue that our visualizations takes the form of an interactive *partitioned posted*, since each visualizations consists of multiple elements such as a map, bar plot etc, that together created the overview. It is however packed into a web-page so there is an argument that the visualizations are partitioned posters, but the overall piece is wrapped in magazine style. All though a more fitting term would probably be "blog" style, such as medium.com
+Our visualizations follow the style of an interactive *partitioned posted*, packed into one web-page.
 
-**Visual Narrative**:
+Let us now detail which tools we use and why. We use the following **Visual Narrative tools**:
 
-- We used a *consistent visual platform* between our visualizations since they display datasets confined in the same area, so it makes sense to reuse the same map.
-- *Close-ups* was also used since we have a large timeline and wanted the user to be able to go closer in 24hr intervals. The 24hr intervals was specified by the research group. 
-- *Motion and zooming* can be argued as being part of the close-ups. 
-- *Animated transitions* is heavily levered using the d3-library. It gives a nice flow to the interactive visualization and gives the user a feeling of seeing the data evolve before their eyes. 
+- *Consistent visual platform*: all visualizations pertain to the same city area, so we reuse the same map.
+- *Close-ups*: one of the plots provides a zoomed view of a 24 hour period, to let the user easily tell when a sharp increase in dropoffs coincides with a big event, as requested by members of the ML^2 group.
+- *Motion and zooming*: happen as part of the zoomed view.
+- *Animated transitions*: nicely flowing, interactive visualizations through D3 show how the data story evolves.
 
-**Narrative Structure**:
+We also use the following **Narrative Structure tools**:
 
-- We have a *user directed path* in our last visualization and use a more *linear* style in our first one. The user is guided by our markings. The user is however free to explore the data in the way that they find interesting, that be modifying the threshold with the slider or choosing any time interval, both from interesting points and also anywhere on the timeline. 
-- *Hover Highlighting* is used to give the user more information about datapoints that they hover over. This is a nice feature since you limit the amount of noise up front, but you allow the visualization to become richer during exploration. 
-- *Filtering* is applied to the data from the input of the user. 
-- *Explicted instruction* is available as tooltips
-- *Stimulating Default View* is limited. If we had a default venue selected with all the information it would seem like a lot at the same time. Now the user is presented with a map and some empty figures so it is much more tempting to click the map to discover how the empty figures will become filled with interesting data. 
-- *Captions and headlines* are used to explain the figures to the user.
-- *Accompanying Article* is this explainer webpage
-- *Introductory Text:* a short text is provided before the figure.
-- *Summary*: We try to sum up our conclusions at the end to give the user an idea of some interesting things that can be found from the data. 
+- *User directed path*: circled numbers guide the user through opearting the interactive plots in a linear style. The user is then free to explore the data as they wish.
+- *Hover Highlighting*: multiple elements in the web page provide more information when hovered on, including events. This way, the user can obtain more information at their own pace, without cluttering the page with persistent text.
+- *Filtering*: per user selection, e.g. using the slider.
+- *Explicted instruction*: available as tooltips.
+- *Stimulating Default View* is limited, to encourage the user to select a venue of interest.
+- *Captions and headlines*: explain the figures to the user.
+- *Accompanying Article*: the explainer webpage
+- *Introductory Text:* a short introductory text is provided at page top.
+- *Summary*: we offer some conclusions, as we found through our interactive tool, thus showing its effectiveness.
 
 ## Visualizations
 
+Following are the visualizations we use, and how they serve the data story of correlations between taxi dropoffs and big events.
 
+1. A map and list for selecting an events venue. These two elements work together to allow easily selection, and then keep the selected venue clearly highlighted.
+2. Bar plot of average hourly taxi dropoffs within 500m of the selected venue. This gives the user a quick overview of when the venue is most active, as reflected in demand for public transportation.
+3. A timeline of hourly dropoffs in Apr-June 2016. This provides an overview of how demand for taxi evolves over time around the venue.
+4. A slider for defining a magnitude of deviation from historical average of dropoffs. This allows the researcher to define points of interest in the timeline, i.e. time points when the hourly count of dropoffs surges.
+5. A zoomed display of one day, corresponding to a click on the timeline plot, and overlayed with co-ocurring events. This is the plot which lets the user tell whether a surge in taxi dropoffs correlates with any big events within 500m of the selected venue.
 
-## Discussions
+## Discussion
 
+On the bright side, we managed to yield a useful research tool, per the needs and requests of the Machine Learning for Mobility Group in DTU Transport.
+It is also nice that we kept visual clutter low, while letting the user access and additionally useful information interactively.
+We think that the tool effectively packs hundreds of thousand of data records into a well flowing display.
 
+However, the tool can be further improved. We could display more than 3 months of data, if e.g. we use some scrolling mechanism.
+We could also display taxi pickups, not only dropoffs.
+Finally, the data for this project is preprocessed offline, and it would be a great to provide some online tool for processing new data, which Open NYC releases about twice a year.
 
+## Contributions
 
-
-##Contributions
-
-90% of the project was made at Inons office, where we used pair programming, sitting together on one screen to process and understand the data as well as create the visualizations in d3. Therefore in all practical regards, we have contributed equally to the project. 
+Inon is a member of the ML^2 group, and so came up with the project idea. Jacob implemented and stylized most parts of the timeline plots,
+while Inon implemented and stylized most parts of the other plots.
+We mostly pair-programmed the entire project at Inon's office, where we shared one screen for data processing,
+data exploration, project planning, and webpage implementation.
+Eventually, each of us either touched or reviewed nearly every line of code, so we are both well familiar with all aspects of this project.
 
 <img src="explainer.assets/1526022914710.png" style="zoom:35%">
 
