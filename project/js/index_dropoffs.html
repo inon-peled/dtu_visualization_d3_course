@@ -48,6 +48,9 @@
         var circleRadius = 6;
         var zoomedLine;
 
+        // TODO: place invisible line on top of event line for better hovering.
+        // TODO: clear zoomed plot when changing venue.
+
         function zeroPad(value, width) {
             var valueStr = value + '';
             return valueStr.length >= width ? valueStr : new Array(width - valueStr.length + 1).join('0') + valueStr;
