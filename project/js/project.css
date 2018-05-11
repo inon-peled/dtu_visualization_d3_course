@@ -10,8 +10,9 @@
 }
 
 #explain #pExplain {
+    color: black;
     font-family: Georgia;
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 16px;
 }
 
