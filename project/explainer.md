@@ -46,6 +46,14 @@ We also use the following **Narrative Structure tools**:
 
 ## Visualizations
 
+Following are the visualizations we use, and how they serve the data story of correlations between taxi dropoffs and big events.
+
+1. A map and list for selecting an events venue. These two elements work together to allow easily selection, and then keep the selected venue clearly highlighted.
+2. Bar plot of average hourly taxi dropoffs within 500m of the selected venue. This gives the user a quick overview of when the venue is most active, as reflected in demand for public transportation.
+3. A timeline of hourly dropoffs in Apr-June 2016. This provides an overview of how demand for taxi evolves over time around the venue.
+4. A slider for defining a magnitude of deviation from historical average of dropoffs. This allows the researcher to define points of interest in the timeline, i.e. time points when the hourly count of dropoffs surges.
+5. A zoomed display of one day, corresponding to a click on the timeline plot, and overlayed with co-ocurring events. This is the plot which lets the user tell whether a surge in taxi dropoffs correlates with any big events within 500m of the selected venue.
+
 ## Discussions
 
 
