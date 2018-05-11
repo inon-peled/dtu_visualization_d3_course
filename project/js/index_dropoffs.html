@@ -37,7 +37,9 @@
         var meanAndStd;
         var hourlyCountDropoffsAllVenues;
 
-        var svgDailyEventsWidth = 1600;
+        var eventsAxisPadding = 60;
+        var svgDailyEventsHeight = 400;
+        var svgDailyEventsWidth = 1150;
         var dailyYAxis;
         var timeSeriesYScale = d3.scaleLinear();
         var hourlyYAxis;
@@ -304,15 +306,15 @@
             var svgTimeSeries = d3
                 .select("#svgHourlyTimeSeries")
                 .attr("width", svgDailyEventsWidth)
-                .attr("height", barplotSvgHeight);
+                .attr("height", svgDailyEventsHeight);
 
             timeSeriesXScale = d3.scaleTime()
-                .rangeRound([barplotAxisPadding, svgDailyEventsWidth]);
+                .rangeRound([eventsAxisPadding, svgDailyEventsWidth]);
             timeSeriesXAxis = d3
                 .axisBottom(timeSeriesXScale);
 
             timeSeriesYScale
-                .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding]);
+                .range([svgDailyEventsHeight - eventsAxisPadding, eventsAxisPadding]);
             dailyYAxis = d3
                 .axisLeft(timeSeriesYScale)
                 .tickFormat(function (e) {
@@ -334,7 +336,7 @@
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0)
-                .attr("x", -barplotSvgHeight / 2)
+                .attr("x", -svgDailyEventsHeight / 2)
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
@@ -342,17 +344,17 @@
             //Create axis
             svgTimeSeries.append("g")
                 .attr("id", "timeSeriesGXAxis")
-                .attr("transform", "translate(0," + (barplotSvgHeight - barplotAxisPadding) + ")");
+                .attr("transform", "translate(0," + (svgDailyEventsHeight - eventsAxisPadding) + ")");
 
             svgTimeSeries.append("g")
                 .attr("id", "timeSeriesGYAxis")
-                .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)");
+                .attr("transform", "translate(" + (eventsAxisPadding - 5) + ", 0)");
 
             var block = svgTimeSeries.append("g")
                 .attr("id", "block")
                 .append("rect")
                 .attr("width", svgDailyEventsWidth)
-                .attr("height", barplotSvgHeight)
+                .attr("height", svgDailyEventsHeight)
                 .style("opacity", 0);
 
             block.on("click", showZoomed);
