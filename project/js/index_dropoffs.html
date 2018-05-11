@@ -9,9 +9,19 @@
     <script type="text/javascript" src="picker.js"></script>
     <script type="text/javascript" src="events_on_time_series.js"></script>
     <script type="text/javascript" src="slider.js"></script>
+    <script type="text/javascript" src="./explanatory_cue.js"></script>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
+
+<div id="explain">
+    <p>Explore the correlation between taxi dropoffs and big events in Manhattan!</p>
+    <p>
+    1) Choose a venue from the list or the map.
+    2) Slide to highlight timeline values, which are that many std. devs. greater than the historical average.
+    3) Click the time line for a zoomed display of the same day -- with big events overlayed.
+    </p>
+</div>
 
 <div id="dropoffsAndEvents" class="centered">
     <svg id="svgMap"></svg>
@@ -52,9 +62,12 @@
         var circleRadius = 6;
         var zoomedLine;
 
-        // TODO: change scatter in zoomed view per slider.
         // TODO: place invisible line on top of event line for better hovering.
-        // TODO: clear zoomed plot when changing venue.
+
+        function createExplanatoryCues() {
+            createCue(d3.select("#svgMap"), 1, "Choose a venue from the list or the map.",
+                svgMapWidth / 2, svgMapHeight / 2)
+        }
 
         function clearZoomed(){
             d3.select("#zoomedPath")
@@ -583,6 +596,7 @@
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createBarPlotHourlyCountDropoffs();
                 createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
+                createExplanatoryCues();
             });
         };
 
