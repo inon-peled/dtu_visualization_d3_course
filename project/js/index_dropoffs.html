@@ -44,6 +44,27 @@
         var svgMapHeight = 600;
         var circleRadius = 6;
 
+        function updateZoomed(hourlyDropoffsData) {
+            zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
+            d3.select("#svgZoomed")
+                .selectAll(".bar")
+                .data(hourlyDropoffsData)
+                .transition()
+                .ease(d3.easeLinear)
+                .attr("y", function (d) {
+                    return zoomedYScale(d);
+                })
+                .attr("height", function (d) {
+                    return barplotSvgHeight - zoomedYScale(d) - barplotAxisPadding;
+                })
+                .attr("fill", "blue");
+            d3.select("#svgZoomed")
+                .select(".yAxis")
+                .transition()
+                .ease(d3.easeLinear)
+                .call(zoomedYAxis);
+        }
+
         function createZoomed() {
             var xScale = d3
                 .scaleBand()
@@ -209,6 +230,22 @@
             svgTimeSeries.append("g")
                 .attr("id", "timeSeriesGYAxis")
                 .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)");
+
+            svgTimeSeries.on("click", function () {
+                var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
+                var venue = d3.select(".selected").data()[0].venue.toLowerCase();
+                var data = hourlyCountDropoffsAllVenues
+                    .filter(function(d) {
+                        return d.venue.toLowerCase() == venue;
+                    })
+                    .filter(function (d) {
+                        return d.date.getFullYear() === clickedDateTime.getFullYear() &&
+                            d.date.getMonth() === clickedDateTime.getMonth() &&
+                            d.date.getDate() === clickedDateTime.getDate();
+                    });
+                console.log(clickedDateTime);
+                console.log(data);
+            });
         }
 
         function updateHourlyBarplot(d) {
