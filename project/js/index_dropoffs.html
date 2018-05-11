@@ -56,16 +56,16 @@
 
         var hourlyCountDropoffsAllVenues;
         var eventsAxisPadding = 60;
-        var svgDailyEventsHeight = 310;
+        var svgDailyEventsHeight = 295;
         var svgDailyEventsWidth = 1150;
         var dailyYAxis;
         var hourlyYAxis;
         var hourlyDropoffsYScale = d3.scaleLinear();
         var barplotAxisPadding = 30;
         var barplotSvgWidth = 300;
-        var barplotSvgHeight = 200;
+        var barplotSvgHeight = 180;
         var svgMapWidth = 600;
-        var svgMapHeight = 500;
+        var svgMapHeight = 480;
         var circleRadius = 6;
         var zoomedLine;
 
@@ -89,7 +89,7 @@
             createCue(d3.select("#svgHourlyTimeSeries"), 3,
                 "The highlighted points show extraordinary taxi dropoffs, per the slider value.<br/><br/>" +
                 "Click anywhere for a zoomed display of the same day " +
-                "-- with contemporaneous big events.", 720, 55);
+                "-- with contemporaneous big events.", 720, 45);
             createCue(d3.select("#svgZoomed"), 4, "See how extraordinary counts of taxi dropoffs co-occur with " +
                 "big events near the selected venue.<br/><br/>Hover over event lines for more information.<br/><br/>" +
                 "<b>Findings:</b><ol>" +
@@ -471,7 +471,7 @@
                 .attr("id", "timelineTitle")
                 .attr("class", "plotTitle")
                 .attr("x", svgDailyEventsWidth / 2 + 20)
-                .attr("y", eventsAxisPadding)
+                .attr("y", eventsAxisPadding - 10)
                 .text("Hourly Dropoffs over Time");
 
             //Create axis
