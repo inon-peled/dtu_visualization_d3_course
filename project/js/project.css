@@ -99,6 +99,7 @@
 }
 
 div.tooltip {
+    background: yellow;
     position: absolute;
     display: none;
     height: auto;
