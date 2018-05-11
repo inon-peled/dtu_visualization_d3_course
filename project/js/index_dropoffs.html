@@ -72,8 +72,8 @@
                 "The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
-                "Slide to show which timeline values are that many std. devs. greater than the historical average " +
-                "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
+                "Slide to define magnitude of difference from historical average.<br/><br/>" +
+                "Difference is measured in standard deviations. Historical average pertains to time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
                 sliderMargin / 2, sliderHeight / 2);
             createCue(d3.select("#svgHourlyTimeSeries"), 3,
                 "The highlighted points show extraordinary taxi dropoffs, per the slider value.<br/><br/>" +
@@ -302,13 +302,13 @@
             //     .attr("dy", "1em")
             //     .style("text-anchor", "middle")
             //     .text("#Dropoffs");
-            svgZoomed.append("text")
-                .attr("class", "axisLabel")
-                .attr("y", zoomedSvgHeight - zoomedAxisPadding / 2)
-                .attr("x", zoomedSvgWidth / 2 + 20)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Hour of Day");
+            // svgZoomed.append("text")
+            //     .attr("class", "axisLabel")
+            //     .attr("y", zoomedSvgHeight - zoomedAxisPadding / 2)
+            //     .attr("x", zoomedSvgWidth / 2 + 20)
+            //     .attr("dy", "1em")
+            //     .style("text-anchor", "middle")
+            //     .text("Hour of Day");
         }
 
         function updateTimeSeriesPlot() {
@@ -409,14 +409,14 @@
             svgTimeSeries.append("path")
                 .attr("id", "timeSeriesPath");
 
-            svgTimeSeries.append("text")
-                .attr("class", "axisLabel")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0)
-                .attr("x", -svgDailyEventsHeight / 2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("#Dropoffs");
+            // svgTimeSeries.append("text")
+            //     .attr("class", "axisLabel")
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("y", 0)
+            //     .attr("x", -svgDailyEventsHeight / 2)
+            //     .attr("dy", "1em")
+            //     .style("text-anchor", "middle")
+            //     .text("#Dropoffs");
 
             svgTimeSeries.append("text")
                 .attr("id", "timelineTitle")
