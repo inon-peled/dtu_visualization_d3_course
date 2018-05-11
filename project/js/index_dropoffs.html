@@ -21,6 +21,9 @@
     <svg id="svgSlider"></svg>
 
     <script type="text/javascript">
+        var zoomedYAxis;
+        var zoomedYScale = d3.scaleLinear();
+
         var stdDevFromHistoricalAverage = { };
         var eventsVenues;
         var timeSeriesLine;
@@ -40,6 +43,74 @@
         var svgMapWidth = 800;
         var svgMapHeight = 600;
         var circleRadius = 6;
+
+        function createZoomed() {
+            var xScale = d3
+                .scaleBand()
+                .domain(_.range(24))
+                .rangeRound([barplotAxisPadding, barplotSvgWidth])
+                .paddingInner(0.05);
+            zoomedYScale
+                .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
+                .domain([0, 0]);
+
+            var svgBarplot = d3
+                .select("#svgZoomed")
+                .attr("width", barplotSvgWidth)
+                .attr("height", barplotSvgHeight);
+
+            var xAxis = d3
+                .axisBottom(xScale)
+                .tickFormat(function (d, i) {
+                    return i;
+                });
+            zoomedYAxis = d3
+                .axisLeft(zoomedYScale)
+                .tickFormat(function (e) {
+                    return Math.floor(e) !== e ? "" : e;
+                });
+
+            svgBarplot
+                .selectAll("rect")
+                .data(_.times(24, _.constant(0)))
+                .enter()
+                .append("rect")
+                .attr("class", "bar")
+                .attr("x", function (d, i) {
+                    return xScale(i);
+                })
+                .attr("width", xScale.bandwidth());
+            svgBarplot.append("g")
+                .attr("class", "xAxis")
+                .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
+                .call(xAxis);
+            svgBarplot.append("g")
+                .attr("class", "yAxis")
+                .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+                .call(zoomedYAxis);
+            svgBarplot.append("text")
+                .attr("id", "barplotTitle")
+                .attr("x", barplotSvgWidth / 2 + 20)
+                .attr("y", barplotAxisPadding / 2)
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .text("Hourly Dropoffs");
+            svgBarplot.append("text")
+                .attr("class", "axisLabel")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0)
+                .attr("x", -barplotSvgHeight / 2)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("#Dropoffs");
+            svgBarplot.append("text")
+                .attr("class", "axisLabel")
+                .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
+                .attr("x", barplotSvgWidth / 2 + 20)
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text("Hour of Day");
+        }
 
         function updateTimeSeriesPlot() {
             if (d3.select(".selected").empty()) {
@@ -161,7 +232,7 @@
                 .call(hourlyYAxis);
         }
 
-        function createBarPlotHourlyCountEvents() {
+        function createBarPlotHourlyCountDropoffs() {
             var xScale = d3
                 .scaleBand()
                 .domain(_.range(24))
@@ -320,7 +391,8 @@
                         return d.properties.BoroName;
                     });
                 createAllCircles(venueLocations);
-                createBarPlotHourlyCountEvents();
+                createBarPlotHourlyCountDropoffs();
+                createZoomed();
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
