@@ -13,7 +13,7 @@ by making it much easier and quicker to spot possible correlations, and thus acc
 
 The original taxi dataset comprises of about 120M rows of trip data, taken from the Open NYC website.
 Data features include pickup and dropoff location and time, as well as trip price.
-To avoid visualization clutter, we focus on taxi dropoffs only in Manhattan during three months: April-June 2016.
+To avoid visual clutter, we focus on taxi dropoffs only in Manhattan during three months: April-June 2016.
 We extract dropoffs information, and aggregate it into hourly resolution.
 
 The big events dataset was scraped from several online sources, mainly timeoutworld.com and eventful.com, and
@@ -54,11 +54,15 @@ Following are the visualizations we use, and how they serve the data story of co
 4. A slider for defining a magnitude of deviation from historical average of dropoffs. This allows the researcher to define points of interest in the timeline, i.e. time points when the hourly count of dropoffs surges.
 5. A zoomed display of one day, corresponding to a click on the timeline plot, and overlayed with co-ocurring events. This is the plot which lets the user tell whether a surge in taxi dropoffs correlates with any big events within 500m of the selected venue.
 
-## Discussions
+## Discussion
 
+On the bright side, we managed to yield a useful research tool, per the needs and requests of the Machine Learning for Mobility Group in DTU Transport.
+It is also nice that we kept visual clutter low, while letting the user access and additionally useful information interactively.
+We think that the tool effectively packs hundreds of thousand of data records into a well flowing display.
 
-
-
+However, the tool can be further improved. We could display more than 3 months of data, if e.g. we use some scrolling mechanism.
+We could also display taxi pickups, not only dropoffs.
+Finally, the data for this project is preprocessed offline, and it would be a great to provide some online tool for processing new data, which Open NYC releases about twice a year.
 
 ##Contributions
 
