@@ -2,10 +2,7 @@
 
 ## Motivation
 
-We are working with two datasets in this project, both pertaining to Manhattan, NYC:
-
-1. Taxi data: dropoffs, price, time, etc. of trips made with yello taxis in Manhattan, NYC.
-2. Big Events datas: scraped from eventful.com and timeoutworld.com. We focus on several selected event venues.
+This project presents two datasets which pertain to Manhattan, NYC: taxi dropoffs, and big events.
 
 The motivation for this project is to create an interactive research tool for the *machine learning for mobility* (ML^2) group at DTU Transport.
 Currently, the group does a lot of manual labor to explore correlations between changes in taxi dropoffs and big events in NYC.
@@ -13,6 +10,16 @@ This project provides a tool which relieves such manual labor. The tool will gre
 by making it much easier and quicker to spot possible correlations, and thus accelerate future research.
 
 ## Basic stats
+
+The original taxi dataset comprises of about 120M rows of trip data, taken from the Open NYC website.
+Data features include pickup and dropoff location and time, as well as trip price.
+To avoid visualization clutter, we focus on taxi dropoffs only in Manhattan during three months: April-June 2016.
+We extract dropoffs information, and aggregate it into hourly resolution.
+
+The big events dataset was scraped from several online sources, mainly timeoutworld.com and eventful.com, and
+comprises of about 30K events in the aforementioned period. Data features include event title, location, and time.
+We focus the visualization on 11 large venues in Manhattan, including e.g. MoMA Museum and Beacon Theatre.
+For each event, we display only the event title and start time, because this is enough information for highlighting correlations with taxi dropoffs.
 
 ## Genre
 
