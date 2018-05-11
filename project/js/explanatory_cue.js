@@ -12,18 +12,21 @@ function createCue(svg, num, explanation, cx, cy) {
                 .style("display", "inline")
                 .style("background", "yellow");
             d3.select(".tooltip")
-                .html(explanation)
-                .style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 100) + "px")
                 .classed("notcue", false)
                 .classed("cue", true);
+            d3.select(".tooltip")
+                .html(explanation)
+                .style("left", (d3.event.pageX + 20) + "px")
+                .style("top", (d3.event.pageY - 80) + "px");
         })
         .on("mouseout", function () {
             d3.select(".tooltip")
-                .transition()
-                .style("display", "none")
                 .classed("notcue", true)
                 .classed("cue", false);
+            d3.select(".tooltip")
+                .transition()
+                .style("display", "none")
+;
         });
     svg
         .append("text")

@@ -21,8 +21,8 @@
 <div id="dropoffsAndEvents" class="centered">
     <svg id="svgMap"></svg>
     <svg id="svgZoomed"></svg>
-    <svg id="svgHourlyTimeSeries"></svg>
     <svg id="svgSlider"></svg>
+    <svg id="svgHourlyTimeSeries"></svg>
 
     <script type="text/javascript">
         var sliderMargin = 60;
@@ -64,7 +64,9 @@
         // TODO: place invisible line on top of event line for better hovering.
 
         function createExplanatoryCues() {
-            createCue(d3.select("#svgMap"), 1, "Choose a venue from the list or the map.",
+            createCue(d3.select("#svgMap"), 1,
+                "<p>Choose a venue from the list or the map.</p>" +
+                "<p>The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.</p>",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
                 "Slide to show which timeline values are that many std. devs. greater than the historical average " +
@@ -165,8 +167,7 @@
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
                         .transition()
-                        .style("display", "inline")
-                        .style("background", "yellow");
+                        .style("display", "inline");
                     d3.select(".tooltip")
                         .html(zeroPad(d.startTime.getHours(), 2) + ":" + zeroPad(d.startTime.getMinutes(), 2) + ", " + d.title)
                         .style("left", (d3.event.pageX + 20) + "px")
@@ -400,6 +401,14 @@
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
+
+            svgTimeSeries.append("text")
+                .attr("id", "timelineTitle")
+                .attr("x", svgDailyEventsWidth / 2 + 20)
+                .attr("y", eventsAxisPadding)
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .text("Hourly Dropoffs over Time");
 
             //Create axis
             svgTimeSeries.append("g")
@@ -660,7 +669,7 @@
                         },
                         function (allHourlyInfo) {
                             hourlyCountDropoffsAllVenues = allHourlyInfo.filter(function (d) {
-                                return (d.date.getMonth() >= 3) && (d.date.getMonth() < 7);
+                                return (d.date.getMonth() >= 3) && (d.date.getMonth() < 6);
                             });
                             readMeanHourly();
                         }
