@@ -162,6 +162,7 @@ h1, h2, h3 {
 
 div.tooltip {
     position: absolute;
+    display: none;
     height: auto;
     padding: 10px;
     border: 0;
