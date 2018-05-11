@@ -46,15 +46,15 @@
         var eventsVenues;
         var timeSeriesLine;
         var timeSeriesXAxis;
-        var timeSeriesXScale;
+        var timeSeriesXScale = d3.scaleTime().domain([new Date('2016-apr-01'), new Date('2016-Jul-01')]);
+        var timeSeriesYScale = d3.scaleLinear().domain([0, 500]);
         var meanAndStd;
-        var hourlyCountDropoffsAllVenues;
 
+        var hourlyCountDropoffsAllVenues;
         var eventsAxisPadding = 60;
         var svgDailyEventsHeight = 310;
         var svgDailyEventsWidth = 1150;
         var dailyYAxis;
-        var timeSeriesYScale = d3.scaleLinear();
         var hourlyYAxis;
         var hourlyDropoffsYScale = d3.scaleLinear();
         var barplotAxisPadding = 30;
@@ -198,10 +198,7 @@
                         .attr("stroke-width", eventLineWidth);
                 });
 
-            ZoomCircles()
-
-
-
+            ZoomCircles();
         }
 
         function ZoomCircles(){
@@ -300,7 +297,7 @@
                 .attr("id", "zoomedTitle")
                 .attr("class", "plotTitle")
                 .attr("x", zoomedSvgWidth / 2 + 20)
-                .attr("y", zoomedAxisPadding / 3)
+                .attr("y", zoomedAxisPadding / 2)
                 .text("Daily Dropoffs and Events");
             svgZoomed.append("text")
                 .attr("class", "axisLabel")
@@ -393,8 +390,7 @@
                 .attr("width", svgDailyEventsWidth)
                 .attr("height", svgDailyEventsHeight);
 
-            timeSeriesXScale = d3.scaleTime()
-                .rangeRound([eventsAxisPadding, svgDailyEventsWidth]);
+            timeSeriesXScale.rangeRound([eventsAxisPadding, svgDailyEventsWidth]);
             timeSeriesXAxis = d3
                 .axisBottom(timeSeriesXScale);
 
@@ -441,6 +437,13 @@
             svgTimeSeries.append("g")
                 .attr("id", "timeSeriesGYAxis")
                 .attr("transform", "translate(" + (eventsAxisPadding - 5) + ", 0)");
+
+            //Create axis
+            d3.select("#timeSeriesGXAxis")
+                .call(d3.axisBottom(timeSeriesXScale));
+
+            d3.select("#timeSeriesGYAxis")
+                .call(d3.axisLeft(timeSeriesYScale));
 
             var block = svgTimeSeries.append("g")
                 .attr("id", "block")
