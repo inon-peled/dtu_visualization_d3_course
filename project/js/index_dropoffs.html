@@ -240,13 +240,7 @@
                     .style("fill", filler)
                     .transition()
                     .attr("r", radii)
-                    .merge(dotti)
-                    .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
-                    .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
-                    .style("fill", filler)
-                    .attr("r", radii);
-
-
+                    
 
             }
 
