@@ -51,6 +51,26 @@
         // TODO: place invisible line on top of event line for better hovering.
         // TODO: clear zoomed plot when changing venue.
 
+        function showZoomed() {
+            if (d3.select(".selected").empty()) {
+                return;
+            }
+            var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
+            var venue = d3.select(".selected").data()[0].venue;
+            var data = hourlyCountDropoffsAllVenues
+                .filter(function(d) {
+                    return d.venue.toLowerCase() === venue.toLowerCase();
+                })
+                .filter(function (d) {
+                    return hasSameDate(d.date, clickedDateTime);
+                });
+            if (!_.isEmpty(data)) {
+                var overlappingEvents = eventsVenues[venue].filter(function (d) {
+                    return hasSameDate(d.startTime, clickedDateTime)
+                });
+                updateZoomed(overlappingEvents, clickedDateTime, _.map(data, 'dropoffs'));
+            }
+
         function zeroPad(value, width) {
             var valueStr = value + '';
             return valueStr.length >= width ? valueStr : new Array(width - valueStr.length + 1).join('0') + valueStr;
@@ -264,7 +284,8 @@
                 .attr("r", 3.5)
                 .attr("cx", function(d) { return timeSeriesXScale(d.date); })
                 .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
-                .style("fill", "blue");
+                .style("fill", "blue")
+                .on("click", showZoomed)
 
             //Create axis
             d3.select("#timeSeriesGXAxis")
@@ -323,26 +344,14 @@
                 .attr("id", "timeSeriesGYAxis")
                 .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)");
 
-            svgTimeSeries.on("click", function () {
-                if (d3.select(".selected").empty()) {
-                    return;
-                }
-                var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
-                var venue = d3.select(".selected").data()[0].venue;
-                var data = hourlyCountDropoffsAllVenues
-                    .filter(function(d) {
-                        return d.venue.toLowerCase() === venue.toLowerCase();
-                    })
-                    .filter(function (d) {
-                        return hasSameDate(d.date, clickedDateTime);
-                    });
-                if (!_.isEmpty(data)) {
-                    var overlappingEvents = eventsVenues[venue].filter(function (d) {
-                        return hasSameDate(d.startTime, clickedDateTime)
-                    });
-                    updateZoomed(overlappingEvents, clickedDateTime, _.map(data, 'dropoffs'));
-                }
-            });
+            var block = svgTimeSeries.append("g")
+                .attr("id", "block")
+                .append("rect")
+                .attr("width", svgDailyEventsWidth)
+                .attr("height", barplotSvgHeight)
+                .style("opacity", 0);
+
+            block.on("click", showZoomed);
         }
 
         function updateHourlyBarplot(d) {
