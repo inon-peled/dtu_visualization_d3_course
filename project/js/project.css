@@ -173,8 +173,6 @@ h1, h2, h3 {
 
 div.tooltip {
     position: absolute;
-    text-align: center;
-    width: 150px;
     height: auto;
     padding: 10px;
     background: lightsteelblue;
@@ -188,6 +186,16 @@ div.tooltip {
     -webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+div.tooltip.notcue {
+    width: 150px;
+    text-align: center;
+}
+
+div.tooltip.cue {
+    width: 500px;
+    text-align: left;
 }
 
 .partTitle {

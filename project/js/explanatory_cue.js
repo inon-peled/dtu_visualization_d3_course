@@ -14,12 +14,16 @@ function createCue(svg, num, explanation, cx, cy) {
             d3.select(".tooltip")
                 .html(explanation)
                 .style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 20) + "px");
+                .style("top", (d3.event.pageY - 100) + "px")
+                .classed("notcue", false)
+                .classed("cue", true);
         })
         .on("mouseout", function () {
             d3.select(".tooltip")
                 .transition()
-                .style("display", "none");
+                .style("display", "none")
+                .classed("notcue", true)
+                .classed("cue", false);
         });
     svg
         .append("text")

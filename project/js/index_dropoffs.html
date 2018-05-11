@@ -72,8 +72,11 @@
             createCue(d3.select("#svgMap"), 1, "Choose a venue from the list or the map.",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
-                "Slide to highlight values, which are that many std. devs. greater than the historical average " +
-                "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).", sliderMargin / 2, sliderHeight / 2)
+                "Slide to show which timeline values are that many std. devs. greater than the historical average " +
+                "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
+                sliderMargin / 2, sliderHeight / 2);
+            createCue(d3.select("#svgHourlyTimeSeries"), 3, "Click anywhere for a zoomed display of the same day " +
+                "-- with contemporaneous big events.", 100, 70);
         }
 
         function clearZoomed(){
