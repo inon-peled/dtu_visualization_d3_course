@@ -45,6 +45,8 @@ function createSlider(initialValue, valueKeeper, svg, margin, width, height, cb)
     function updateHandle(h) {
         handle.attr("cx", x(h));
         valueKeeper.value = h;
-        cb();
+        for(i = 0; i < cb.length; i++){
+            cb[i]();
+        }
     }
 }

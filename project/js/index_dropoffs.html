@@ -52,6 +52,8 @@
         var circleRadius = 6;
         var zoomedLine;
 
+        var selectedDate;
+
         // TODO: change scatter in zoomed view per slider.
         // TODO: place invisible line on top of event line for better hovering.
         // TODO: clear zoomed plot when changing venue.
@@ -166,45 +168,55 @@
                         .attr("stroke-width", eventLineWidth);
                 });
 
-            var zoomedDataScatter = dataScatter.filter(function (d) {
-                return hasSameDate(d.date, clickedDateTime)
-            });
-            var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected").data()[0]
+            ZoomCircles()
 
-            d3.select("#svgZoomed")
-                .selectAll(".dot")
-                .remove();
-            var dotti = d3.select("#svgZoomed")
-                .selectAll(".dot")
-                .data(zoomedDataScatter)
-                .enter()
-                .append("circle")
-                .attr("class", "dot")
-                .attr("r",  function(d,i){
-                    var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
-                    if (picked.empty()){
-                        return 3.5;
-                    }
-                    else if(picked.data()[0].date == d.date){
-                        return 3.5*2;
-                    }else{
-                        return 3.5;
-                    }
-                })
-                .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
-                .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
-                .style("fill", function(d,i){
-                    var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
-                    if (picked.empty()){
-                        return "blue";
-                    }
-                    else if(picked.data()[0].date == d.date){
-                        return "orange";
-                    }else{
-                        return "blue";
-                    }
+
+
+        }
+
+        function ZoomCircles(){
+
+            if (typeof selectedDate != "undefined") {
+
+                var zoomedDataScatter = dataScatter.filter(function (d) {
+                    return hasSameDate(d.date, selectedDate)
                 });
 
+                d3.select("#svgZoomed")
+                    .selectAll(".dot")
+                    .remove();
+
+                dotti = d3.select("#svgZoomed")
+                    .selectAll(".dot")
+                    .data(zoomedDataScatter)
+                    .enter()
+                    .append("circle")
+                    .attr("class", "dot")
+                    .attr("r",  function(d,i){
+                        var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                        if (picked.empty()){
+                            return 3.5;
+                        }
+                        else if(picked.data()[0].date == d.date){
+                            return 3.5*2;
+                        }else{
+                            return 3.5;
+                        }
+                    })
+                    .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
+                    .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
+                    .style("fill", function(d,i){
+                        var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                        if (picked.empty()){
+                            return "blue";
+                        }
+                        else if(picked.data()[0].date == d.date){
+                            return "orange";
+                        }else{
+                            return "blue";
+                        }
+                    })
+            }
 
 
         }
@@ -324,7 +336,8 @@
                         .style("fill", "blue")
                         .attr("r", 3.5)
                     d3.select(this).attr("r", 8).style("fill", "orange").classed("pointselected", true);
-                    showZoomed.call(this, timeSeriesXScale.invert(d3.select(this).attr("cx")));
+                    selectedDate = timeSeriesXScale.invert(d3.select(this).attr("cx"))
+                    showZoomed.call(this, selectedDate);
                 })
                 .on("mouseout", function(d){
                     //debugger
@@ -399,7 +412,8 @@
 
             block.on("click", function(d){
                 console.log("Clicked on the invisible block")
-                showZoomed.apply(this, [timeSeriesXScale.invert(d3.mouse(this)[0])])
+                selectedDate = timeSeriesXScale.invert(d3.mouse(this)[0])
+                showZoomed.apply(this, [selectedDate])
                 d3.selectAll(".dot")
                     .classed("pointselected", false)
                     .style("fill", "blue")
@@ -582,7 +596,8 @@
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createBarPlotHourlyCountDropoffs();
-                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
+                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"),
+                    50, 960, 50, [updateTimeSeriesPlot, ZoomCircles]);
             });
         };
 
