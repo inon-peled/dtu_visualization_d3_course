@@ -25,14 +25,14 @@ For each event, we display only the event title and start time, because this is 
 
 Our visualizations follow the style of an interactive *partitioned posted*, packed into one web-page.
 
-We use the following **Visual Narrative tools**:
+Let us now detail which tools we use and why. We use the following **Visual Narrative tools**:
 
 - *Consistent visual platform*: all visualizations pertain to the same city area, so we reuse the same map.
 - *Close-ups*: one of the plots provides a zoomed view of a 24 hour period, to let the user easily tell when a sharp increase in dropoffs coincides with a big event, as requested by members of the ML^2 group.
 - *Motion and zooming*: happen as part of the zoomed view.
 - *Animated transitions*: nicely flowing, interactive visualizations through D3 show how the data story evolves.
 
-We use the following **Narrative Structure tools**:
+We also use the following **Narrative Structure tools**:
 
 - *User directed path*: circled numbers guide the user through opearting the interactive plots in a linear style. The user is then free to explore the data as they wish.
 - *Hover Highlighting*: multiple elements in the web page provide more information when hovered on, including events. This way, the user can obtain more information at their own pace, without cluttering the page with persistent text.
