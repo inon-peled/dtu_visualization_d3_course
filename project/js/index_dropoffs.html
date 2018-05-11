@@ -44,7 +44,7 @@
         var svgMapHeight = 600;
         var circleRadius = 6;
 
-        function updateZoomed(hourlyDropoffsData) {
+        function updateZoomed(clickedDateTime, hourlyDropoffsData) {
             zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
             d3.select("#svgZoomed")
                 .selectAll(".bar")
@@ -63,6 +63,8 @@
                 .transition()
                 .ease(d3.easeLinear)
                 .call(zoomedYAxis);
+            d3.select("#zoomedTitle")
+                .text("Hourly Dropoffs at " + clickedDateTime.getFullYear() + "-" + (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
         }
 
         function createZoomed() {
@@ -110,7 +112,7 @@
                 .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
                 .call(zoomedYAxis);
             svgBarplot.append("text")
-                .attr("id", "barplotTitle")
+                .attr("id", "zoomedTitle")
                 .attr("x", barplotSvgWidth / 2 + 20)
                 .attr("y", barplotAxisPadding / 2)
                 .attr("text-anchor", "middle")
@@ -243,8 +245,11 @@
                             d.date.getMonth() === clickedDateTime.getMonth() &&
                             d.date.getDate() === clickedDateTime.getDate();
                     });
-                console.log(clickedDateTime);
-                console.log(data);
+                // console.log(clickedDateTime);
+                // console.log(data);
+                if (!_.isEmpty(data)) {
+                    updateZoomed(clickedDateTime, _.map(data, 'dropoffs'));
+                }
             });
         }
 
