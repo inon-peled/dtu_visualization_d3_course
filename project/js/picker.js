@@ -1,9 +1,11 @@
 function createPicker(fig, func) {
+    var height = 20;
+    var width = 200;
 
-    var height = 20
-    var width = 200
-
-    var bub = ["Madison Square Garden", "MoMA Museum", "Beacon Theatre",
+    var bub = [
+        "Madison Square Garden",
+        "MoMA Museum",
+        "Beacon Theatre",
         "Bowery Ballroom",
         "Carnegie Hall",
         "Javits Center",
@@ -14,10 +16,12 @@ function createPicker(fig, func) {
         "The Town Hall"];
 
     //Define the group elements holding the display.
-    g = fig.selectAll("g")
+    g = fig
+        .selectAll(".gPicker")
         .data(bub)
         .enter()
         .append("g")
+        .attr("class", "gPicker")
         .on("click", function (v) {
             updatePicker(fig, v);
 
@@ -25,7 +29,7 @@ function createPicker(fig, func) {
             f = d3.selectAll(".venueLocation")
             f2 = f.filter(function(d){
                 return d.venue === v;
-            })
+            });
 
             func.apply(this, f2.data());
         })
@@ -56,16 +60,16 @@ function createPicker(fig, func) {
         })
         .style("font-weight", "bold")
         .style("font-family", "sans-serif")
-};
+}
 
 function updatePicker(fig, venue){
-    g = fig.selectAll("g")
+    g = fig.selectAll(".gPicker");
     g.selectAll("rect")
         .transition()
         .duration(200)
-        .attr("fill", "grey").attr("fill-opacity", 0.3)
+        .attr("fill", "grey").attr("fill-opacity", 0.3);
     g.selectAll("rect").filter(function (d) {
-        return d == venue;
+        return d === venue;
     })
         .transition()
         .duration(200)

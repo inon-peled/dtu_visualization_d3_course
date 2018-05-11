@@ -15,7 +15,6 @@
 
 <div id="events">
     <svg id="svgMap"></svg>
-    <svg id="svgHourlyDropoffs"></svg>
     <svg id="svgZoomed"></svg>
     <svg id="svgHourlyTimeSeries"></svg>
     <svg id="svgSlider"></svg>
@@ -41,8 +40,8 @@
         var hourlyYAxis;
         var hourlyDropoffsYScale = d3.scaleLinear();
         var barplotAxisPadding = 60;
-        var barplotSvgWidth = 550;
-        var barplotSvgHeight = 380;
+        var barplotSvgWidth = 300;
+        var barplotSvgHeight = 200;
         var svgMapWidth = 600;
         var svgMapHeight = 600;
         var circleRadius = 6;
@@ -378,6 +377,17 @@
         }
 
         function createBarPlotHourlyCountDropoffs() {
+            var svgBarplot = d3.select("#svgMap")
+                .append("g")
+                .attr("id", "gHourlyDropoffsBarPlot")
+                .append("svg")
+                .attr("id", "svgHourlyDropoffs")
+                .attr("width", barplotSvgWidth)
+                .attr("height", barplotSvgHeight);
+
+            d3.select("#gHourlyDropoffsBarPlot")
+                .attr("transform", "translate(0, 300)");
+
             var xScale = d3
                 .scaleBand()
                 .domain(_.range(24))
@@ -387,21 +397,15 @@
                 .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
                 .domain([0, 0]);
 
-            var svgBarplot = d3
-                .select("#svgHourlyDropoffs")
-                .attr("width", barplotSvgWidth)
-                .attr("height", barplotSvgHeight);
 
             var xAxis = d3
                 .axisBottom(xScale)
                 .tickFormat(function (d, i) {
-                    return i;
+                    return i % 4 === 0 ? i : '';
                 });
             hourlyYAxis = d3
                 .axisLeft(hourlyDropoffsYScale)
-                .tickFormat(function (e) {
-                    return Math.floor(e) !== e ? "" : e;
-                });
+                .ticks(4);
 
             svgBarplot
                 .selectAll("rect")
@@ -428,21 +432,6 @@
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Average Hourly Dropoffs");
-            svgBarplot.append("text")
-                .attr("class", "axisLabel")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0)
-                .attr("x", -barplotSvgHeight / 2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("#Dropoffs");
-            svgBarplot.append("text")
-                .attr("class", "axisLabel")
-                .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
-                .attr("x", barplotSvgWidth / 2 + 20)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("Hour of Day");
         }
 
         function toggleVenueSelection(d) {
@@ -536,10 +525,10 @@
                         return d.properties.BoroName;
                     });
                 createAllCircles(venueLocations);
-                createBarPlotHourlyCountDropoffs();
                 createZoomed();
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
+                createBarPlotHourlyCountDropoffs();
                 createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
             });
         };
