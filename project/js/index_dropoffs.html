@@ -23,6 +23,7 @@
     <script type="text/javascript">
         var zoomedYAxis;
         var zoomedYScale = d3.scaleLinear();
+        var xScale;
 
         var stdDevFromHistoricalAverage = { };
         var eventsVenues;
@@ -42,6 +43,7 @@
         var barplotSvgHeight = 380;
         var svgMapWidth = 800;
         var svgMapHeight = 600;
+        var circleRadius = 6;
         var circleRadius = 6;
 
         function updateZoomed(clickedDateTime, hourlyDropoffsData) {
@@ -64,11 +66,21 @@
                 .ease(d3.easeLinear)
                 .call(zoomedYAxis);
             d3.select("#zoomedTitle")
-                .text("Hourly Dropoffs at " + clickedDateTime.getFullYear() + "-" + (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
+                .text("Hourly Dropoffs at " + clickedDateTime.getFullYear() + "-"
+                    + (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
+
+
+            d3.select('#svgZoomed').append("line")          // attach a line
+                .style("stroke", "red")  // colour the line
+                .attr("x1", xScale(2) + xScale.bandwidth() / 2)     // x position of the first end of the line
+                .attr("y1", zoomedYScale(0))      // y position of the first end of the line
+                .attr("x2", xScale(2) + xScale.bandwidth() / 2)     // x position of the second end of the line
+                .attr("y2", barplotAxisPadding)    // y position of the second end of the line
+                .attr("stroke-width", 5);
         }
 
         function createZoomed() {
-            var xScale = d3
+            xScale = d3
                 .scaleBand()
                 .domain(_.range(24))
                 .rangeRound([barplotAxisPadding, barplotSvgWidth])
