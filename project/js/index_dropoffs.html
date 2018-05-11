@@ -89,12 +89,13 @@
                     (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
 
             function eventLineLocation(d) {
-                return zoomedXScale(d.startTime.getHours() + (d.startTime.getMinutes() / 60)) + zoomedXScale.bandwidth() / 2;
+                return zoomedXScale(d.startTime.getHours() + (d.startTime.getMinutes() / 60));
             }
 
             d3.select('#svgZoomed')
                 .selectAll(".eventLine")
                 .remove();
+
             d3.select('#svgZoomed')
                 .selectAll(".eventLine")
                 .data(overlappingEvents)
