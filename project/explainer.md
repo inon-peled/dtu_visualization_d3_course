@@ -64,9 +64,13 @@ However, the tool can be further improved. We could display more than 3 months o
 We could also display taxi pickups, not only dropoffs.
 Finally, the data for this project is preprocessed offline, and it would be a great to provide some online tool for processing new data, which Open NYC releases about twice a year.
 
-##Contributions
+## Contributions
 
-90% of the project was made at Inons office, where we used pair programming, sitting together on one screen to process and understand the data as well as create the visualizations in d3. Therefore in all practical regards, we have contributed equally to the project. 
+Inon is a member of the ML^2 group, and so came up with the project idea. Jacob implemented and stylized most parts of the timeline plots,
+while Inon implemented and stylized most parts of the other plots.
+We mostly pair-programmed the entire project at Inon's office, where we shared one screen for data processing,
+data exploration, project planning, and webpage implementation.
+Eventually, each of us either touched or reviewed nearly every line of code, so we are both well familiar with all aspects of this project.
 
 <img src="explainer.assets/1526022914710.png" style="zoom:35%">
 
