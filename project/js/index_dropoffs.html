@@ -75,11 +75,11 @@
 
         function createExplanatoryCues() {
             createCue(d3.select("#svgMap"), 1,
-                "Choose a venue from the list or the map.<br/><br/>" +
+                "Choose a venue of big events from the list or the map.<br/><br/>" +
                 "The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
-                "Slide to define a magnitude of difference from historical average.<br/><br/>" +
+                "Slide to define a magnitude of difference from historical average of dropoffs.<br/><br/>" +
                 "Difference is measured in standard deviations. Historical average pertains to time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
                 sliderMargin / 2, sliderHeight / 2);
             createCue(d3.select("#svgHourlyTimeSeries"), 3,
