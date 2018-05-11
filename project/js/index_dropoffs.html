@@ -453,7 +453,6 @@
                 .style("opacity", 0);
 
             block.on("click", function(d){
-                console.log("Clicked on the invisible block")
                 selectedDate = timeSeriesXScale.invert(d3.mouse(this)[0])
                 showZoomed.apply(this, [selectedDate])
                 d3.selectAll(".dot")
