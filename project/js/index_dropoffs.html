@@ -589,7 +589,9 @@
                             };
                         },
                         function (allHourlyInfo) {
-                            hourlyCountDropoffsAllVenues = allHourlyInfo;
+                            hourlyCountDropoffsAllVenues = allHourlyInfo.filter(function (d) {
+                                return (d.date.getMonth() >= 3) && (d.date.getMonth() < 7);
+                            });
                             readMeanHourly();
                         }
                     );
