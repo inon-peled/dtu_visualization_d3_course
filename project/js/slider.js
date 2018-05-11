@@ -15,7 +15,7 @@ function createSlider(initialValue, valueKeeper, svg, margin, width, height, cb)
 
     var slider = svg.append("g")
         .attr("class", "slider")
-        .attr("transform", "translate(" + (1.5 * margin) + "," + (height / 2) + ")");
+        .attr("transform", "translate(" + (1.46 * margin) + "," + (height / 2) + ")");
 
     slider.append("line")
         .attr("class", "track")
