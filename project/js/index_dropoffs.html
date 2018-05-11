@@ -334,9 +334,9 @@
 
         function getProjection() {
             return d3.geoMercator()
-                .center([-74.0, 40.7]) // Approximate center point of NYC.
+                .center([-74.03, 40.7]) // Approximate center point of NYC.
                 .translate([svgMapWidth / 2 - 120, svgMapHeight / 2 + 200])
-                .scale([38000 * 4]);
+                .scale([38000 * 6]);
         }
 
         var createMap = function (venueLocations) {
