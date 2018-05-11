@@ -82,15 +82,11 @@
 
 .venueLocation.selected {
     fill: yellow;
-    stroke: black;
-    stroke-width: 1;
     opacity: 1;
 }
 
 .venueLocation.notSelected {
     fill: lightgrey;
-    stroke: black;
-    stroke-width: 1;
     opacity: 1;
 }
 
