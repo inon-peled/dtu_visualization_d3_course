@@ -21,6 +21,8 @@
     <svg id="svgSlider"></svg>
 
     <script type="text/javascript">
+        var eventLineWidth = 3;
+        var dataScatter;
         var zoomedYAxis;
         var zoomedYScale = d3.scaleLinear();
         var zoomedXScale;
@@ -106,7 +108,7 @@
                 .attr("y1", zoomedYScale(0))      // y position of the first end of the line
                 .attr("x2", eventLineLocation)     // x position of the second end of the line
                 .attr("y2", barplotAxisPadding)    // y position of the second end of the line
-                .attr("stroke-width", 5)
+                .attr("stroke-width", eventLineWidth)
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
                         .transition()
@@ -119,7 +121,7 @@
                     d3.select(this)
                         .transition()
                         .style("stroke", "purple")
-                        .attr("stroke-width", 8);
+                        .attr("stroke-width", eventLineWidth * 2);
                 })
                 .on("mouseout", function (d) {
                     d3.select(".tooltip")
@@ -128,8 +130,25 @@
                     d3.select(this)
                         .transition()
                         .style("stroke", "red")
-                        .attr("stroke-width", 5);
+                        .attr("stroke-width", eventLineWidth);
                 });
+
+            var zoomedDataScatter = dataScatter.filter(function (d) {
+                return hasSameDate(d.date, clickedDateTime)
+            });
+            d3.select("#svgZoomed")
+                .selectAll(".dot")
+                .remove();
+            d3.select("#svgZoomed")
+                .selectAll(".dot")
+                .data(zoomedDataScatter)
+                .enter()
+                .append("circle")
+                .attr("class", "dot")
+                .attr("r", 3.5)
+                .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
+                .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
+                .style("fill", "blue");
         }
 
         function createZoomed() {
@@ -208,7 +227,7 @@
                 return d.venue.toLowerCase() == venue;
             });
 
-            var datascatter = data.filter(function(d){
+            dataScatter = data.filter(function(d){
                 var ms = meanAndStd[venue][d.date.getDay()][d.date.getHours()];
                 return d.dropoffs >= ms.mean + stdDevFromHistoricalAverage.value * ms.std;
             });
@@ -230,7 +249,7 @@
                 .remove();
             d3.select("#svgHourlyTimeSeries")
                 .selectAll(".dot")
-                .data(datascatter)
+                .data(dataScatter)
                 .enter()
                 .append("circle")
                 .attr("class", "dot")
