@@ -65,17 +65,19 @@
 
         function createExplanatoryCues() {
             createCue(d3.select("#svgMap"), 1,
-                "<p>Choose a venue from the list or the map.</p>" +
-                "<p>The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.</p>",
+                "Choose a venue from the list or the map.<br/><br/>" +
+                "The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
                 "Slide to show which timeline values are that many std. devs. greater than the historical average " +
                 "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
                 sliderMargin / 2, sliderHeight / 2);
-            createCue(d3.select("#svgHourlyTimeSeries"), 3, "Click anywhere for a zoomed display of the same day " +
-                "-- with contemporaneous big events.", 100, 70);
+            createCue(d3.select("#svgHourlyTimeSeries"), 3,
+                "The highlighted points show extraordinary taxi dropoffs, per the slider value.<br/><br/>" +
+                "Click anywhere for a zoomed display of the same day " +
+                "-- with contemporaneous big events.", 720, 55);
             createCue(d3.select("#svgZoomed"), 4, "See how extraordinary counts of taxi dropoffs co-occur with " +
-                "big events near the selected venue. Hover over event lines for more information.", 150, 70);
+                "big events near the selected venue.<br/><br/>Hover over event lines for more information.", 150, 70);
         }
 
         function clearZoomed(){

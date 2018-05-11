@@ -16,8 +16,8 @@ function createCue(svg, num, explanation, cx, cy) {
                 .classed("cue", true);
             d3.select(".tooltip")
                 .html(explanation)
-                .style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 80) + "px");
+                .style("left", (d3.event.pageX) + "px")
+                .style("top", (d3.event.pageY) + "px");
         })
         .on("mouseout", function () {
             d3.select(".tooltip")
