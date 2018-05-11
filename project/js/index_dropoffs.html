@@ -20,6 +20,9 @@
     <svg id="svgSlider"></svg>
 
     <script type="text/javascript">
+        var zoomedAxisPadding = 60;
+        var zoomedSvgWidth = 600;
+        var zoomedSvgHeight = 500;
         var eventLineWidth = 3;
         var dataScatter;
         var zoomedYAxis;
@@ -39,11 +42,11 @@
         var timeSeriesYScale = d3.scaleLinear();
         var hourlyYAxis;
         var hourlyDropoffsYScale = d3.scaleLinear();
-        var barplotAxisPadding = 60;
+        var barplotAxisPadding = 30;
         var barplotSvgWidth = 300;
         var barplotSvgHeight = 200;
         var svgMapWidth = 600;
-        var svgMapHeight = 600;
+        var svgMapHeight = 500;
         var circleRadius = 6;
         var zoomedLine;
 
@@ -93,7 +96,7 @@
                 .attr("stroke", "steelblue")
                 .attr("stroke-linejoin", "round")
                 .attr("stroke-linecap", "round")
-                .attr("stroke-width", 1.5)
+                .attr("stroke-width", 2.5)
                 .attr("opacity", 0.5)
                 .attr("d", zoomedLine);
 
@@ -184,16 +187,16 @@
             zoomedXScale = d3
                 .scaleLinear()
                 .domain([0,24])
-                .rangeRound([barplotAxisPadding, barplotSvgWidth])
+                .rangeRound([zoomedAxisPadding, zoomedSvgWidth]);
 
             zoomedYScale
-                .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
+                .range([zoomedSvgHeight - zoomedAxisPadding, zoomedAxisPadding])
                 .domain([0, 0]);
 
-            var svgBarplot = d3
+            var svgZoomed = d3
                 .select("#svgZoomed")
-                .attr("width", barplotSvgWidth)
-                .attr("height", barplotSvgHeight);
+                .attr("width", zoomedSvgWidth)
+                .attr("height", zoomedSvgHeight);
 
             var xAxis = d3
                 .axisBottom(zoomedXScale);
@@ -211,36 +214,36 @@
                     return zoomedYScale(d)
                 });
 
-            svgBarplot.append("path")
+            svgZoomed.append("path")
                 .attr("id", "zoomedPath");
 
-            svgBarplot.append("g")
+            svgZoomed.append("g")
                 .attr("class", "xAxis")
-                .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
+                .attr("transform", "translate(0, " + (zoomedSvgHeight - zoomedAxisPadding) + ")")
                 .call(xAxis);
-            svgBarplot.append("g")
+            svgZoomed.append("g")
                 .attr("class", "yAxis")
-                .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+                .attr("transform", "translate(" + zoomedAxisPadding + ", 0)")
                 .call(zoomedYAxis);
-            svgBarplot.append("text")
+            svgZoomed.append("text")
                 .attr("id", "zoomedTitle")
-                .attr("x", barplotSvgWidth / 2 + 20)
-                .attr("y", barplotAxisPadding / 2)
+                .attr("x", zoomedSvgWidth / 2 + 20)
+                .attr("y", zoomedAxisPadding / 2)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Daily Dropoffs and Events");
-            svgBarplot.append("text")
+            svgZoomed.append("text")
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0)
-                .attr("x", -barplotSvgHeight / 2)
+                .attr("x", -zoomedSvgHeight / 2)
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
-            svgBarplot.append("text")
+            svgZoomed.append("text")
                 .attr("class", "axisLabel")
-                .attr("y", barplotSvgHeight - barplotAxisPadding / 2)
-                .attr("x", barplotSvgWidth / 2 + 20)
+                .attr("y", zoomedSvgHeight - zoomedAxisPadding / 2)
+                .attr("x", zoomedSvgWidth / 2 + 20)
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("Hour of Day");
@@ -485,7 +488,7 @@
 
         function getProjection() {
             return d3.geoMercator()
-                .center([-74.041, 40.72]) // Approximate center point of NYC.
+                .center([-74.05, 40.72]) // Approximate center point of NYC.
                 .translate([svgMapWidth / 2 - 120, svgMapHeight / 2 + 200])
                 .scale([38000 * 8]);
         }
