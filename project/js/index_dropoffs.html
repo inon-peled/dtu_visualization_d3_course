@@ -56,11 +56,22 @@
         // TODO: place invisible line on top of event line for better hovering.
         // TODO: clear zoomed plot when changing venue.
 
-        function showZoomed() {
+        function clearZoomed(){
+            d3.select("#zoomedPath")
+                .attr("opacity", 0);
+            d3.select('#svgZoomed')
+                .selectAll(".eventLine")
+                .remove();
+            d3.select("#svgZoomed")
+                .selectAll(".dot")
+                .remove();
+        }
+
+        function showZoomed(clickedDateTime) {
             if (d3.select(".selected").empty()) {
                 return;
             }
-            var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
+            //var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
             var venue = d3.select(".selected").data()[0].venue;
             var data = hourlyCountDropoffsAllVenues
                 .filter(function(d) {
@@ -91,7 +102,6 @@
         function updateZoomed(overlappingEvents, clickedDateTime, hourlyDropoffsData) {
             zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
 
-            //debugger
             d3.select("#zoomedPath")
                 .datum(hourlyDropoffsData)
                 .attr("fill", "none")
@@ -102,18 +112,7 @@
                 .attr("opacity", 0.5)
                 .attr("d", zoomedLine);
 
-            d3.select("#svgZoomed")
-                .selectAll(".bar")
-                .data(hourlyDropoffsData)
-                .transition()
-                .ease(d3.easeLinear)
-                .attr("y", function (d) {
-                    return zoomedYScale(d);
-                })
-                .attr("height", function (d) {
-                    return barplotSvgHeight - zoomedYScale(d) - barplotAxisPadding;
-                })
-                .attr("fill", "blue");
+
             d3.select("#svgZoomed")
                 .select(".yAxis")
                 .transition()
@@ -170,19 +169,44 @@
             var zoomedDataScatter = dataScatter.filter(function (d) {
                 return hasSameDate(d.date, clickedDateTime)
             });
+            var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected").data()[0]
+
             d3.select("#svgZoomed")
                 .selectAll(".dot")
                 .remove();
-            d3.select("#svgZoomed")
+            var dotti = d3.select("#svgZoomed")
                 .selectAll(".dot")
                 .data(zoomedDataScatter)
                 .enter()
                 .append("circle")
                 .attr("class", "dot")
-                .attr("r", 3.5)
+                .attr("r",  function(d,i){
+                    var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                    if (picked.empty()){
+                        return 3.5;
+                    }
+                    else if(picked.data()[0].date == d.date){
+                        return 3.5*2;
+                    }else{
+                        return 3.5;
+                    }
+                })
                 .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
                 .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
-                .style("fill", "blue");
+                .style("fill", function(d,i){
+                    var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                    if (picked.empty()){
+                        return "blue";
+                    }
+                    else if(picked.data()[0].date == d.date){
+                        return "orange";
+                    }else{
+                        return "blue";
+                    }
+                });
+
+
+
         }
 
         function createZoomed() {
@@ -291,7 +315,23 @@
                 .attr("cx", function(d) { return timeSeriesXScale(d.date); })
                 .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
                 .style("fill", "blue")
-                .on("click", showZoomed)
+                .on("mouseover", function(d){
+                    d3.select(this).transition().duration(200).attr("r", 8);
+                })
+                .on("click", function(d){
+                    d3.selectAll(".dot")
+                        .classed("pointselected", false)
+                        .style("fill", "blue")
+                        .attr("r", 3.5)
+                    d3.select(this).attr("r", 8).style("fill", "orange").classed("pointselected", true);
+                    showZoomed.call(this, timeSeriesXScale.invert(d3.select(this).attr("cx")));
+                })
+                .on("mouseout", function(d){
+                    //debugger
+                    if(!d3.select(this).classed("pointselected")){
+                        d3.select(this).transition().duration(200).attr("r", 3.5)
+                    }
+                })
 
             //Create axis
             d3.select("#timeSeriesGXAxis")
@@ -357,7 +397,14 @@
                 .attr("height", svgDailyEventsHeight)
                 .style("opacity", 0);
 
-            block.on("click", showZoomed);
+            block.on("click", function(d){
+                console.log("Clicked on the invisible block")
+                showZoomed.apply(this, [timeSeriesXScale.invert(d3.mouse(this)[0])])
+                d3.selectAll(".dot")
+                    .classed("pointselected", false)
+                    .style("fill", "blue")
+                    .attr("r", 3.5)
+            });
         }
 
         function updateHourlyBarplot(d) {
@@ -440,6 +487,7 @@
         }
 
         function toggleVenueSelection(d) {
+            clearZoomed()
             f = d3.selectAll(".venueLocation")
                 .classed("selected", false)
                 .classed("notSelected", true);
