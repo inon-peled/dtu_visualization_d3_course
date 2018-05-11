@@ -1,11 +1,10 @@
-function createSlider(valueKeeper, svg, margin, width, height, cb) {
-    // TODO: make current slider value accessible from outside, so that switching to a different venue can also update the scatter plot of deviations from historical average.
+function createSlider(initialValue, valueKeeper, svg, margin, width, height, cb) {
+    svg.attr("height", height).attr("width", width);
+
     var x = d3.scaleLinear()
         .domain([0, 5])
         .range([0, width - 2 * margin])
         .clamp(true);
-
-    valueKeeper.value = 0;
 
     var slider = svg.append("g")
         .attr("class", "slider")
@@ -35,7 +34,10 @@ function createSlider(valueKeeper, svg, margin, width, height, cb) {
 
     var handle = slider.insert("circle", ".track-overlay")
         .attr("class", "handle")
-        .attr("r", 9);
+        .attr("r", 9)
+        .attr("cx", x(initialValue));
+
+    valueKeeper.value = initialValue;
 
     slider.transition()
         .duration(750);

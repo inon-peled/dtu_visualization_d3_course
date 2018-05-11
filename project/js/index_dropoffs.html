@@ -17,7 +17,7 @@
     <svg id="svgMap"></svg>
     <svg id="svgHourlyEvents"></svg>
     <svg id="svgHourlyTimeSeries"></svg>
-    <svg width="960" height="50" id="svgSlider"></svg>
+    <svg id="svgSlider"></svg>
 
     <script type="text/javascript">
         var stdDevFromHistoricalAverage = { };
@@ -378,7 +378,7 @@
                 createBarPlotHourlyCountEvents();
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
-                createSlider(stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
+                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
             });
         };
 
