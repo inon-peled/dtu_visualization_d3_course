@@ -268,7 +268,10 @@
                 .attr("height", zoomedSvgHeight);
 
             var xAxis = d3
-                .axisBottom(zoomedXScale);
+                .axisBottom(zoomedXScale)
+                .tickFormat(function (d, i) {
+                    return d + ':00';
+                });
             zoomedYAxis = d3
                 .axisLeft(zoomedYScale)
                 .tickFormat(function (e) {
@@ -500,11 +503,10 @@
                 .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
                 .domain([0, 0]);
 
-
             var xAxis = d3
                 .axisBottom(xScale)
                 .tickFormat(function (d, i) {
-                    return i % 4 === 0 ? i : '';
+                    return i % 6 === 0 ? (i + ':00') : '';
                 });
             hourlyYAxis = d3
                 .axisLeft(hourlyDropoffsYScale)
