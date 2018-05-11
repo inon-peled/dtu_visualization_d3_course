@@ -53,6 +53,7 @@
         }
 
         function updateZoomed(overlappingEvents, clickedDateTime, hourlyDropoffsData) {
+            console.log(overlappingEvents)
             zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
             d3.select("#svgZoomed")
                 .selectAll(".bar")
@@ -75,12 +76,23 @@
                 .text("Hourly Dropoffs and Events on " + clickedDateTime.getFullYear() + "-" +
                     (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
 
+            function eventLineLocation(d) {
+                return xScale(d.startTime.getHours() + (d.startTime.getMinutes() / 60)) + xScale.bandwidth() / 2;
+            }
 
-            d3.select('#svgZoomed').append("line")          // attach a line
-                .style("stroke", "red")  // colour the line
-                .attr("x1", xScale(2) + xScale.bandwidth() / 2)     // x position of the first end of the line
+            d3.select('#svgZoomed')
+                .selectAll(".eventLine")
+                .remove();
+            d3.select('#svgZoomed')
+                .selectAll(".eventLine")
+                .data(overlappingEvents)
+                .enter()
+                .append("line")
+                .attr("class", "eventLine")
+                .style("stroke", "red")
+                .attr("x1", eventLineLocation)
                 .attr("y1", zoomedYScale(0))      // y position of the first end of the line
-                .attr("x2", xScale(2) + xScale.bandwidth() / 2)     // x position of the second end of the line
+                .attr("x2", eventLineLocation)     // x position of the second end of the line
                 .attr("y2", barplotAxisPadding)    // y position of the second end of the line
                 .attr("stroke-width", 5);
         }
