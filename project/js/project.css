@@ -1,3 +1,13 @@
+#mapTitle {
+    font-family: Georgia;
+    font-size: 28px;
+    font-weight: bold;
+    fill: white;
+    stroke: grey;
+    stroke-opacity: 1;
+    stroke-width: 0.5px;
+}
+
 .cueText {
     color: black;
     font-size: 20px;

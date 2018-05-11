@@ -14,11 +14,11 @@
 </head>
 <body>
 
-<div id="explain">
-    Explore the correlations between taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.
-</div>
-
 <div id="dropoffsAndEvents" class="centered">
+    <div id="explain">
+        Explore the correlations between taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.
+    </div>
+
     <svg id="svgMap"></svg>
     <svg id="svgZoomed"></svg>
     <svg id="svgSlider"></svg>
@@ -575,8 +575,6 @@
         }
 
         var createMap = function (venueLocations) {
-            var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
-
             var path = d3.geoPath()
                 .projection(getProjection());
 
@@ -591,23 +589,13 @@
                     .append("path")
                     .attr("d", path)
                     .style("fill", function (d, i) {
-                        return "teal";
-                        return boroughColors(i);
+                        return "steelblue";
                     });
-                svgMap.selectAll("text")
-                    .data(json.features)
-                    .enter()
-                    .append("text")
-                    .attr("class", "boroughNameLabel")
-                    .attr("x", function (d) {
-                        return path.centroid(d)[0];
-                    })
-                    .attr("y", function (d) {
-                        return path.centroid(d)[1];
-                    })
-                    .text(function (d) {
-                        return d.properties.BoroName;
-                    });
+                svgMap.append("text")
+                    .attr("id", "mapTitle")
+                    .text("Manhattan")
+                    .attr("x", 420)
+                    .attr("y", 330);
                 createAllCircles(venueLocations);
                 createZoomed();
                 createTimeSeriesPlot();
