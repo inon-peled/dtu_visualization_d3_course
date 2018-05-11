@@ -1,9 +1,11 @@
-function createSlider(svg, margin, width, height, cb) {
+function createSlider(valueKeeper, svg, margin, width, height, cb) {
     // TODO: make current slider value accessible from outside, so that switching to a different venue can also update the scatter plot of deviations from historical average.
     var x = d3.scaleLinear()
         .domain([0, 5])
         .range([0, width - 2 * margin])
         .clamp(true);
+
+    valueKeeper.value = 0;
 
     var slider = svg.append("g")
         .attr("class", "slider")
@@ -40,6 +42,7 @@ function createSlider(svg, margin, width, height, cb) {
 
     function updateHandle(h) {
         handle.attr("cx", x(h));
-        cb(h);
+        valueKeeper.value = h;
+        cb();
     }
 }
