@@ -9,17 +9,26 @@
     <script type="text/javascript" src="picker.js"></script>
     <script type="text/javascript" src="events_on_time_series.js"></script>
     <script type="text/javascript" src="slider.js"></script>
+    <script type="text/javascript" src="./explanatory_cue.js"></script>
     <link rel="stylesheet" href="project.css">
 </head>
 <body>
 
-<div id="events">
+<div id="dropoffsAndEvents" class="centered">
+    <div id="explain">
+        Explore the correlations between taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.
+    </div>
+
     <svg id="svgMap"></svg>
     <svg id="svgZoomed"></svg>
-    <svg id="svgHourlyTimeSeries"></svg>
     <svg id="svgSlider"></svg>
+    <svg id="svgHourlyTimeSeries"></svg>
 
     <script type="text/javascript">
+        var sliderMargin = 60;
+        var sliderWidth = 960;
+        var sliderHeight = 50;
+
         var zoomedAxisPadding = 60;
         var zoomedSvgWidth = 600;
         var zoomedSvgHeight = 500;
@@ -38,7 +47,7 @@
         var hourlyCountDropoffsAllVenues;
 
         var eventsAxisPadding = 60;
-        var svgDailyEventsHeight = 400;
+        var svgDailyEventsHeight = 350;
         var svgDailyEventsWidth = 1150;
         var dailyYAxis;
         var timeSeriesYScale = d3.scaleLinear();
@@ -56,7 +65,23 @@
 
         // TODO: change scatter in zoomed view per slider.
         // TODO: place invisible line on top of event line for better hovering.
-        // TODO: clear zoomed plot when changing venue.
+
+        function createExplanatoryCues() {
+            createCue(d3.select("#svgMap"), 1,
+                "Choose a venue from the list or the map.<br/><br/>" +
+                "The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.",
+                svgMapWidth / 2, svgMapHeight / 2);
+            createCue(d3.select("#svgSlider"), 2,
+                "Slide to show which timeline values are that many std. devs. greater than the historical average " +
+                "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
+                sliderMargin / 2, sliderHeight / 2);
+            createCue(d3.select("#svgHourlyTimeSeries"), 3,
+                "The highlighted points show extraordinary taxi dropoffs, per the slider value.<br/><br/>" +
+                "Click anywhere for a zoomed display of the same day " +
+                "-- with contemporaneous big events.", 720, 55);
+            createCue(d3.select("#svgZoomed"), 4, "See how extraordinary counts of taxi dropoffs co-occur with " +
+                "big events near the selected venue.<br/><br/>Hover over event lines for more information.", 150, 70);
+        }
 
         function clearZoomed(){
             d3.select("#zoomedPath")
@@ -142,13 +167,12 @@
                 .attr("x1", eventLineLocation)
                 .attr("y1", zoomedYScale(0))      // y position of the first end of the line
                 .attr("x2", eventLineLocation)     // x position of the second end of the line
-                .attr("y2", barplotAxisPadding)    // y position of the second end of the line
+                .attr("y2", barplotAxisPadding + 20)    // y position of the second end of the line
                 .attr("stroke-width", eventLineWidth)
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
                         .transition()
-                        .style("display", "inline")
-                        .style("background", "yellow");
+                        .style("display", "inline");
                     d3.select(".tooltip")
                         .html(zeroPad(d.startTime.getHours(), 2) + ":" + zeroPad(d.startTime.getMinutes(), 2) + ", " + d.title)
                         .style("left", (d3.event.pageX + 20) + "px")
@@ -266,18 +290,18 @@
             svgZoomed.append("text")
                 .attr("id", "zoomedTitle")
                 .attr("x", zoomedSvgWidth / 2 + 20)
-                .attr("y", zoomedAxisPadding / 2)
+                .attr("y", zoomedAxisPadding / 3)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Daily Dropoffs and Events");
-            svgZoomed.append("text")
-                .attr("class", "axisLabel")
-                .attr("transform", "rotate(-90)")
-                .attr("y", 0)
-                .attr("x", -zoomedSvgHeight / 2)
-                .attr("dy", "1em")
-                .style("text-anchor", "middle")
-                .text("#Dropoffs");
+            // svgZoomed.append("text")
+            //     .attr("class", "axisLabel")
+            //     .attr("transform", "rotate(-90)")
+            //     .attr("y", 0)
+            //     .attr("x", -zoomedSvgHeight / 2)
+            //     .attr("dy", "1em")
+            //     .style("text-anchor", "middle")
+            //     .text("#Dropoffs");
             svgZoomed.append("text")
                 .attr("class", "axisLabel")
                 .attr("y", zoomedSvgHeight - zoomedAxisPadding / 2)
@@ -393,6 +417,14 @@
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
+
+            svgTimeSeries.append("text")
+                .attr("id", "timelineTitle")
+                .attr("x", svgDailyEventsWidth / 2 + 20)
+                .attr("y", eventsAxisPadding)
+                .attr("text-anchor", "middle")
+                .style("font-size", "16px")
+                .text("Hourly Dropoffs over Time");
 
             //Create axis
             svgTimeSeries.append("g")
@@ -558,8 +590,6 @@
         }
 
         var createMap = function (venueLocations) {
-            var boroughColors = d3.scaleOrdinal(d3.schemeCategory10);
-
             var path = d3.geoPath()
                 .projection(getProjection());
 
@@ -574,30 +604,21 @@
                     .append("path")
                     .attr("d", path)
                     .style("fill", function (d, i) {
-                        return "teal";
-                        return boroughColors(i);
+                        return "steelblue";
                     });
-                svgMap.selectAll("text")
-                    .data(json.features)
-                    .enter()
-                    .append("text")
-                    .attr("class", "boroughNameLabel")
-                    .attr("x", function (d) {
-                        return path.centroid(d)[0];
-                    })
-                    .attr("y", function (d) {
-                        return path.centroid(d)[1];
-                    })
-                    .text(function (d) {
-                        return d.properties.BoroName;
-                    });
+                svgMap.append("text")
+                    .attr("id", "mapTitle")
+                    .text("Manhattan")
+                    .attr("x", 420)
+                    .attr("y", 330);
                 createAllCircles(venueLocations);
                 createZoomed();
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createBarPlotHourlyCountDropoffs();
                 createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"),
-                    50, 960, 50, [updateTimeSeriesPlot, ZoomCircles]);
+                    sliderMargin, sliderWidth, sliderHeight, [updateTimeSeriesPlot, ZoomCircles]);
+                createExplanatoryCues();
             });
         };
 
@@ -653,7 +674,7 @@
                         },
                         function (allHourlyInfo) {
                             hourlyCountDropoffsAllVenues = allHourlyInfo.filter(function (d) {
-                                return (d.date.getMonth() >= 3) && (d.date.getMonth() < 7);
+                                return (d.date.getMonth() >= 3) && (d.date.getMonth() < 6);
                             });
                             readMeanHourly();
                         }
