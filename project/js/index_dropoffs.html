@@ -30,6 +30,10 @@
     <svg id="svgSlider"></svg>
 
     <script type="text/javascript">
+        var sliderMargin = 60;
+        var sliderWidth = 960;
+        var sliderHeight = 50;
+
         var zoomedAxisPadding = 60;
         var zoomedSvgWidth = 600;
         var zoomedSvgHeight = 500;
@@ -66,7 +70,10 @@
 
         function createExplanatoryCues() {
             createCue(d3.select("#svgMap"), 1, "Choose a venue from the list or the map.",
-                svgMapWidth / 2, svgMapHeight / 2)
+                svgMapWidth / 2, svgMapHeight / 2);
+            createCue(d3.select("#svgSlider"), 2,
+                "Slide to highlight values, which are that many std. devs. greater than the historical average " +
+                "for the same time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).", sliderMargin / 2, sliderHeight / 2)
         }
 
         function clearZoomed(){
@@ -595,7 +602,8 @@
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createBarPlotHourlyCountDropoffs();
-                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
+                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"),
+                    sliderMargin, sliderWidth, sliderHeight, updateTimeSeriesPlot);
                 createExplanatoryCues();
             });
         };

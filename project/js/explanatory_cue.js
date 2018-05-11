@@ -21,7 +21,7 @@ function createCue(svg, num, explanation, cx, cy) {
                 .transition()
                 .style("display", "none");
         });
-    d3.select("#svgMap")
+    svg
         .append("text")
         .attr("class", "cueText")
         .attr("text-anchor", "middle")
