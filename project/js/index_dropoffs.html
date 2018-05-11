@@ -20,6 +20,7 @@
     <svg width="960" height="50" id="svgSlider"></svg>
 
     <script type="text/javascript">
+        var stdDevFromHistoricalAverage = { };
         var eventsVenues;
         var timeSeriesLine;
         var timeSeriesXAxis;
@@ -95,7 +96,7 @@
             return dateArray;
         }
 
-        function updateTimeSeriesPlot(thresh) {
+        function updateTimeSeriesPlot() {
             if (d3.select(".selected").empty()) {
                 return;
             }
@@ -107,7 +108,7 @@
 
             var datascatter = data.filter(function(d){
                 var ms = meanAndStd[venue][d.date.getDay()][d.date.getHours()];
-                return d.dropoffs >= ms.mean + thresh * ms.std;
+                return d.dropoffs >= ms.mean + stdDevFromHistoricalAverage.value * ms.std;
             });
             timeSeriesXScale.domain(d3.extent(data, function(d) { return d.date; }));
             timeSeriesYScale.domain(d3.extent(data, function(d) { return d.dropoffs; }));
@@ -376,7 +377,8 @@
                 createAllCircles(venueLocations);
                 createBarPlotHourlyCountEvents();
                 createTimeSeriesPlot();
-                createSlider(d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
+                createPicker(d3.select("#svgMap"), toggleVenueSelection);
+                createSlider(stdDevFromHistoricalAverage, d3.select("#svgSlider"), 50, 960, 50, updateTimeSeriesPlot);
             });
         };
 
@@ -438,9 +440,6 @@
                 }
             );
         }
-
-        readDailyInfo();
-        createPicker(d3.select("#svgMap"), toggleVenueSelection);
 
         function readEventsVenues() {
             read_events_venues_csv(function (data) {
