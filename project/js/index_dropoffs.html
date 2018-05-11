@@ -15,12 +15,7 @@
 <body>
 
 <div id="explain">
-    <p>Explore the correlation between taxi dropoffs and big events in Manhattan!</p>
-    <p>
-    1) Choose a venue from the list or the map.
-    2) Slide to highlight timeline values, which are that many std. devs. greater than the historical average.
-    3) Click the time line for a zoomed display of the same day -- with big events overlayed.
-    </p>
+    Explore the correlations between taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.
 </div>
 
 <div id="dropoffsAndEvents" class="centered">
@@ -77,6 +72,8 @@
                 sliderMargin / 2, sliderHeight / 2);
             createCue(d3.select("#svgHourlyTimeSeries"), 3, "Click anywhere for a zoomed display of the same day " +
                 "-- with contemporaneous big events.", 100, 70);
+            createCue(d3.select("#svgZoomed"), 4, "See how extraordinary counts of taxi dropoffs co-occur with " +
+                "big events near the selected venue. Hover over event lines for more information.", 150, 70);
         }
 
         function clearZoomed(){
@@ -163,7 +160,7 @@
                 .attr("x1", eventLineLocation)
                 .attr("y1", zoomedYScale(0))      // y position of the first end of the line
                 .attr("x2", eventLineLocation)     // x position of the second end of the line
-                .attr("y2", barplotAxisPadding)    // y position of the second end of the line
+                .attr("y2", barplotAxisPadding + 20)    // y position of the second end of the line
                 .attr("stroke-width", eventLineWidth)
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
@@ -277,7 +274,7 @@
             svgZoomed.append("text")
                 .attr("id", "zoomedTitle")
                 .attr("x", zoomedSvgWidth / 2 + 20)
-                .attr("y", zoomedAxisPadding / 2)
+                .attr("y", zoomedAxisPadding / 3)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
                 .text("Daily Dropoffs and Events");
