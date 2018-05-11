@@ -67,6 +67,10 @@
                 });
                 updateZoomed(overlappingEvents, clickedDateTime, _.map(data, 'dropoffs'));
             }
+
+        function zeroPad(value, width) {
+            var valueStr = value + '';
+            return valueStr.length >= width ? valueStr : new Array(width - valueStr.length + 1).join('0') + valueStr;
         }
 
         function hasSameDate(d1, d2) {
@@ -136,7 +140,7 @@
                         .style("display", "inline")
                         .style("background", "yellow");
                     d3.select(".tooltip")
-                        .html(d.title)
+                        .html(zeroPad(d.startTime.getHours(), 2) + ":" + zeroPad(d.startTime.getMinutes(), 2) + ", " + d.title)
                         .style("left", (d3.event.pageX + 20) + "px")
                         .style("top", (d3.event.pageY - 20) + "px");
                     d3.select(this)
