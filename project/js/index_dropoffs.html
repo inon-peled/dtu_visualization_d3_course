@@ -549,6 +549,7 @@
 
         function toggleVenueSelection(d) {
             clearZoomed()
+            selectedDate = undefined;
             f = d3.selectAll(".venueLocation")
                 .classed("selected", false)
                 .classed("notSelected", true);
