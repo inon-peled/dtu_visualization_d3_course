@@ -1,3 +1,8 @@
+.centered {
+    margin: auto;
+    text-align: center;
+}
+
 .ticks {
     font: 10px sans-serif;
 }
