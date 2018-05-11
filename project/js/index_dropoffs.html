@@ -46,7 +46,13 @@
         var circleRadius = 6;
         var circleRadius = 6;
 
-        function updateZoomed(clickedDateTime, hourlyDropoffsData) {
+        function hasSameDate(d1, d2) {
+            return d1.getFullYear() === d2.getFullYear() &&
+                d1.getMonth() === d2.getMonth() &&
+                d1.getDate() === d2.getDate();
+        }
+
+        function updateZoomed(overlappingEvents, clickedDateTime, hourlyDropoffsData) {
             zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
             d3.select("#svgZoomed")
                 .selectAll(".bar")
@@ -66,8 +72,8 @@
                 .ease(d3.easeLinear)
                 .call(zoomedYAxis);
             d3.select("#zoomedTitle")
-                .text("Hourly Dropoffs at " + clickedDateTime.getFullYear() + "-"
-                    + (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
+                .text("Hourly Dropoffs and Events on " + clickedDateTime.getFullYear() + "-" +
+                    (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
 
 
             d3.select('#svgZoomed').append("line")          // attach a line
@@ -129,7 +135,7 @@
                 .attr("y", barplotAxisPadding / 2)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Hourly Dropoffs");
+                .text("Daily Dropoffs and Events");
             svgBarplot.append("text")
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
@@ -246,21 +252,23 @@
                 .attr("transform", "translate(" + (barplotAxisPadding - 5) + ", 0)");
 
             svgTimeSeries.on("click", function () {
+                if (d3.select(".selected").empty()) {
+                    return;
+                }
                 var clickedDateTime = timeSeriesXScale.invert(d3.mouse(this)[0]);
-                var venue = d3.select(".selected").data()[0].venue.toLowerCase();
+                var venue = d3.select(".selected").data()[0].venue;
                 var data = hourlyCountDropoffsAllVenues
                     .filter(function(d) {
-                        return d.venue.toLowerCase() == venue;
+                        return d.venue.toLowerCase() === venue.toLowerCase();
                     })
                     .filter(function (d) {
-                        return d.date.getFullYear() === clickedDateTime.getFullYear() &&
-                            d.date.getMonth() === clickedDateTime.getMonth() &&
-                            d.date.getDate() === clickedDateTime.getDate();
+                        return hasSameDate(d.date, clickedDateTime);
                     });
-                // console.log(clickedDateTime);
-                // console.log(data);
                 if (!_.isEmpty(data)) {
-                    updateZoomed(clickedDateTime, _.map(data, 'dropoffs'));
+                    var overlappingEvents = eventsVenues[venue].filter(function (d) {
+                        return hasSameDate(d.startTime, clickedDateTime)
+                    });
+                    updateZoomed(overlappingEvents, clickedDateTime, _.map(data, 'dropoffs'));
                 }
             });
         }
@@ -336,7 +344,7 @@
                 .attr("y", barplotAxisPadding / 2)
                 .attr("text-anchor", "middle")
                 .style("font-size", "16px")
-                .text("Hourly Dropoffs");
+                .text("Average Hourly Dropoffs");
             svgBarplot.append("text")
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
