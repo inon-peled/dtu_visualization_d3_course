@@ -56,6 +56,17 @@
         // TODO: place invisible line on top of event line for better hovering.
         // TODO: clear zoomed plot when changing venue.
 
+        function clearZoomed(){
+            d3.select("#zoomedPath")
+                .attr("opacity", 0);
+            d3.select('#svgZoomed')
+                .selectAll(".eventLine")
+                .remove();
+            d3.select("#svgZoomed")
+                .selectAll(".dot")
+                .remove();
+        }
+
         function showZoomed(clickedDateTime) {
             if (d3.select(".selected").empty()) {
                 return;
@@ -91,7 +102,6 @@
         function updateZoomed(overlappingEvents, clickedDateTime, hourlyDropoffsData) {
             zoomedYScale.domain([0, d3.max(hourlyDropoffsData)]);
 
-            //debugger
             d3.select("#zoomedPath")
                 .datum(hourlyDropoffsData)
                 .attr("fill", "none")
@@ -102,18 +112,7 @@
                 .attr("opacity", 0.5)
                 .attr("d", zoomedLine);
 
-            d3.select("#svgZoomed")
-                .selectAll(".bar")
-                .data(hourlyDropoffsData)
-                .transition()
-                .ease(d3.easeLinear)
-                .attr("y", function (d) {
-                    return zoomedYScale(d);
-                })
-                .attr("height", function (d) {
-                    return barplotSvgHeight - zoomedYScale(d) - barplotAxisPadding;
-                })
-                .attr("fill", "blue");
+
             d3.select("#svgZoomed")
                 .select(".yAxis")
                 .transition()
@@ -488,6 +487,7 @@
         }
 
         function toggleVenueSelection(d) {
+            clearZoomed()
             f = d3.selectAll(".venueLocation")
                 .classed("selected", false)
                 .classed("notSelected", true);
