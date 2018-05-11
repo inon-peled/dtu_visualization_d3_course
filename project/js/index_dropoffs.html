@@ -17,7 +17,7 @@
 
 <div id="dropoffsAndEvents" class="centered">
     <div id="explain">
-        <p id="pExplain">Explore correlations between yellow taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.</p>
+        <p id="pExplain">Explore correlations between yellow taxi dropoffs and big events in Manhattan, April-June 2016! Follow the circled numbers for guidance.</p>
     </div>
 
     <svg id="svgMap"></svg>
@@ -79,7 +79,7 @@
                 "The small bar plot then shows how taxi dropoffs distribute on a typical day around the selected venue.",
                 svgMapWidth / 2, svgMapHeight / 2);
             createCue(d3.select("#svgSlider"), 2,
-                "Slide to define magnitude of difference from historical average.<br/><br/>" +
+                "Slide to define a magnitude of difference from historical average.<br/><br/>" +
                 "Difference is measured in standard deviations. Historical average pertains to time-of-day (e.g. 20:00) and day-of-week (e.g. Monday).",
                 sliderMargin / 2, sliderHeight / 2);
             createCue(d3.select("#svgHourlyTimeSeries"), 3,
@@ -145,7 +145,6 @@
                 .attr("stroke-width", 2.5)
                 .attr("opacity", 0.5)
                 .attr("d", zoomedLine);
-
 
             d3.select("#svgZoomed")
                 .select(".yAxis")
