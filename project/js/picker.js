@@ -1,5 +1,5 @@
 function createPicker(fig, func) {
-    var height = 20;
+    var height = 23;
     var width = 200;
 
     var bub = [
@@ -43,7 +43,7 @@ function createPicker(fig, func) {
         .attr("y", function (d, i) {
             return i * (height + 1) + 3;
         })
-        .attr("x", 10)
+        .attr("x", 30)
         .attr("height", height)
         .attr("width", width)
         .attr("fill", "grey")
@@ -54,11 +54,11 @@ function createPicker(fig, func) {
         .text(function (d) {
             return d;
         })
-        .attr("x", 15)
+        .attr("x", 40)
         .attr("y", function (d, i) {
             return i * (height + 1) + height - 2;
         })
-        .style("font-weight", "bold")
+        // .style("font-weight", "bold")
         .style("font-family", "sans-serif")
 }
 
@@ -73,6 +73,6 @@ function updatePicker(fig, venue){
     })
         .transition()
         .duration(200)
-        .attr("fill", "orange")
+        .attr("fill", "yellow")
         .attr("fill-opacity", 0.6);
 }
