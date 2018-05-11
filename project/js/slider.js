@@ -1,6 +1,13 @@
 function createSlider(initialValue, valueKeeper, svg, margin, width, height, cb) {
     svg.attr("height", height).attr("width", width);
 
+    svg
+        .append("text")
+        .attr("class", "plotTitle")
+        .text("Deviation from Historical Average:")
+        .attr("x", 300)
+        .attr("y", 30);
+
     var x = d3.scaleLinear()
         .domain([0, 5])
         .range([0, width - 2 * margin])
@@ -8,7 +15,7 @@ function createSlider(initialValue, valueKeeper, svg, margin, width, height, cb)
 
     var slider = svg.append("g")
         .attr("class", "slider")
-        .attr("transform", "translate(" + margin + "," + (height / 2) + ")");
+        .attr("transform", "translate(" + (1.5 * margin) + "," + (height / 2) + ")");
 
     slider.append("line")
         .attr("class", "track")

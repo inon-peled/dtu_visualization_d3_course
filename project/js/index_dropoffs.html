@@ -17,7 +17,7 @@
 
 <div id="dropoffsAndEvents" class="centered">
     <div id="explain">
-        <p id="pExplain">Explore the correlations between taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.</p>
+        <p id="pExplain">Explore correlations between yellow taxi dropoffs and big events in Manhattan! Follow the circled numbers for guidance.</p>
     </div>
 
     <svg id="svgMap"></svg>
@@ -29,8 +29,8 @@
     <svg id="svgHourlyTimeSeries"></svg>
     </div>
     <script type="text/javascript">
-        var sliderMargin = 60;
-        var sliderWidth = 960;
+        var sliderMargin = 300;
+        var sliderWidth = 1150;
         var sliderHeight = 50;
 
         var zoomedAxisPadding = 60;
@@ -51,7 +51,7 @@
         var hourlyCountDropoffsAllVenues;
 
         var eventsAxisPadding = 60;
-        var svgDailyEventsHeight = 350;
+        var svgDailyEventsHeight = 310;
         var svgDailyEventsWidth = 1150;
         var dailyYAxis;
         var timeSeriesYScale = d3.scaleLinear();
@@ -628,7 +628,7 @@
                 createTimeSeriesPlot();
                 createPicker(d3.select("#svgMap"), toggleVenueSelection);
                 createBarPlotHourlyCountDropoffs();
-                createSlider(1.5, stdDevFromHistoricalAverage, d3.select("#svgSlider"),
+                createSlider(2, stdDevFromHistoricalAverage, d3.select("#svgSlider"),
                     sliderMargin, sliderWidth, sliderHeight, [updateTimeSeriesPlot, ZoomCircles]);
                 createExplanatoryCues();
             });
