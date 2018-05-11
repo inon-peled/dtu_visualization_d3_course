@@ -23,30 +23,28 @@ For each event, we display only the event title and start time, because this is 
 
 ## Genre
 
-We will argue that our visualizations takes the form of an interactive *partitioned posted*, since each visualizations consists of multiple elements such as a map, bar plot etc, that together created the overview. It is however packed into a web-page so there is an argument that the visualizations are partitioned posters, but the overall piece is wrapped in magazine style. All though a more fitting term would probably be "blog" style, such as medium.com
+Our visualizations follow the style of an interactive *partitioned posted*, packed into one web-page.
 
-**Visual Narrative**:
+We use the following **Visual Narrative tools**:
 
-- We used a *consistent visual platform* between our visualizations since they display datasets confined in the same area, so it makes sense to reuse the same map.
-- *Close-ups* was also used since we have a large timeline and wanted the user to be able to go closer in 24hr intervals. The 24hr intervals was specified by the research group. 
-- *Motion and zooming* can be argued as being part of the close-ups. 
-- *Animated transitions* is heavily levered using the d3-library. It gives a nice flow to the interactive visualization and gives the user a feeling of seeing the data evolve before their eyes. 
+- *Consistent visual platform*: all visualizations pertain to the same city area, so we reuse the same map.
+- *Close-ups*: one of the plots provides a zoomed view of a 24 hour period, to let the user easily tell when a sharp increase in dropoffs coincides with a big event, as requested by members of the ML^2 group.
+- *Motion and zooming*: happen as part of the zoomed view.
+- *Animated transitions*: nicely flowing, interactive visualizations through D3 show how the data story evolves.
 
-**Narrative Structure**:
+We use the following **Narrative Structure tools**:
 
-- We have a *user directed path* in our last visualization and use a more *linear* style in our first one. The user is guided by our markings. The user is however free to explore the data in the way that they find interesting, that be modifying the threshold with the slider or choosing any time interval, both from interesting points and also anywhere on the timeline. 
-- *Hover Highlighting* is used to give the user more information about datapoints that they hover over. This is a nice feature since you limit the amount of noise up front, but you allow the visualization to become richer during exploration. 
-- *Filtering* is applied to the data from the input of the user. 
-- *Explicted instruction* is available as tooltips
-- *Stimulating Default View* is limited. If we had a default venue selected with all the information it would seem like a lot at the same time. Now the user is presented with a map and some empty figures so it is much more tempting to click the map to discover how the empty figures will become filled with interesting data. 
-- *Captions and headlines* are used to explain the figures to the user.
-- *Accompanying Article* is this explainer webpage
-- *Introductory Text:* a short text is provided before the figure.
-- *Summary*: We try to sum up our conclusions at the end to give the user an idea of some interesting things that can be found from the data. 
+- *User directed path*: circled numbers guide the user through opearting the interactive plots in a linear style. The user is then free to explore the data as they wish.
+- *Hover Highlighting*: multiple elements in the web page provide more information when hovered on, including events. This way, the user can obtain more information at their own pace, without cluttering the page with persistent text.
+- *Filtering*: per user selection, e.g. using the slider.
+- *Explicted instruction*: available as tooltips.
+- *Stimulating Default View* is limited, to encourage the user to select a venue of interest.
+- *Captions and headlines*: explain the figures to the user.
+- *Accompanying Article*: the explainer webpage
+- *Introductory Text:* a short introductory text is provided at page top.
+- *Summary*: we offer some conclusions, as we found through our interactive tool, thus showing its effectiveness.
 
 ## Visualizations
-
-
 
 ## Discussions
 
