@@ -67,8 +67,11 @@
 
         var selectedDate;
 
-        // TODO: change scatter in zoomed view per slider.
         // TODO: place invisible line on top of event line for better hovering.
+
+        function monthName(monthNumZeroBased) {
+            return ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][monthNumZeroBased];
+        }
 
         function createExplanatoryCues() {
             createCue(d3.select("#svgMap"), 1,
@@ -151,7 +154,7 @@
                 .call(zoomedYAxis);
             d3.select("#zoomedTitle")
                 .text("Hourly Dropoffs and Events on " + clickedDateTime.getFullYear() + "-" +
-                    (clickedDateTime.getMonth() + 1) + "-" + clickedDateTime.getDate());
+                    monthName(clickedDateTime.getMonth()) + "-" + zeroPad(clickedDateTime.getDate(), 2));
 
             function eventLineLocation(d) {
                 return zoomedXScale(d.startTime.getHours() + (d.startTime.getMinutes() / 60));
