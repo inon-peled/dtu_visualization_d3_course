@@ -1,3 +1,9 @@
+#explain #pExplain {
+    font-family: Georgia;
+    font-size: 18px;
+    margin-bottom: 16px;
+}
+
 .bar {
     fill: lightsteelblue;
 }
@@ -63,87 +69,6 @@
     stroke-width: 1.25px;
 }
 
-#part2 {
-    align: center;
-    margin: auto;
-}
-
-table {
-    border-collapse: collapse;
-    width: 40%;
-}
-
-th {
-    font-weight: normal;
-    font-style: italic;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid black;
-}
-
-.mostCommon {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.inlineTable {
-    font-family: Georgia;
-    display: inline-block;
-    font-size: 18px;
-}
-
-table ul {
-    font-size: 16px;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-#part1 p, #part2 p {
-    -webkit-margin-before: 1em;
-    -webkit-margin-after: 1em;
-    -webkit-margin-start: 0px;
-    -webkit-margin-end: 0px;
-    font-family: Georgia;
-    font-size: 18px;
-    line-height: 1.6em;
-    margin-right: 400px;
-    margin-left: 20px;
-}
-
-h1, h2, h3 {
-    font-family: Georgia;
-    font-size: 36px;
-    margin-left: 20px;
-}
-
-.boroughNameLabel {
-    text-anchor: middle;
-    /*text-shadow: -1px 0 lightgrey, 0 1px lightgrey, 1px 0 lightgrey, 0 -1px lightgrey;*/
-    fill: black;
-    font-size: 18px;
-    /*font-weight: bold;*/
-}
-
-.animateButton rect {
-    fill: black;
-    opacity: 0.2;
-}
-
-.animateButton text {
-    fill: black;
-    font-size: 18px;
-    text-anchor: middle;
-}
-
-.animateButton:hover rect,
-.animateButton:hover text {
-    fill: blue;
-}
-
 .venueLocation.selected {
     fill: yellow;
     stroke: black;
@@ -193,25 +118,4 @@ div.tooltip.cue {
     width: 400px;
     text-align: left;
     background: lightsteelblue;
-}
-
-.partTitle {
-    font-size: 30px;
-}
-
-.homeworkTitle {
-    font-size: 40px;
-}
-
-#part2 ol, #part2 ul, #part2 li {
-    margin: 0 0 5px 0;
-    font-family: Georgia;
-    font-size: 18px;
-    margin-left: 20px;
-    margin-right: 200px;
-}
-
-#part2Plots * {
-    font-size: 13px;
-    font-family: Arial;
 }
