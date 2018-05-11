@@ -15,7 +15,8 @@
 
 <div id="events">
     <svg id="svgMap"></svg>
-    <svg id="svgHourlyEvents"></svg>
+    <svg id="svgHourlyDropoffs"></svg>
+    <svg id="svgZoomed"></svg>
     <svg id="svgHourlyTimeSeries"></svg>
     <svg id="svgSlider"></svg>
 
@@ -27,74 +28,18 @@
         var timeSeriesXScale;
         var meanAndStd;
         var hourlyCountDropoffsAllVenues;
-        var startDate = new Date('2016-01-01');
-        var endDate = new Date('2016-08-31');
-        var dateRange = rangeOfDates(startDate, endDate);
 
         var svgDailyEventsWidth = 1600;
         var dailyYAxis;
         var timeSeriesYScale = d3.scaleLinear();
         var hourlyYAxis;
-        var hourlyEventsYScale = d3.scaleLinear();
+        var hourlyDropoffsYScale = d3.scaleLinear();
         var barplotAxisPadding = 60;
         var barplotSvgWidth = 550;
         var barplotSvgHeight = 380;
         var svgMapWidth = 800;
         var svgMapHeight = 600;
         var circleRadius = 6;
-
-        function updateDailyBarplot(d) {
-            function dateStr(k) {
-                return k.getFullYear() + '-' + k.getMonth() + '-' + k.getDate();
-            }
-
-            var dailyCountForVenue = _(hourlyCountDropoffsAllVenues)
-                .filter(function (o) { return o.venue === _.toLower(d.venue)})
-                .keyBy('day')
-                .mapValues('value')
-                .mapKeys(function (v, k) {return dateStr(new Date(k));})
-                .value();
-            var dailyCountsWithZeros = [];
-            for (var i = 0 ; i < dateRange.length ; i++) {
-                dailyCountsWithZeros.push({
-                    date: dateRange[i],
-                    value: dailyCountForVenue[dateStr(dateRange[i])] || 0
-                });
-            }
-            timeSeriesYScale.domain([0, d3.max(_(dailyCountsWithZeros).map('value').value())]);
-            d3.select("#svgDailyEvents")
-                .selectAll(".dailyBar")
-                .data(dailyCountsWithZeros)
-                .transition()
-                .ease(d3.easeLinear)
-                .attr("y", function (d) {
-                    return timeSeriesYScale(d.value);
-                })
-                .attr("height", function (d) {
-                    return barplotSvgHeight - timeSeriesYScale(d.value) - barplotAxisPadding;
-                })
-                .attr("fill", "blue");
-            d3.select("#svgDailyEvents")
-                .select(".yAxis")
-                .transition()
-                .ease(d3.easeLinear)
-                .call(dailyYAxis);
-        }
-
-        function rangeOfDates(startDate, stopDate) {
-            Date.prototype.addDays = function (days) {
-                var date = new Date(this.valueOf());
-                date.setDate(date.getDate() + days);
-                return date;
-            };
-            var dateArray = [];
-            var currentDate = startDate;
-            while (currentDate <= stopDate) {
-                dateArray.push(new Date(currentDate));
-                currentDate = currentDate.addDays(1);
-            }
-            return dateArray;
-        }
 
         function updateTimeSeriesPlot() {
             if (d3.select(".selected").empty()) {
@@ -196,20 +141,20 @@
         }
 
         function updateHourlyBarplot(d) {
-            hourlyEventsYScale.domain([0, d3.max(d.startTime)]);
-            d3.select("#svgHourlyEvents")
+            hourlyDropoffsYScale.domain([0, d3.max(d.startTime)]);
+            d3.select("#svgHourlyDropoffs")
                 .selectAll(".bar")
                 .data(d.startTime)
                 .transition()
                 .ease(d3.easeLinear)
                 .attr("y", function (d) {
-                    return hourlyEventsYScale(d);
+                    return hourlyDropoffsYScale(d);
                 })
                 .attr("height", function (d) {
-                    return barplotSvgHeight - hourlyEventsYScale(d) - barplotAxisPadding;
+                    return barplotSvgHeight - hourlyDropoffsYScale(d) - barplotAxisPadding;
                 })
                 .attr("fill", "blue");
-            d3.select("#svgHourlyEvents")
+            d3.select("#svgHourlyDropoffs")
                 .select(".yAxis")
                 .transition()
                 .ease(d3.easeLinear)
@@ -222,12 +167,12 @@
                 .domain(_.range(24))
                 .rangeRound([barplotAxisPadding, barplotSvgWidth])
                 .paddingInner(0.05);
-            hourlyEventsYScale
+            hourlyDropoffsYScale
                 .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
                 .domain([0, 0]);
 
             var svgBarplot = d3
-                .select("#svgHourlyEvents")
+                .select("#svgHourlyDropoffs")
                 .attr("width", barplotSvgWidth)
                 .attr("height", barplotSvgHeight);
 
@@ -237,7 +182,7 @@
                     return i;
                 });
             hourlyYAxis = d3
-                .axisLeft(hourlyEventsYScale)
+                .axisLeft(hourlyDropoffsYScale)
                 .tickFormat(function (e) {
                     return Math.floor(e) !== e ? "" : e;
                 });
