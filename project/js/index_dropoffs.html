@@ -144,6 +144,7 @@
                 .attr("stroke-linecap", "round")
                 .attr("stroke-width", 2.5)
                 .attr("opacity", 0.5)
+                .transition()
                 .attr("d", zoomedLine);
 
             d3.select("#svgZoomed")
@@ -168,13 +169,6 @@
                 .data(overlappingEvents)
                 .enter()
                 .append("line")
-                .attr("class", "eventLine")
-                .style("stroke", "red")
-                .attr("x1", eventLineLocation)
-                .attr("y1", zoomedYScale(0))      // y position of the first end of the line
-                .attr("x2", eventLineLocation)     // x position of the second end of the line
-                .attr("y2", barplotAxisPadding + 20)    // y position of the second end of the line
-                .attr("stroke-width", eventLineWidth)
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
                         .transition()
@@ -196,7 +190,17 @@
                         .transition()
                         .style("stroke", "red")
                         .attr("stroke-width", eventLineWidth);
-                });
+                })
+                .attr("x1", eventLineLocation)
+                .attr("x2", eventLineLocation)     // x position of the second end of the line
+                .attr("class", "eventLine")
+                .style("stroke", "red")
+                .attr("y2", barplotAxisPadding + 20)    // y position of the second end of the line
+                .attr("y1", zoomedYScale(0))      // y position of the first end of the line
+                .attr("stroke-width", eventLineWidth)
+                .attr("opacity", 0.0)
+                .transition()
+                .attr("opacity", 1.0)
 
             ZoomCircles();
         }
@@ -209,40 +213,55 @@
                     return hasSameDate(d.date, selectedDate)
                 });
 
+
                 d3.select("#svgZoomed")
                     .selectAll(".dot")
                     .remove();
 
-                dotti = d3.select("#svgZoomed")
+                var dotti = d3.select("#svgZoomed")
                     .selectAll(".dot")
-                    .data(zoomedDataScatter)
-                    .enter()
+                    .data(zoomedDataScatter);
+
+                dotti.enter()
                     .append("circle")
                     .attr("class", "dot")
-                    .attr("r",  function(d,i){
-                        var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
-                        if (picked.empty()){
-                            return 3.5;
-                        }
-                        else if(picked.data()[0].date == d.date){
-                            return 3.5*2;
-                        }else{
-                            return 3.5;
-                        }
-                    })
                     .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
                     .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
-                    .style("fill", function(d,i){
-                        var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
-                        if (picked.empty()){
-                            return "blue";
-                        }
-                        else if(picked.data()[0].date == d.date){
-                            return "orange";
-                        }else{
-                            return "blue";
-                        }
-                    })
+                    .style("fill", filler)
+                    .transition()
+                    .attr("r", radii)
+                    .merge(dotti)
+                    .attr("cx", function(d) { return zoomedXScale(d.date.getHours()); })
+                    .attr("cy", function(d) { return zoomedYScale(parseInt(d.dropoffs)); })
+                    .style("fill", filler)
+                    .attr("r", radii);
+
+
+
+            }
+
+            function filler(d){
+                var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                if (picked.empty()){
+                    return "blue";
+                }
+                else if(picked.data()[0].date == d.date){
+                    return "orange";
+                }else{
+                    return "blue";
+                }
+            }
+
+            function radii(d){
+                var picked = d3.select("#svgHourlyTimeSeries").selectAll(".pointselected")
+                if (picked.empty()){
+                    return 3.5;
+                }
+                else if(picked.data()[0].date == d.date){
+                    return 3.5*2;
+                }else{
+                    return 3.5;
+                }
             }
 
 
@@ -343,37 +362,34 @@
                 .attr("opacity", 0.5)
                 .attr("d", timeSeriesLine);
 
-            d3.select("#svgHourlyTimeSeries")
-                .selectAll(".dot")
-                .remove();
-            d3.select("#svgHourlyTimeSeries")
+
+            //Select the dots
+            var dots = d3.select("#svgHourlyTimeSeries")
                 .selectAll(".dot")
                 .data(dataScatter)
-                .enter()
+
+            //Make new dots
+            dots.enter()
                 .append("circle")
                 .attr("class", "dot")
                 .attr("r", 3.5)
                 .attr("cx", function(d) { return timeSeriesXScale(d.date); })
                 .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
                 .style("fill", "blue")
-                .on("mouseover", function(d){
-                    d3.select(this).transition().duration(200).attr("r", 8);
-                })
-                .on("click", function(d){
-                    d3.selectAll(".dot")
-                        .classed("pointselected", false)
-                        .style("fill", "blue")
-                        .attr("r", 3.5)
-                    d3.select(this).attr("r", 8).style("fill", "orange").classed("pointselected", true);
-                    selectedDate = timeSeriesXScale.invert(d3.select(this).attr("cx"))
-                    showZoomed.call(this, selectedDate);
-                })
-                .on("mouseout", function(d){
-                    //debugger
-                    if(!d3.select(this).classed("pointselected")){
-                        d3.select(this).transition().duration(200).attr("r", 3.5)
-                    }
-                })
+                .on("mouseover", timeDotsOver)
+                .on("click", timeDotsClick)
+                .on("mouseout", timeDotsOut)
+                .merge(dots) //Merge with existing data
+                .attr("r", 3.5)
+                .attr("cx", function(d) { return timeSeriesXScale(d.date); })
+                .attr("cy", function(d) { return timeSeriesYScale(parseInt(d.dropoffs)); })
+                .style("fill", "blue")
+                .on("mouseover", timeDotsOver)
+                .on("click", timeDotsClick)
+                .on("mouseout", timeDotsOut)
+
+            dots.exit()
+                .remove();
 
             //Create axis
             d3.select("#timeSeriesGXAxis")
@@ -382,6 +398,31 @@
 
             d3.select("#timeSeriesGYAxis")
                 .call(d3.axisLeft(timeSeriesYScale))
+
+
+            //Functions for the mouse
+            function timeDotsClick(){
+                d3.selectAll(".dot")
+                    .classed("pointselected", false)
+                    .style("fill", "blue")
+                    .attr("r", 3.5)
+                d3.select(this).attr("r", 8).style("fill", "orange").classed("pointselected", true);
+                selectedDate = timeSeriesXScale.invert(d3.select(this).attr("cx"))
+                if (selectedDate.getHours() > 22){
+                    selectedDate.setHours(selectedDate.getHours() + 1)
+                }
+                showZoomed.call(this, selectedDate);
+            }
+
+            function timeDotsOver(){
+                d3.select(this).transition().duration(200).attr("r", 8);
+            }
+
+            function timeDotsOut(){
+                if(!d3.select(this).classed("pointselected")){
+                    d3.select(this).transition().duration(200).attr("r", 3.5)
+                }
+            }
         }
 
         function createTimeSeriesPlot() {
@@ -454,11 +495,14 @@
 
             block.on("click", function(d){
                 selectedDate = timeSeriesXScale.invert(d3.mouse(this)[0])
-                showZoomed.apply(this, [selectedDate])
+                if (selectedDate.getHours() > 22){
+                    selectedDate.setHours(selectedDate.getHours() + 1)
+                }
                 d3.selectAll(".dot")
                     .classed("pointselected", false)
                     .style("fill", "blue")
                     .attr("r", 3.5)
+                showZoomed.apply(this, [selectedDate])
             });
         }
 
