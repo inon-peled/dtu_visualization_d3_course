@@ -581,7 +581,6 @@
                 })
                 .attr("width", xScale.bandwidth())
                 .on("mouseover", function(d){
-                    console.log("test")
                     d3.select(this)
                         .classed("bar", false)
                         .classed("barSelected", true)
