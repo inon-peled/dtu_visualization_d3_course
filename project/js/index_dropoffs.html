@@ -18,8 +18,10 @@
 <div id="dropoffsAndEvents" class="centered">
     <div id="explain">
         <p id="pExplain">
-            Explore correlations between taxi dropoffs and big events in Manhattan, April-June 2016! Follow the circled numbers for guidance and additional info.<br/>
-            Also see the <a target="_blank" href="../explainer.html">explainer page</a>, download <a target="_blank" href="./taxi_events_data.zip">the data</a>,
+            Explore correlations between taxi dropoffs and big events in Manhattan, April-June 2016! Follow the circled numbers for tooltips and additional info.
+            <br/>
+            Tested with Chrome, Firefox, and Edge in FHD Resolution.
+            Also see the <a target="_blank" href="./explainer.html">explainer page</a>, download <a target="_blank" href="./taxi_events_data.zip">the data</a>,
             or visit our <a target="_blank" href="https://github.com/inon-peled/dtu_visualization_d3_course/tree/master/project">github repo</a>.
         </p>
     </div>
@@ -581,7 +583,6 @@
                 })
                 .attr("width", xScale.bandwidth())
                 .on("mouseover", function(d){
-                    console.log("test")
                     d3.select(this)
                         .classed("bar", false)
                         .classed("barSelected", true)
