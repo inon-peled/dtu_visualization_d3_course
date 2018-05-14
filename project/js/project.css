@@ -9,6 +9,15 @@
     fill: grey;
 }
 
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
 #explain #pExplain {
     color: black;
     font-family: Arial;
@@ -92,6 +101,16 @@
 }
 
 .venueLocation.notSelected {
+    fill: lightgrey;
+    opacity: 1;
+}
+
+.venueLocation1.selected {
+    fill: yellow;
+    opacity: 1;
+}
+
+.venueLocation1.notSelected {
     fill: lightgrey;
     opacity: 1;
 }
