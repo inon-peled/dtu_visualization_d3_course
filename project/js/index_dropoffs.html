@@ -111,6 +111,9 @@
             d3.select("#svgZoomed")
                 .selectAll(".dot")
                 .remove();
+            d3.select("#svgZoomed")
+                .selectAll(".eventGroup")
+                .remove();
         }
 
         function showZoomed(clickedDateTime) {
@@ -173,14 +176,16 @@
             }
 
             d3.select('#svgZoomed')
-                .selectAll(".eventLine")
+                .selectAll(".eventGroup")
                 .remove();
 
-            d3.select('#svgZoomed')
+            //Create group element
+            g = d3.select("#svgZoomed")
                 .selectAll(".eventLine")
                 .data(overlappingEvents)
                 .enter()
-                .append("line")
+                .append("g")
+                .attr("class", "eventGroup")
                 .on("mouseover", function (d) {
                     d3.select(".tooltip")
                         .transition()
@@ -189,22 +194,39 @@
                         .html(zeroPad(d.startTime.getHours(), 2) + ":" + zeroPad(d.startTime.getMinutes(), 2) + ", " + d.title)
                         .style("left", (d3.event.pageX + 20) + "px")
                         .style("top", (d3.event.pageY - 20) + "px");
-                    d3.select(this)
+                    d3.select(this).select("line")
                         .transition()
                         .style("stroke", "purple")
-                        .attr("stroke-width", eventLineWidth * 2);
+                        .attr("stroke-width", eventLineWidth * 3);
                 })
                 .on("mouseout", function (d) {
                     d3.select(".tooltip")
                         .transition()
                         .style("display", "none");
-                    d3.select(this)
+                    d3.select(this).select("line")
                         .transition()
                         .style("stroke", "red")
                         .attr("stroke-width", eventLineWidth);
                 })
-                .attr("x1", eventLineLocation)
-                .attr("x2", eventLineLocation)     // x position of the second end of the line
+
+            //Create line and add a rect around to help with zoom
+            var pad = 20
+            g.append("rect")
+                .attr("x", function(d){
+                    return eventLineLocation(d) - pad/2;
+                })
+                .attr("y", zoomedAxisPadding)
+                .attr("height", zoomedSvgHeight - 2 * zoomedAxisPadding)
+                .attr("width", pad)
+                .attr("opacity", 0)
+
+            g.append("line")
+                .attr("x1", function(d){
+                    return eventLineLocation(d);
+                })
+                .attr("x2", function(d){
+                    return eventLineLocation(d);
+                })
                 .attr("class", "eventLine")
                 .style("stroke", "red")
                 .attr("y2", barplotAxisPadding + 20)    // y position of the second end of the line
