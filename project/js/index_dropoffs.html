@@ -543,11 +543,12 @@
             d3.select("#gHourlyDropoffsBarPlot")
                 .attr("transform", "translate(0, 300)");
 
+            var pad = 10
             var xScale = d3
                 .scaleBand()
                 .domain(_.range(24))
-                .rangeRound([barplotAxisPadding, barplotSvgWidth])
-                .paddingInner(0.05);
+                .rangeRound([(barplotAxisPadding + pad), barplotSvgWidth])
+                .paddingInner(0.1);
             hourlyDropoffsYScale
                 .range([barplotSvgHeight - barplotAxisPadding, barplotAxisPadding])
                 .domain([0, 0]);
@@ -555,12 +556,20 @@
             var xAxis = d3
                 .axisBottom(xScale)
                 .tickFormat(function (d, i) {
-                    return i % 6 === 0 ? (i + ':00') : '';
-                });
+                    return i % 4 === 0 ? (i + ':00') : '';
+                })
+
             hourlyYAxis = d3
                 .axisLeft(hourlyDropoffsYScale)
                 .ticks(4);
 
+            //Construct tooltips for bar plot
+            var tooltipDiv = d3
+                .select("body")
+                .append("div")
+                .attr("class", "tooltip");
+
+            //Construct bawr plot
             svgBarplot
                 .selectAll("rect")
                 .data(_.times(24, _.constant(0)))
@@ -570,15 +579,41 @@
                 .attr("x", function (d, i) {
                     return xScale(i);
                 })
-                .attr("width", xScale.bandwidth());
+                .attr("width", xScale.bandwidth())
+                .on("mouseover", function(d){
+                    console.log("test")
+                    d3.select(this)
+                        .classed("bar", false)
+                        .classed("barSelected", true)
+
+                    tooltipDiv.transition()
+                        .style("display", "inline")
+                        .style("background", "yellow");
+                    tooltipDiv
+                        .html(d)
+                        .style("left", (d3.event.pageX + 20) + "px")
+                        .style("top", (d3.event.pageY - 20) + "px");
+                })
+                .on("mouseout", function(d){
+                    d3.select(this)
+                        .classed("bar", true)
+                        .classed("barSelected", false)
+                    tooltipDiv.transition()
+                        .style("display", "none");
+                });
+
+
+            //Axis
             svgBarplot.append("g")
                 .attr("class", "xAxis")
                 .attr("transform", "translate(0, " + (barplotSvgHeight - barplotAxisPadding) + ")")
                 .call(xAxis);
             svgBarplot.append("g")
                 .attr("class", "yAxis")
-                .attr("transform", "translate(" + barplotAxisPadding + ", 0)")
+                .attr("transform", "translate(" + (barplotAxisPadding + pad + 5) + ", 0)")
                 .call(hourlyYAxis);
+
+            //Titles and labels
             svgBarplot.append("text")
                 .attr("id", "barplotTitle")
                 .attr("class", "plotTitle")
@@ -588,8 +623,8 @@
             svgBarplot.append("text")
                 .attr("class", "axisLabel")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 33)
-                .attr("x", -50)
+                .attr("y", 0)
+                .attr("x", -90)
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
                 .text("#Dropoffs");
@@ -644,6 +679,8 @@
                     }
                 })
                 .on("click", toggleVenueSelection);
+
+
         }
 
         function getProjection() {

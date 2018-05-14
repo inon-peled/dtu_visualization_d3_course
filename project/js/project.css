@@ -1,5 +1,5 @@
 .plotTitle {
-    font-family: Georgia;
+    font-family: Arial;
     font-size: 16px;
     text-anchor: middle;
     font-style: italic;
@@ -11,7 +11,7 @@
 
 #explain #pExplain {
     color: black;
-    font-family: Georgia;
+    font-family: Arial;
     font-size: 16px;
     margin-bottom: 20px;
 }
@@ -20,8 +20,12 @@
     fill: lightsteelblue;
 }
 
+.barSelected{
+    fill: orange;
+}
+
 #mapTitle {
-    font-family: Georgia;
+    font-family: Arial;
     font-size: 34px;
     /*font-weight: bold;*/
     fill: white;
