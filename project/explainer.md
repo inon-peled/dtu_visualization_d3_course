@@ -4,9 +4,9 @@
 
 This project presents two datasets which pertain to Manhattan, NYC: taxi dropoffs, and big events.
 
-The motivation for this project is to create an interactive research tool for the *machine learning for mobility* (ML^2) group at DTU Transport.
+The motivation for this project is to create an interactive research tool for the *machine learning for mobility* ($\text{ML}^2$) group at DTU Transport.
 Currently, the group does a lot of manual labor to explore correlations between changes in taxi dropoffs and big events in NYC.
-This project provides a tool which relieves such manual labor. The tool will greatly help the ML^2 group,
+This project provides a tool which relieves such manual labor. The tool will greatly help the $\text{ML}^2$ group,
 by making it much easier and quicker to spot possible correlations, and thus accelerate future research.
 
 ## Basic stats
@@ -28,7 +28,7 @@ Our visualizations follow the style of an interactive *partitioned posted*, pack
 Let us now detail which tools we use and why. We use the following **Visual Narrative tools**:
 
 - *Consistent visual platform*: all visualizations pertain to the same city area, so we reuse the same map.
-- *Close-ups*: one of the plots provides a zoomed view of a 24 hour period, to let the user easily tell when a sharp increase in dropoffs coincides with a big event, as requested by members of the ML^2 group.
+- *Close-ups*: one of the plots provides a zoomed view of a 24 hour period, to let the user easily tell when a sharp increase in dropoffs coincides with a big event, as requested by members of the $\text{ML}^2$ group.
 - *Motion and zooming*: happen as part of the zoomed view.
 - *Animated transitions*: nicely flowing, interactive visualizations through D3 show how the data story evolves.
 
@@ -66,10 +66,11 @@ Finally, the data for this project is preprocessed offline, and it would be a gr
 
 ## Contributions
 
-Inon is a member of the ML^2 group, and so came up with the project idea. Jacob implemented and stylized most parts of the timeline plots,
-while Inon implemented and stylized most parts of the other plots.
+Inon is a member of the $\text{ML}^2$ group, and so came up with the project idea. Jacob implemented and stylized most parts of the timeline plots, while Inon implemented and stylized most parts of the other plots.
+
 We mostly pair-programmed the entire project at Inon's office, where we shared one screen for data processing,
 data exploration, project planning, and webpage implementation.
+
 Eventually, each of us either touched or reviewed nearly every line of code, so we are both well familiar with all aspects of this project.
 
 <img src="explainer.assets/1526022914710.png" style="zoom:35%">
